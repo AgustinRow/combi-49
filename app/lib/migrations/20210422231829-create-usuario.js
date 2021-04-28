@@ -26,6 +26,9 @@ module.exports = {
       dni: {
         type: Sequelize.INTEGER
       },
+      tipo: {
+        type: Sequelize.INTEGER,
+      },
       habilitado: {
         type: Sequelize.BOOLEAN
       },
