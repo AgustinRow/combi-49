@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './home/login/login.component';
 import { LogoutComponent } from './home/logout/logout.component';
@@ -47,6 +48,14 @@ import { ListaValoracionComponent } from './lista-valoracion/lista-valoracion.co
 import { ValoracionComponent } from './lista-valoracion/valoracion/valoracion.component';
 import { ValoracionNuevoComponent } from './lista-valoracion/valoracion-nuevo/valoracion-nuevo.component';
 
+const appRoutes: Routes = [
+  { path: '', component: HomeComponent},
+  { path: 'SignUp', component: SingUpComponent},
+  { path: 'Login', component: LoginComponent},
+  { path: 'Logout', component: LogoutComponent},
+  { path: 'MyAcount', component: AcountComponent}
+  ];
+  
 @NgModule({
   declarations: [
     AppComponent,
@@ -95,7 +104,8 @@ import { ValoracionNuevoComponent } from './lista-valoracion/valoracion-nuevo/va
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [
     StorageService,
