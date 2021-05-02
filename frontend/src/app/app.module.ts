@@ -47,6 +47,7 @@ import { ProvinciaEditarComponent } from './lista-provincia/provincia-editar/pro
 import { ListaValoracionComponent } from './lista-valoracion/lista-valoracion.component';
 import { ValoracionComponent } from './lista-valoracion/valoracion/valoracion.component';
 import { ValoracionNuevoComponent } from './lista-valoracion/valoracion-nuevo/valoracion-nuevo.component';
+import { AuthenticationService } from "./service/authentication.service";
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent},
@@ -109,6 +110,7 @@ const appRoutes: Routes = [
   ],
   providers: [
     StorageService,
+    AuthenticationService
   ],
   bootstrap: [AppComponent]
 })
