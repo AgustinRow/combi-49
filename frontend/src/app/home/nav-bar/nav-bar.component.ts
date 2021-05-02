@@ -19,25 +19,32 @@ export class NavBarComponent implements OnInit {
     private router: Router,
     private storageService: StorageService,
     private modalCommentService: NgbModal
-  ) { }
+  ) {
+    this.isLogged();
+    this.storageService.logChange.subscribe(
+      (newState: boolean) => {
+        this.isLoggedNavbar = newState;
+      }
+    );
+  }
 
   ngOnInit(): void {
     this.isLogged();
   }
 
-  ngOnChanges(changes){
+  ngOnChanges(changes) {
     this.isLogged();
   }
 
-  isLogged(){
-    if(this.storageService.getCurrentSession() != null){
+  isLogged() {
+    if (this.storageService.getCurrentSession() != null) {
       this.isLoggedNavbar = true;
     }
-    else{
+    else {
       this.isLoggedNavbar = false;
     }
   }
-  
+
   onSelect(modalName) {
     this.modalCommentService.open(modalName);
   }
