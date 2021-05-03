@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Session } from 'src/app/module/session.module';
 import { Usuario } from 'src/app/module/usuario.module';
 import { StorageService } from 'src/app/service/storage.service';
@@ -17,10 +18,12 @@ export class LoginComponent implements OnInit {
   aux = new Usuario();
 
   constructor(
+    private router: Router,
     private storageService: StorageService
   ) { }
 
   ngOnInit(): void {
+    this.aux = new Usuario();
     this.sessionForm = new FormGroup({
       'inputEmail': new FormControl(null, [Validators.email]),
       'inputPassword': new FormControl(null, [Validators.required])
@@ -39,19 +42,19 @@ export class LoginComponent implements OnInit {
           this.aux.email = this.usuario.email;
           this.aux.tipo = 1;
           this.aux.usuario = "admin";
-          this.correctLogin(new Session(this.aux));
+          this.correctLogin(this.aux);
           break;
         case "chofer@combi19.com":
           this.aux.email = this.usuario.email;
           this.aux.tipo = 2;
           this.aux.usuario = "chofer";
-          this.correctLogin(new Session(this.aux));
+          this.correctLogin(this.aux);
           break;
         case "pasajero@combi19.com":
           this.aux.email = this.usuario.email;
           this.aux.tipo = 3;
           this.aux.usuario = "pasajero";
-          this.correctLogin(new Session(this.aux));
+          this.correctLogin(this.aux);
           break;
         default:
           console.log("Fallo la autentificacion");
@@ -64,9 +67,10 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  private correctLogin(data: Session) {
+  private correctLogin(data: Usuario) {
     this.storageService.logChange.emit(true);
-    this.storageService.setCurrentSession(data);
+    this.storageService.setCurrentSession(new Session(data));
+    this.router.navigate(['/']);
   }
 
   cancel() {

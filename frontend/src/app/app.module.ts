@@ -57,7 +57,10 @@ const appRoutes: Routes = [
   { path: 'SignUp', component: SingUpComponent},
   { path: 'Login', component: LoginComponent},
   { path: 'Logout', component: LogoutComponent},
-  { path: 'MyAcount', component: AcountComponent}
+  { path: 'MyAcount', component: AcountComponent},
+  { path: 'Usuarios', component: ListaUsuarioComponent},
+  { path: 'Viajes', component: ListaViajeComponent},
+  { path: 'Vehiculos', component: ListaVehiculoComponent}
   ];
   
 @NgModule({
