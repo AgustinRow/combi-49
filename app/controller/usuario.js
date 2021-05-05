@@ -20,36 +20,43 @@ const findUser = async (req, res) => {
 
 const findUserForLogIn = async (req, res) => {
   const user = req.body;
-  model.Usuario.findOne({ where: { username: user.username } }).then(
-    (response) => {
-      try {
-        if (response.habilitado) {
-          if (user.password === response.password) {
-            res.json({ data: parse(response) });
-            res.status(200);
-          } else {
-            res
-              .status(400)
-              .json({ error: "Bad request. Incorrect username or passowrd" });
-          }
+  model.Usuario.findOne({ where: { email: user.email } }).then((response) => {
+    try {
+      if (response.habilitado) {
+        if (user.password === response.password) {
+          res.json({ data: parse(response) });
+          res.status(200);
         } else {
-          res.status(401).json({ error: "Not Found" });
+          res
+            .status(400)
+            .json({ error: "Bad request. Incorrect email or passowrd" });
         }
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({ error: "Internal server error" });
+      } else {
+        res.status(401).json({ error: "Not Found" });
       }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "Internal server error" });
     }
-  );
+  });
 };
 
 // TODO: agregar oauth token para autenticacion
 const getAllUsers = async (req, res) => {
   try {
-    //el problema est en el filtro de usuarios habilitados... buscar otra forma de filstralos
-    model.Usuario.findAll({ where: { habilitado: true } }).then((response) => {
-      res.json({ data: parseUsersData(response) });
-      res.status(200);
+    const userId = req.params.id;
+    mode.Usuario.findOne({ where: { id: userId } }).then((response) => {
+      // Solo administrador
+      if (response.tipo === 1) {
+        model.Usuario.findAll({ where: { habilitado: true } }).then(
+          (response) => {
+            res.json({ data: parseUsersData(response) });
+            res.status(200);
+          }
+        );
+      } else {
+        res.status(400).json({ message: "Unauthorized" });
+      }
     });
   } catch (err) {
     console.log(err);
@@ -66,6 +73,7 @@ const getAllUsers = async (req, res) => {
 };
 const parse = (user) => {
   return {
+    email: user.email,
     username: user.username,
     nombre: user.nombre,
     apellido: user.apellido,
