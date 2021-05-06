@@ -1,31 +1,46 @@
 const model = require("../lib/models");
 const Op = require("sequelize").Op;
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
+function jwtToken(user) {
+  return jwt.sign(
+    {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    },
+    process.env.TOKEN_SECRET,
+    { expiresIn: 1200 }
+  );
+}
+//buscar un usuario
 const findUser = async (req, res) => {
   const user = req.body;
-  model.Usuario.findOne({ where: { username: user.username } }).then(
-    (response) => {
-      try {
-        if (response) {
-          res.status(200).json({ data: parse(response) });
-        } else {
-          res.status(402).json({ error: "Bad request." });
-        }
-      } catch (err) {
-        res.status(500).json({ error: "Internal server error" });
+  model.Usuario.findOne({ where: { email: user.email } }).then((response) => {
+    try {
+      if (response) {
+        res.status(200).json({ data: parse(response) });
+      } else {
+        res.status(402).json({ error: "Bad request." });
       }
+    } catch (err) {
+      res.status(500).json({ error: "Internal server error" });
     }
-  );
+  });
 };
 
-const findUserForLogIn = async (req, res) => {
+const login = async (req, res) => {
   const user = req.body;
   model.Usuario.findOne({ where: { email: user.email } }).then((response) => {
     try {
       if (response.habilitado) {
         if (user.password === response.password) {
-          res.json({ data: parse(response) });
-          res.status(200);
+          const token = jwtToken(response);
+
+          res.header("auth-token", token).send({ data: parse(response) });
+          //res.json({ data: parse(response) });
+          //res.status(200);
         } else {
           res
             .status(400)
@@ -40,15 +55,14 @@ const findUserForLogIn = async (req, res) => {
     }
   });
 };
-
-// TODO: agregar oauth token para autenticacion
-const getAllUsers = async (req, res) => {
+//listar choferes
+const getAllDrivers = async (req, res) => {
   try {
     const userId = req.params.id;
-    mode.Usuario.findOne({ where: { id: userId } }).then((response) => {
+    model.Usuario.findOne({ where: { id: userId } }).then((response) => {
       // Solo administrador
-      if (response.tipo === 1) {
-        model.Usuario.findAll({ where: { habilitado: true } }).then(
+      if (response && response.tipo === 1) {
+        model.Usuario.findAll({ where: { habilitado: true, tipo: 2 } }).then(
           (response) => {
             res.json({ data: parseUsersData(response) });
             res.status(200);
@@ -71,8 +85,10 @@ const getAllUsers = async (req, res) => {
     return result;
   }
 };
+
 const parse = (user) => {
   return {
+    id: user.id,
     email: user.email,
     username: user.username,
     nombre: user.nombre,
@@ -82,8 +98,19 @@ const parse = (user) => {
   };
 };
 
-//TODO: agregar oauth token para autenticacion
-const addUser = async (req, res) => {
+const findDuplicates = async (user) => {
+  return model.Usuario.findAll({
+    where: {
+      [Op.or]: [
+        { username: user.username },
+        { email: user.email },
+        { dni: user.dni },
+      ],
+    },
+  });
+};
+//registrar usuario
+const register = async (req, res) => {
   const user = req.body;
   model.Usuario.findAll({
     where: {
@@ -119,18 +146,51 @@ const addUser = async (req, res) => {
       habilitado: true,
     }).then(() => {
       try {
-        res.status(201).json({ data: parse(user) });
+        res.status(201).json({ created: parse(user) });
       } catch (err) {
         console.log(err);
-        res.status(500).json({ data: "Internal server error" });
+        res.status(500).json({ message: "Internal server error" });
       }
     });
   }
 };
+//modificar chofer
+consgitt updateDriver = async (req, res) => {
+  const updatedUser = parse(req.body);
+  const oldUser = await findDuplicates(updatedUser).then(
+    (response) => response[0].dataValues
+  );
+  console.log(oldUser.id);
+  if (oldUser.id == updatedUser.id) {
+    model.Usuario.update(updatedUser, {
+      where: {
+        id: updatedUser.id,
+      },
+    }).then((response) => {
+      try {
+        res.status(201).json({ created: parse(response) });
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    });
+  } else {
+    if (oldUser.email === updatedUser.email) {
+      res.status(401).json({ message: "This email already exist" });
+    }
+    if (oldUser.dni === updatedUser.dni) {
+      res.status(401).json({ message: "This DNI already exist" });
+    }
+    if (oldUser.username === updatedUser.username) {
+      res.status(401).json({ message: "This username already exist" });
+    }
+  }
+};
 
 module.exports = {
-  getAllUsers,
-  addUser,
-  findUserForLogIn,
+  getAllDrivers,
+  register,
+  login,
   findUser,
+  updateDriver,
 };

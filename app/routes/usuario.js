@@ -1,11 +1,13 @@
 var express = require("express");
 var router = express.Router();
 const Usuario = require("../controller/usuario");
+const verify = require("../controller/verifyToken");
 
-/*  */
-router.get("/(:id)", Usuario.getAllUsers);
-router.post("/", Usuario.addUser);
-router.get("/login", Usuario.findUserForLogIn);
-router.get("/buscar", Usuario.findUser);
+router.get("/lista_chofer/(:id)", verify, Usuario.getAllDrivers);
+router.post("/alta_chofer", verify, Usuario.addUser);
+router.post("/registrar", Usuario.register);
+router.put("/modificar_chofer", verify, Usuario.updateDriver);
+router.get("/login", Usuario.login);
+router.get("/buscar", verify, Usuario.findUser);
 
 module.exports = router;
