@@ -1,0 +1,101 @@
+<nav class="navbar navbar-expand-sm" style="background-color: #3eb7db;" *ngIf="isLoggedNavbar; else BlockLogin">
+
+    <a class="nav-link" routerLink="/" [routerLinkActiveOptions]="{exact: true}">
+        <img src="/assets/image/Combi19.png" width="80px">
+    </a>
+
+
+    <button class="navbar-toggler" type="button" (click)="c.toggle()">
+        <span class="navbar-toggler-icon">Lista</span>
+    </button>
+
+    <div class="collapse navbar-collapse" #c="ngbCollapse" [(ngbCollapse)]="isCollapsed" (shown)="onShown()"
+        (hidden)="onHidden()">
+
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/MyRouteList">Mis pasajes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/MyAcount">Mi cuenta</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav" *ngIf="usuarioIdentificado.tipo === 1">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/Usuarios">Usuarios</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/Choferes">Choferes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/Viajes">Viajes</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" routerLink="/Vehiculos">Vehiculos</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="btn btn-danger" (click)="onSelect(logOut)">Cerrar sesion</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<ng-template #BlockLogin>
+    <nav class="navbar navbar-expand-sm" style="background-color: #3eb7db;">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/">
+                    <img src="/assets/image/Combi19.png" height="100px" alt="Combi-19"></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <button type="button" class="btn btn-light m-1" (click)="onSelect(newUser)">Registrarse</button>
+            <button type="button" class="btn btn-primary m-1" (click)="onSelect(loginUser)">Ingresar</button>
+        </ul>
+    </nav>
+</ng-template>
+
+<!-- Modal para registrarse-->
+<ng-template #newUser let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Bienvenido</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Por favor complete todos los campos</p>
+        <app-sing-up>Cargando formulario</app-sing-up>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<!-- Modal para iniciar sesion-->
+<ng-template #loginUser let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Inicie sesion</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-login (submittedLogin)="c('Close click')">Cargando formulario</app-login>
+    </div>
+</ng-template>
+
+<!-- Modal para cerrar-->
+<ng-template #logOut let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h6 class="modal-title">¿Realmente quiere cerrar sesión?</h6>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="logout(); c('Close click')">Salir</button>
+    </div>
+</ng-template>

@@ -29,7 +29,6 @@ var server = http.createServer(app);
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
-console.log("Server running on: http://localhost:3000");
 
 //database connection
 sequelize
@@ -41,6 +40,7 @@ sequelize
     console.error("Unable to connect to the database:", err);
   });
 
+console.log(`REST API on http://localhost:${port}/api`);
 /**
  *
  * Normalize a port into a number, string, or false.
