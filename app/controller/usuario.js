@@ -155,7 +155,7 @@ const register = async (req, res) => {
   }
 };
 //modificar chofer
-consgitt updateDriver = async (req, res) => {
+const updateDriver = async (req, res) => {
   const updatedUser = parse(req.body);
   const oldUser = await findDuplicates(updatedUser).then(
     (response) => response[0].dataValues
