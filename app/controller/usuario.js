@@ -11,7 +11,7 @@ function jwtToken(user) {
       email: user.email,
     },
     process.env.TOKEN_SECRET,
-    { expiresIn: 1200 }
+    { expiresIn: 12000 }
   );
 }
 //buscar un usuario
@@ -58,22 +58,13 @@ const login = async (req, res) => {
 //listar choferes
 const getAllDrivers = async (req, res) => {
   try {
-    const userId = req.params.id;
-    model.Usuario.findOne({ where: { id: userId } }).then((response) => {
-      // Solo administrador
-      if (response && response.tipo === 1) {
-        model.Usuario.findAll({ where: { habilitado: true, tipo: 2 } }).then(
-          (response) => {
-            res.json({ data: parseUsersData(response) });
-            res.status(200);
-          }
-        );
-      } else {
-        res.status(400).json({ message: "Unauthorized" });
+    model.Usuario.findAll({ where: { habilitado: true, tipo: 2 } }).then(
+      (response) => {
+        res.json({ data: parseUsersData(response) });
+        res.status(200);
       }
-    });
+    );
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Internal Server error" });
   }
   function parseUsersData(users) {
@@ -157,10 +148,13 @@ const register = async (req, res) => {
 //modificar chofer
 const updateDriver = async (req, res) => {
   const updatedUser = parse(req.body);
-  const oldUser = await findDuplicates(updatedUser).then(
-    (response) => response[0].dataValues
-  );
-  console.log(oldUser.id);
+  const oldUser = await findDuplicates(updatedUser).then((response) => {
+    try {
+      return response[0].dataValues;
+    } catch {
+      res.status(401).json({ message: "This user does not exist" });
+    }
+  });
   if (oldUser.id == updatedUser.id) {
     model.Usuario.update(updatedUser, {
       where: {
@@ -168,7 +162,7 @@ const updateDriver = async (req, res) => {
       },
     }).then((response) => {
       try {
-        res.status(201).json({ created: parse(response) });
+        res.status(201).json({ modified: updatedUser });
       } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal server error" });
