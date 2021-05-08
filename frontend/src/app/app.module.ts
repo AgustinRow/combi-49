@@ -114,7 +114,8 @@ const appRoutes: Routes = [
     NgbModule,
     RouterModule.forRoot(appRoutes),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     StorageService,

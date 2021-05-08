@@ -20,7 +20,8 @@ const findUser = async (req, res) => {
 
 const findUserForLogIn = async (req, res) => {
   const user = req.body;
-  model.Usuario.findOne({ where: { username: user.username } }).then(
+  console.log(user);
+  model.Usuario.findOne({ where: { email: user.email } }).then(
     (response) => {
       try {
         if (response.habilitado) {
@@ -111,9 +112,6 @@ const addUser = async (req, res) => {
       habilitado: true,
     }).then(() => {
       try {
-<<<<<<< Updated upstream
-        res.status(201).json({ data: parse(user) });
-=======
         res.status(201).json({ created: parse(user) });
       } catch (err) {
         console.log(err);
@@ -137,7 +135,6 @@ const updateDriver = async (req, res) => {
     }).then((response) => {
       try {
         res.status(201).json({ created: parse(response) });
->>>>>>> Stashed changes
       } catch (err) {
         console.log(err);
         res.status(500).json({ data: "Internal server error" });

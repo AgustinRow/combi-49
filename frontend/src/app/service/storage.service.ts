@@ -15,8 +15,13 @@ export class StorageService {
   }
 
   setCurrentSession(session: Session): void {
-    this.currentSession = session;
+    this.currentSession = session;    
+    this.setCurrentToken(session.token);
     this.localStorageService.setItem('currentUser', JSON.stringify(session));
+  }
+  
+  setCurrentToken(token: string): void {
+    this.localStorageService.setItem('access_token', JSON.stringify(token));
   }
 
   loadSessionData(): Session{

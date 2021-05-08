@@ -9,10 +9,10 @@ const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/js
 @Injectable()
 export class AuthenticationService {
   constructor(private http: HttpClient) {}
-  private basePath = '/Combi-19/';
+  private basePath = '/api/';
 
   public loginUser(user: Usuario): Observable<any>{
-    return this.http.post<any>(this.basePath +'usuarios/autentificacion', user, httpOptions);
+    return this.http.post<any>(this.basePath +'usuario/login', user, httpOptions);
   }
 
   private handleError(error: HttpErrorResponse) {
