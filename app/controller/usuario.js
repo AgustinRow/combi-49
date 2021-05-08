@@ -11,7 +11,7 @@ function jwtToken(user) {
       email: user.email,
     },
     process.env.TOKEN_SECRET,
-    { expiresIn: 12000 }
+    { expiresIn: 120000 }
   );
 }
 //buscar un usuario
