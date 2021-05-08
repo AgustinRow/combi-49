@@ -111,7 +111,33 @@ const addUser = async (req, res) => {
       habilitado: true,
     }).then(() => {
       try {
+<<<<<<< Updated upstream
         res.status(201).json({ data: parse(user) });
+=======
+        res.status(201).json({ created: parse(user) });
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    });
+  }
+};
+//modificar chofer
+const updateDriver = async (req, res) => {
+  const updatedUser = parse(req.body);
+  const oldUser = await findDuplicates(updatedUser).then(
+    (response) => response[0].dataValues
+  );
+  console.log(oldUser.id);
+  if (oldUser.id == updatedUser.id) {
+    model.Usuario.update(updatedUser, {
+      where: {
+        id: updatedUser.id,
+      },
+    }).then((response) => {
+      try {
+        res.status(201).json({ created: parse(response) });
+>>>>>>> Stashed changes
       } catch (err) {
         console.log(err);
         res.status(500).json({ data: "Internal server error" });
