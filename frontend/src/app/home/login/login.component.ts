@@ -33,13 +33,16 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  ngOnChange(){
+
+  }
+
   loginUser() {
     if (this.sessionForm.valid) {
       this.usuario.email = this.sessionForm.get('inputEmail').value;
       this.usuario.password = this.sessionForm.get('inputPassword').value;
       this.authService.loginUser(this.usuario).subscribe(
         (data: any) => {
-          console.log(data);
           if (data != null) {
             this.correctLogin(data);
           }
@@ -60,10 +63,11 @@ export class LoginComponent implements OnInit {
     else {
       console.log("Formulario no valido");
     }
+    this.storageService.logChange.emit(true);
   }
 
   private correctLogin(data: Usuario) {
-    this.storageService.logChange.emit(true);
+    console.log("correctLogin");
     this.storageService.setCurrentSession(new Session(data));
     this.submittedLogin.emit();
     this.router.navigate(['/']);

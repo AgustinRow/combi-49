@@ -53,16 +53,20 @@ import { ValoracionNuevoComponent } from './lista-valoracion/valoracion-nuevo/va
 import { AuthenticationService } from "./service/authentication.service";
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent},
-  { path: 'SignUp', component: SingUpComponent},
-  { path: 'Login', component: LoginComponent},
-  { path: 'Logout', component: LogoutComponent},
-  { path: 'MyAcount', component: AcountComponent},
-  { path: 'Usuarios', component: ListaUsuarioComponent},
-  { path: 'Viajes', component: ListaViajeComponent},
-  { path: 'Vehiculos', component: ListaVehiculoComponent}
-  ];
-  
+  { path: '', component: HomeComponent },
+  { path: 'SignUp', component: SingUpComponent },
+  { path: 'Login', component: LoginComponent },
+  { path: 'Logout', component: LogoutComponent },
+  { path: 'MyAcount', component: AcountComponent },
+  { path: 'Usuarios', component: ListaUsuarioComponent },
+  { path: 'Viajes', component: ListaViajeComponent },
+  { path: 'Vehiculos', component: ListaVehiculoComponent }
+];
+
+const USUARIO_ADMINISTRADOR = 1;
+const USUARIO_CHOFER = 2;
+const USUARIO_PASAJERO = 3;
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -116,6 +120,9 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule
+  ],
+  exports: [
+    RouterModule
   ],
   providers: [
     StorageService,

@@ -14,14 +14,14 @@
 
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" routerLink="/MyRouteList">Mis pasajes</a>
+                <a class="nav-link" routerLink="/Viajes">Mis pasajes</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" routerLink="/MyAcount">Mi cuenta</a>
             </li>
         </ul>
 
-        <ul class="navbar-nav" *ngIf="usuarioIdentificado.tipo === 1">
+        <ul class="navbar-nav" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
             <li class="nav-item">
                 <a class="nav-link" routerLink="/Usuarios">Usuarios</a>
             </li>
