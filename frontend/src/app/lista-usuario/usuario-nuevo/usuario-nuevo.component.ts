@@ -7,6 +7,7 @@ import { Usuario } from 'src/app/module/usuario.module';
   templateUrl: './usuario-nuevo.component.html',
   styleUrls: ['./usuario-nuevo.component.css']
 })
+
 export class UsuarioNuevoComponent implements OnInit {
   @Input() usuarioNuevo = new Usuario();
   @Output() userNewEvent = new EventEmitter<Usuario>();
