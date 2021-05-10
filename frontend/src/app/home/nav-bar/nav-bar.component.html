@@ -68,7 +68,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-sing-up>Cargando formulario</app-sing-up>
+        <app-sing-up (userNewEvent)="c('Close click')">Cargando formulario</app-sing-up>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
