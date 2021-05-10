@@ -1,7 +1,7 @@
 import { Pasaje } from "./pasaje.module";
 
 export class Usuario{
-    idUsuario: number;
+    id: number;
     nombre: string;
     apellido: string;
     tipo: number;           //perfil 1-Administrador, 2-Chofer, 3-pasajero

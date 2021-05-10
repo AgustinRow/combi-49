@@ -68,7 +68,6 @@
         </button>
     </div>
     <div class="modal-body">
-        <p>Por favor complete todos los campos</p>
         <app-sing-up>Cargando formulario</app-sing-up>
     </div>
     <div class="modal-footer">
@@ -85,7 +84,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-login (submittedLogin)="c('Close click')">Cargando formulario</app-login>
+        <app-login (submittedLogin)="this.isLoggedNavbar = true; c('Close click')">Cargando formulario</app-login>
     </div>
 </ng-template>
 

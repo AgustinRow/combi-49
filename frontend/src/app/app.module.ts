@@ -14,7 +14,6 @@ import { NavBarComponent } from './home/nav-bar/nav-bar.component';
 import { SingUpComponent } from './home/sing-up/sing-up.component';
 import { AcountComponent } from './home/acount/acount.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { StorageService } from './service/storage.service';
 import { ListaUsuarioComponent } from './lista-usuario/lista-usuario.component';
 import { UsuarioComponent } from './lista-usuario/usuario/usuario.component';
 import { UsuarioNuevoComponent } from './lista-usuario/usuario-nuevo/usuario-nuevo.component';
@@ -50,7 +49,10 @@ import { ProvinciaEditarComponent } from './lista-provincia/provincia-editar/pro
 import { ListaValoracionComponent } from './lista-valoracion/lista-valoracion.component';
 import { ValoracionComponent } from './lista-valoracion/valoracion/valoracion.component';
 import { ValoracionNuevoComponent } from './lista-valoracion/valoracion-nuevo/valoracion-nuevo.component';
+
+import { StorageService } from './service/storage.service';
 import { AuthenticationService } from "./service/authentication.service";
+import { UserService } from './service/user.service';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -62,10 +64,6 @@ const appRoutes: Routes = [
   { path: 'Viajes', component: ListaViajeComponent },
   { path: 'Vehiculos', component: ListaVehiculoComponent }
 ];
-
-const USUARIO_ADMINISTRADOR = 1;
-const USUARIO_CHOFER = 2;
-const USUARIO_PASAJERO = 3;
 
 @NgModule({
   declarations: [
@@ -126,7 +124,8 @@ const USUARIO_PASAJERO = 3;
   ],
   providers: [
     StorageService,
-    AuthenticationService
+    AuthenticationService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

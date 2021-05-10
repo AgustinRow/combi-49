@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter, Output } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from '../module/usuario.module';
 import { Session } from '../module/session.module';
@@ -7,7 +7,7 @@ import { Session } from '../module/session.module';
 export class StorageService {
   private localStorageService;
   private currentSession : Session = null;
-  @Output() logChange = new EventEmitter<boolean>();
+  logChange = new EventEmitter<boolean>();
 
   constructor(private router: Router) {
     this.localStorageService = localStorage;
