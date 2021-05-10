@@ -53,6 +53,7 @@ import { ValoracionNuevoComponent } from './lista-valoracion/valoracion-nuevo/va
 import { StorageService } from './service/storage.service';
 import { AuthenticationService } from "./service/authentication.service";
 import { UserService } from './service/user.service';
+import { VehicleService } from './service/vehicle.service';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -125,7 +126,8 @@ const appRoutes: Routes = [
   providers: [
     StorageService,
     AuthenticationService,
-    UserService
+    UserService,
+    VehicleService
   ],
   bootstrap: [AppComponent]
 })

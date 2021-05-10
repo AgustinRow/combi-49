@@ -53,7 +53,7 @@ export class ListaUsuarioComponent implements OnInit {
   }
 
   openModal(contentEdit, userselect: Usuario) {    
-    console.log("openModal");
+    console.log(this.listaU);
     this.usuarioSeleccionado = userselect;
     this.modalService.open(contentEdit);
   }
