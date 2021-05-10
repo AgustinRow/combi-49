@@ -25,8 +25,6 @@ export class VehiculoNuevoComponent implements OnInit {
 
   newVehiculo(formulario: NgForm) {
     if (formulario.valid) {
-      console.log(this.vehiculoNuevo);
-      console.log(formulario.value);
       this.vehicleService.addvehicle(this.vehiculoNuevo).subscribe(
         (data: Vehiculo) => {
           if (data != null) {
