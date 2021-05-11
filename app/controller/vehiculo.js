@@ -86,7 +86,7 @@ const updateVehicle = async (req, res, next) => {
 };
 //busca vehiculo por unidad y lo devuelve
 const findOneVehicle = async (req, res, next) => {
-  const vehiculo = req.body;
+  const vehiculo = req.params;
   model.Vehiculo.findOne({ where: { id: vehiculo.id } }).then((response) => {
     try {
       if (response) {
@@ -99,10 +99,31 @@ const findOneVehicle = async (req, res, next) => {
     }
   });
 };
-
+const remove = async (req, res) => {
+  const { id } = req.params;
+  model.Vehiculo.findByPk(id).then((response) => {
+    try {
+      if (response.dataValues.habilitado) {
+        model.Vehiculo.update(
+          { habilitado: false },
+          { where: { id: id } }
+        ).then(() => {
+          res.status(200).json({ message: "removed" });
+        });
+      } else {
+        res
+          .status(400)
+          .json({ message: "This vehicle has been removed already" });
+      }
+    } catch (err) {
+      res.status(400).json({ message: "Bad Request" });
+    }
+  });
+};
 module.exports = {
   addVehicle,
   listVehicle,
   findOneVehicle,
   updateVehicle,
+  remove,
 };

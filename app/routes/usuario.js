@@ -4,11 +4,12 @@ const Usuario = require("../controller/usuario");
 const verify = require("../controller/verifyToken");
 const auth = require("../controller/auth");
 
-router.get("/lista_chofer", verify, Usuario.getAllDrivers);
-router.post("/alta_chofer", verify, Usuario.register);
+router.get("/lista_usuarios", Usuario.getAllDrivers);
+router.post("/alta_chofer", Usuario.register);
 router.post("/registrar", Usuario.register);
-router.put("/modificar_chofer", verify, Usuario.updateDriver);
+router.put("/modificar_usuario", Usuario.updateDriver);
 router.get("/login", Usuario.login);
-router.get("/buscar", verify, Usuario.findUser);
+router.get("/buscar/(:id)", Usuario.findUser);
+router.delete("/borrar/(:id)", Usuario.remove);
 
 module.exports = router;

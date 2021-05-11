@@ -16,8 +16,8 @@ function jwtToken(user) {
 }
 //buscar un usuario
 const findUser = async (req, res) => {
-  const user = req.body;
-  model.Usuario.findOne({ where: { email: user.email } }).then((response) => {
+  const userId = req.params.id;
+  model.Usuario.findOne({ where: { id: userId, tipo: 2 } }).then((response) => {
     try {
       if (response) {
         res.status(200).json({ data: parse(response) });
@@ -152,7 +152,7 @@ const updateDriver = async (req, res) => {
     try {
       return response[0].dataValues;
     } catch {
-      res.status(401).json({ message: "This user does not exist" });
+      res.status(400).json({ message: "This user does not exist" });
     }
   });
   if (oldUser.id == updatedUser.id) {
@@ -181,10 +181,30 @@ const updateDriver = async (req, res) => {
   }
 };
 
+const remove = async (req, res) => {
+  const id = req.params.id;
+  model.Usuario.findOne({ where: { id: id } }).then((response) => {
+    try {
+      if (response.dataValues.habilitado) {
+        model.Usuario.update({ habilitado: false }, { where: { id: id } }).then(
+          (res) => {
+            res.status(200).json({ message: "removed" });
+          }
+        );
+      } else {
+        res.status(400).json({ message: "This user has been removed already" });
+      }
+    } catch (err) {
+      res.status(400).json({ message: "Bad Request" });
+    }
+  });
+};
+
 module.exports = {
   getAllDrivers,
   register,
   login,
   findUser,
   updateDriver,
+  remove,
 };
