@@ -26,12 +26,12 @@ export class ListaParadaComponent implements OnInit {
     this.modalService.open(contentEdit);
   }
 
-  deleteParada(select: Parada) {
+  deleteStop(select: Parada) {
     var i = this.listParadas.indexOf(select);
     i !== -1 && this.listParadas.splice(i, 1);
   }
 
-  addCity(newCity: Parada) {
-    this.listParadas.push(newCity);
+  addStop(newStop: Parada) {
+    this.listParadas.push(newStop);
   }
 }

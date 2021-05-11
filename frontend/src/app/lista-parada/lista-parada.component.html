@@ -24,7 +24,7 @@
                         <button type="button" class="btn btn-warning"
                             (click)="openModal(contentEdit, parada)">Editar</button>
                         <button type="button" class="btn btn-danger"
-                            (click)="deleteParada(parada)">Eliminar</button>
+                            (click)="deleteStop(parada)">Eliminar</button>
                     </div>
                 </td>
             </tr>
@@ -56,7 +56,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-parada-nuevo (paradaNewEvent)="addCity($event); c('Close click')">Cargando</app-parada-nuevo>
+        <app-parada-nuevo (paradaNewEvent)="addStop($event); c('Close click')">Cargando</app-parada-nuevo>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>

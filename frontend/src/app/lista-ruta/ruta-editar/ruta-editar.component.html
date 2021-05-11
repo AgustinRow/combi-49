@@ -1,1 +1,32 @@
-<p>ruta-editar works!</p>
+<form (ngSubmit)="modifyRoute(modifyRouteForm)" #modifyRouteForm="ngForm">
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" [(ngModel)]="rutaModificada.nombre" name="nombre" required>
+    </div>
+
+    <div class="form-group">
+        <label for="distancia">Distancia:</label>
+        <input type="number" class="form-control" id="distancia" [(ngModel)]="rutaModificada.distancia" name="direccion"
+            required>
+    </div>
+
+    <div class="form-group">
+        <label for="origen">Origen:</label>
+        <select type="text" class="form-control" id="origen" name="origen" [(ngModel)]="rutaModificada.origen" required>
+            <option *ngFor="let origen of listParadas; index as i" value="{{origen.nombre}}">{{ origen.nombre }}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="destino">Destino:</label>
+        <select type="text" class="form-control" id="destino" name="destino" [(ngModel)]="rutaModificada.destino" required>
+            <ng-container *ngFor="let destino of listParadas; index as i">
+                <option value="{{destino.nombre}}" *ngIf="rutaModificada.origen != destino.nombre">{{ destino.nombre }}
+                </option>
+            </ng-container>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="!modifyRouteForm.form.valid">Guardar</button>
+</form>
