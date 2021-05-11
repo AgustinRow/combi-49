@@ -54,6 +54,7 @@ import { StorageService } from './service/storage.service';
 import { AuthenticationService } from "./service/authentication.service";
 import { UserService } from './service/user.service';
 import { VehicleService } from './service/vehicle.service';
+import { MockService } from "./service/mock.service.";
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -127,7 +128,8 @@ const appRoutes: Routes = [
     StorageService,
     AuthenticationService,
     UserService,
-    VehicleService
+    VehicleService,
+    MockService
   ],
   bootstrap: [AppComponent]
 })

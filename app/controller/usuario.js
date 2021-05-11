@@ -108,9 +108,9 @@ const register = async (req, res) => {
   model.Usuario.findAll({
     where: {
       [Op.or]: [
-        { username: user.username },
+        //{ username: user.username },
         { email: user.email },
-        { dni: user.dni },
+        //{ dni: user.dni },
       ],
     },
   }).then((response) => {
