@@ -32,6 +32,7 @@ export class UsuarioNuevoComponent implements OnInit {
   newUser(formulario: NgForm) {
     if(formulario.valid) 
     {
+      console.log(this.usuarioNuevo);
       this.submitted = true;this.userService.addUser(this.usuarioNuevo).subscribe(
         (data: Usuario)=>{
           if(data != null)

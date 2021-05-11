@@ -1,5 +1,5 @@
 export class Provincia{
-    idProvincia: number;
+    id: number;
     nombre: string;
     borradoLogico: number;  //activo
 }

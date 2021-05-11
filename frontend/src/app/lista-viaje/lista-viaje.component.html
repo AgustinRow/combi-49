@@ -1,4 +1,29 @@
-<div class="container">
+<nav class="navbar navbar-expand-sm" style="background-color: #27b970;">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" (click)="onSelect('viajes')">Lista Viajes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" (click)="onSelect('rutas')">Rutas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" (click)="onSelect('paradas')">Paradas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" (click)="onSelect('ciudades')">Ciudades</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" (click)="onSelect('provincias')">Provincias</a>
+            </li>
+        </ul>
+</nav>
+
+<app-lista-ruta [(listaRuta)]="lRutas" *ngIf="ver == 'rutas'">Carcgando rutas...</app-lista-ruta>
+<app-lista-parada [(listParadas)]="lParadas" *ngIf="ver == 'paradas'">Carcgando paradas...</app-lista-parada>
+<app-lista-ciudad [(listCiudades)]="lCiudades" *ngIf="ver == 'ciudades'">Carcgando ciudades...</app-lista-ciudad>
+<app-lista-provincia *ngIf="ver == 'provincias'">Carcgando provincias...</app-lista-provincia>
+
+<div class="container" *ngIf="ver == 'viajes'">
     <h2>Lista de viajes </h2>
     <p>Para realizar la compra de un viaje puede selecionar en la tabla, los viajes son dado de alta por la empresa y se
         disponen para los usuarios :</p>
