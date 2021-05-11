@@ -27,32 +27,71 @@
     <h2>Lista de viajes </h2>
     <p>Para realizar la compra de un viaje puede selecionar en la tabla, los viajes son dado de alta por la empresa y se
         disponen para los usuarios :</p>
+    
+    <button class="btn btn-primary m-2" (click)="openModal(contentNew, viajeSeleccionado)">
+        Crear viaje
+    </button>
+
     <table class="table">
         <thead>
             <tr>
-                <th>Origin</th>
-                <th>Destino</th>
-                <th>Tiempo Estimado</th>
-                <th>Fecha de Salidad</th>
-                <th>Fecha de Llegada</th>
+                <th>Ruta</th>
+                <th>Fecha de salida</th>
+                <th>Fecha de llegada</th>
+                <th>Chofer</th>
+                <th>Vehiculo</th>
                 <th>Detalles</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Chascomus</td>
-                <td>La Plata</td>
-                <td>1HS</td>
-                <td>29/042021</td>
-                <td>29/042021</td>
-
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <td><button type="button" class="btn btn-info">Informacion</button></td>
-                    <td><button type="button" class="btn btn-success">Comprar</button></td>
-                    <td><button type="button" class="btn btn-primary">Editar</button> </td>
-                    <td><button type="button" class="btn btn-danger">Eliminar</button></td>
-                </div>
+            <tr *ngFor="let viaje of lViajes">
+                <td data-title="Ruta">{{viaje.ruta}}</td>
+                <td data-title="Fecha de Salida">{{viaje.fechaSalida}}</td>
+                <td data-title="Fecha de Llegada">{{viaje.fechaLlegada}}</td>
+                <td data-title="Chofer">{{viaje.chofer}}</td>
+                <td data-title="Vehiculo">{{viaje.vehiculo}}</td>
+                <td data-title="Detalles">{{viaje.detalle}}</td>
+                <td data-title="Acciones">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-warning"
+                            (click)="openModal(contentEdit, viaje)">Editar</button>
+                        <button type="button" class="btn btn-danger"
+                            (click)="deleteTravel(viaje)">Eliminar</button>
+                    </div>
+                </td>
             </tr>
         </tbody>
     </table>
 </div>
+
+
+<ng-template #contentEdit let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Editar viaje</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-viaje-editar [(viajeModificado)]="viajeSeleccionado" (travelEditEvent)="c('Close click')">
+            Cargando</app-viaje-editar>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<ng-template #contentNew let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Nuevo viaje</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-viaje-nuevo (travelNewEvent)="addTravel($event); c('Close click')">Cargando</app-viaje-nuevo>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>

@@ -5,6 +5,7 @@ import { Parada } from "../module/parada.module";
 import { Ciudad } from "../module/ciudad.module";
 import { Provincia } from "../module/provincia.module";
 import { MockService } from '../service/mock.service.';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-lista-viaje',
@@ -14,6 +15,7 @@ import { MockService } from '../service/mock.service.';
     MockService]
 })
 export class ListaViajeComponent implements OnInit {
+  viajeSeleccionado: Viaje;
   ver: String = "viajes";
   lViajes: Viaje[] = [];
   @Input() lRutas: Ruta[] = [];
@@ -22,20 +24,12 @@ export class ListaViajeComponent implements OnInit {
   @Input() lProvincia: Provincia[] = [];
 
   constructor(
+    private modalService: NgbModal,
     private mockService: MockService
   ) { }
 
   ngOnInit(): void {
     this.lViajes = this.mockService.lViajes;
-    this.lRutas = this.mockService.lRutas;
-    this.lParadas = this.mockService.lParadas;
-    this.lCiudades = this.mockService.lCiudades;
-    this.lProvincia = this.mockService.lProvincia;
-    console.log(this.lRutas);
-    console.log(this.lParadas);
-    console.log(this.lCiudades);
-    console.log(this.lProvincia);
-    console.log(this.lViajes);
   }
 
   onSelect(selction: String) {
@@ -50,4 +44,18 @@ export class ListaViajeComponent implements OnInit {
     this.lProvincia = this.mockService.lProvincia;
   }
 
+  
+  openModal(contentEdit, select: Viaje) {
+    this.viajeSeleccionado = select;
+    this.modalService.open(contentEdit);
+  }
+
+  deleteTravel(select: Viaje) {
+    var i = this.lViajes.indexOf(select);
+    i !== -1 && this.lViajes.splice(i, 1);
+  }
+
+  addTravel(newTravel: Viaje) {
+    this.lViajes.push(newTravel);
+  }
 }
