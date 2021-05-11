@@ -11,7 +11,11 @@ function jwtToken(user) {
       email: user.email,
     },
     process.env.TOKEN_SECRET,
+<<<<<<< HEAD
     { expiresIn: 1200 }
+=======
+    { expiresIn: 120000 }
+>>>>>>> 78cb406e10a5a5a90b148467b854788976e90ea8
   );
 }
 //buscar un usuario
@@ -32,6 +36,7 @@ const findUser = async (req, res) => {
 
 const login = async (req, res) => {
   const user = req.body;
+<<<<<<< HEAD
   model.Usuario.findOne({ where: { email: user.email } }).then((response) => {
     try {
       if (response.habilitado) {
@@ -41,6 +46,23 @@ const login = async (req, res) => {
           res.header("auth-token", token).send({ data: parse(response) });
           //res.json({ data: parse(response) });
           //res.status(200);
+=======
+  model.Usuario.findOne({ where: { email: user.email } }).then(
+    (response) => {
+      try {
+        if (response.habilitado) {
+          if (user.password === response.password) {
+            const token = jwtToken(response);
+
+            res.header("auth-token", token).send({ data: parse(response) });
+            //res.json({ data: parse(response) });
+            //res.status(200);
+          } else {
+            res
+              .status(400)
+              .json({ error: "Bad request. Incorrect email or passowrd" });
+          }
+>>>>>>> 78cb406e10a5a5a90b148467b854788976e90ea8
         } else {
           res
             .status(400)
@@ -49,6 +71,7 @@ const login = async (req, res) => {
       } else {
         res.status(401).json({ error: "Not Found" });
       }
+<<<<<<< HEAD
     } catch (err) {
       console.log(err);
       res.status(500).json({ error: "Internal server error" });
@@ -72,8 +95,21 @@ const getAllDrivers = async (req, res) => {
         res.status(400).json({ message: "Unauthorized" });
       }
     });
+=======
+  });
+};
+
+//listar choferes
+const getAllDrivers = async (req, res) => {
+  try {
+    model.Usuario.findAll({ where: { habilitado: true, tipo: 2 } }).then(
+      (response) => {
+        res.json({ data: parseUsersData(response) });
+        res.status(200);
+      }
+    );
+>>>>>>> 78cb406e10a5a5a90b148467b854788976e90ea8
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Internal Server error" });
   }
   function parseUsersData(users) {
@@ -157,10 +193,20 @@ const register = async (req, res) => {
 //modificar chofer
 const updateDriver = async (req, res) => {
   const updatedUser = parse(req.body);
+<<<<<<< HEAD
   const oldUser = await findDuplicates(updatedUser).then(
     (response) => response[0].dataValues
   );
   console.log(oldUser.id);
+=======
+  const oldUser = await findDuplicates(updatedUser).then((response) => {
+    try {
+      return response[0].dataValues;
+    } catch {
+      res.status(401).json({ message: "This user does not exist" });
+    }
+  });
+>>>>>>> 78cb406e10a5a5a90b148467b854788976e90ea8
   if (oldUser.id == updatedUser.id) {
     model.Usuario.update(updatedUser, {
       where: {
@@ -168,7 +214,11 @@ const updateDriver = async (req, res) => {
       },
     }).then((response) => {
       try {
+<<<<<<< HEAD
         res.status(201).json({ created: parse(response) });
+=======
+        res.status(201).json({ modified: updatedUser });
+>>>>>>> 78cb406e10a5a5a90b148467b854788976e90ea8
       } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal server error" });

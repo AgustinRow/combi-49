@@ -6,8 +6,10 @@ var logger = require("morgan");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/usuario");
+const vehiculoRouter = require("./routes/vehiculo");
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/usuario");
+const ciudadRouter = require("./routes/ciudad");
 
 var app = express();
 
@@ -24,8 +26,14 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 app.use("/", indexRouter);
+app.use("/api/ciudad", ciudadRouter);
 app.use("/api/usuario", usersRouter);
+<<<<<<< HEAD
 app.use("api/vehiculo")
+=======
+app.use("/api/vehiculo", vehiculoRouter);
+//app.use("api/vehiculo", vehiculoRouter);
+>>>>>>> 78cb406e10a5a5a90b148467b854788976e90ea8
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

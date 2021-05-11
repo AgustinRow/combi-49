@@ -21,33 +21,33 @@ export class ListaUsuarioComponent implements OnInit {
     var aux = new Usuario()
     aux.nombre = "Agustin";
     aux.apellido = "Colla";
-    aux.usuario = "acolla";
+    aux.username = "acolla";
     aux.email = "acolla@grupo49.com";
-    aux.contrasenia = "grupo49";
+    aux.password = "grupo49";
     aux.tipo = 1;
     this.listaU.push(aux);
     aux = new Usuario()
     aux.nombre = "Agustin";
     aux.apellido = "Diaz";
-    aux.usuario = "adiaz";
+    aux.username = "adiaz";
     aux.email = "adiaz@grupo49.com";
-    aux.contrasenia = "grupo49";
+    aux.password = "grupo49";
     aux.tipo = 2;
     this.listaU.push(aux);
     aux = new Usuario()
     aux.nombre = "Julio Cesar";
     aux.apellido = "Contreras Benitez";
-    aux.usuario = "jcontreras";
+    aux.username = "jcontreras";
     aux.email = "jcontreras@grupo49.com";
-    aux.contrasenia = "grupo49";
+    aux.password = "grupo49";
     aux.tipo = 3;
     this.listaU.push(aux);
     aux = new Usuario()
     aux.nombre = "Maximiliano";
     aux.apellido = "Teodosio";
-    aux.usuario = "mteodosio";
+    aux.username = "mteodosio";
     aux.email = "mteodosio@grupo49.com";
-    aux.contrasenia = "grupo49";
+    aux.password = "grupo49";
     aux.tipo = 1;
     this.listaU.push(aux);
   }

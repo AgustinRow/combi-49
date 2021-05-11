@@ -24,9 +24,17 @@ export class NavBarComponent implements OnInit {
     private modalCommentService: NgbModal
   ) {
     this.isLogged();
+    //Ver porque no lo toma
     this.storageService.logChange.subscribe(
       (newState: boolean) => {
         this.isLoggedNavbar = newState;
+        console.log('newState : ', newState);
+      },
+      (error) => {
+        console.log('ERROR verify : ', error);
+      },
+      (complete) => {
+        console.log('complete : ', complete);
       }
     );
   }

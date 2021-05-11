@@ -14,14 +14,14 @@
 
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" routerLink="/MyRouteList">Mis pasajes</a>
+                <a class="nav-link" routerLink="/Viajes">Mis pasajes</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" routerLink="/MyAcount">Mi cuenta</a>
             </li>
         </ul>
 
-        <ul class="navbar-nav" *ngIf="usuarioIdentificado.tipo === 1">
+        <ul class="navbar-nav" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
             <li class="nav-item">
                 <a class="nav-link" routerLink="/Usuarios">Usuarios</a>
             </li>
@@ -68,8 +68,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <p>Por favor complete todos los campos</p>
-        <app-sing-up>Cargando formulario</app-sing-up>
+        <app-sing-up (userNewEvent)="c('Close click')">Cargando formulario</app-sing-up>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
@@ -85,7 +84,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-login (submittedLogin)="c('Close click')">Cargando formulario</app-login>
+        <app-login (submittedLogin)="this.isLoggedNavbar = true; c('Close click')">Cargando formulario</app-login>
     </div>
 </ng-template>
 

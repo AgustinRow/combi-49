@@ -1,32 +1,31 @@
 <form (ngSubmit)="newUser(userForm)" #userForm="ngForm">
     <div class="form-group">
         <label for="nombre">Nombre:</label>
-        <input type="text" class="form-control" id="nombre" required [(ngModel)]="usuarioNuevo.nombre"
-            name="nombre">
+        <input type="text" class="form-control" id="nombre" [(ngModel)]="usuarioNuevo.nombre" name="nombre" required>
     </div>
     <div class="form-group">
         <label for="apellido">Apellido:</label>
-        <input type="text" class="form-control" id="apellido" [(ngModel)]="usuarioNuevo.apellido" name="apellido">
+        <input type="text" class="form-control" id="apellido" [(ngModel)]="usuarioNuevo.apellido" name="apellido" required>
     </div>
     <div class="form-group">
-        <label for="telefono">Usuario:</label>
-        <input type="text" class="form-control" id="telefono" [(ngModel)]="usuarioNuevo.usuario" name="telefono">
+        <label for="username">Usuario:</label>
+        <input type="text" class="form-control" id="username" [(ngModel)]="usuarioNuevo.username" name="username" required>
     </div>    
     <div class="form-group">
         <label for="contrasenia">Contraseña:</label>
-        <input type="password" class="form-control" id="contrasenia" [(ngModel)]="usuarioNuevo.contrasenia" name="contrasenia">
+        <input type="password" class="form-control" id="contrasenia" [(ngModel)]="usuarioNuevo.password" name="contrasenia" required>
     </div>  
     <div class="form-group">
         <label for="dni">DNI:</label>
-        <input type="number" class="form-control" id="dni" [(ngModel)]="usuarioNuevo.dni" name="dni">
+        <input type="number" class="form-control" id="dni" [(ngModel)]="usuarioNuevo.dni" name="dni" required>
     </div>
     <div class="form-group">
         <label for="email">E-mail:</label>
-        <input type="text" class="form-control" id="email" [(ngModel)]="usuarioNuevo.email" name="email">
+        <input type="text" class="form-control" id="email" [(ngModel)]="usuarioNuevo.email" name="email" required>
     </div>
     <div class="form-group">
         <label for="tipo">Tipo</label>
-        <select class="form-control" id="tipo" name="tipo" [(ngModel)]="usuarioNuevo.tipo">
+        <select class="form-control" id="tipo" name="tipo" [(ngModel)]="usuarioNuevo.tipo" required>
             <option value="1">Pasajero</option>
             <option value="2">Chofer</option>
             <option value="3">Administrador</option>

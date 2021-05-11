@@ -3,73 +3,73 @@ import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Session } from 'src/app/module/session.module';
 import { Usuario } from 'src/app/module/usuario.module';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 import { StorageService } from 'src/app/service/storage.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: [
+    StorageService,
+    AuthenticationService],
 })
 export class LoginComponent implements OnInit {
   usuario = new Usuario();
   @Output() submittedLogin = new EventEmitter();
   sessionForm: FormGroup;
-  //Para quitar
-  aux = new Usuario();
+  private errorMSN = new String();
 
   constructor(
     private router: Router,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private authService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
-    this.aux = new Usuario();
     this.sessionForm = new FormGroup({
       'inputEmail': new FormControl(null, [Validators.email]),
       'inputPassword': new FormControl(null, [Validators.required])
     });
   }
 
+  ngOnChange(){
+
+  }
+
   loginUser() {
     if (this.sessionForm.valid) {
       this.usuario.email = this.sessionForm.get('inputEmail').value;
-      this.usuario.contrasenia = this.sessionForm.get('inputPassword').value;
-      //se debe llamar al servico de autentificaci'on
-      this.aux.apellido = "combi19";
-      this.aux.nombre = "empresa";
-      switch (this.usuario.email) {
-        case "admin@combi19.com":
-          this.aux.email = this.usuario.email;
-          this.aux.tipo = 1;
-          this.aux.usuario = "admin";
-          this.correctLogin(this.aux);
-          break;
-        case "chofer@combi19.com":
-          this.aux.email = this.usuario.email;
-          this.aux.tipo = 2;
-          this.aux.usuario = "chofer";
-          this.correctLogin(this.aux);
-          break;
-        case "pasajero@combi19.com":
-          this.aux.email = this.usuario.email;
-          this.aux.tipo = 3;
-          this.aux.usuario = "pasajero";
-          this.correctLogin(this.aux);
-          break;
-        default:
-          console.log("Fallo la autentificacion");
-          break;
-      }
-      this.submittedLogin.emit();
+      this.usuario.password = this.sessionForm.get('inputPassword').value;
+      this.authService.loginUser(this.usuario).subscribe(
+        (data: any) => {
+          if (data != null) {
+            this.correctLogin(data);
+          }
+          else {
+            console.log("Login fallo ");
+          }
+        },
+        (error) => {
+          if (error.status >= 500) {
+            this.errorMSN = "Error en el servidor, por favor intente mas tarde";
+          } else {
+            this.errorMSN = "El usuario o contraseña es invalido";
+          }
+          alert(this.errorMSN)
+        }
+      );
     }
     else {
       console.log("Formulario no valido");
     }
+    this.storageService.logChange.emit(true);
   }
 
   private correctLogin(data: Usuario) {
-    this.storageService.logChange.emit(true);
+    console.log("correctLogin");
     this.storageService.setCurrentSession(new Session(data));
+    this.submittedLogin.emit();
     this.router.navigate(['/']);
   }
 
