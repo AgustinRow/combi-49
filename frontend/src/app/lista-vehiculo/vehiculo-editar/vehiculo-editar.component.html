@@ -17,8 +17,10 @@
 
     <div class="form-group">
         <label for="confort">Confort:</label>
-        <input type="text" class="form-control" id="confort" required [(ngModel)]="vehiculoModificado.confort"
-            name="confort">
+        <select class="form-control" id="confort" name="confort" [(ngModel)]="vehiculoModificado.confort" required>
+            <option value="Cama">Cama</option>
+            <option value="Semicama">Semicama</option>
+        </select>
     </div>
 
     <button type="submit" class="btn btn-success" [disabled]="!vehiculoForm.form.valid">Guardar</button>

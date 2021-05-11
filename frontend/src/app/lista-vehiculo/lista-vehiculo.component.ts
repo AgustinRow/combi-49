@@ -35,7 +35,6 @@ export class ListaVehiculoComponent implements OnInit {
     this.vehicleService.getvehicles().subscribe(
       (list: any) => {
         this.listaV = list.data as Vehiculo[];
-        console.log(this.listaV);
       },
       (error) => {
         console.log(error);

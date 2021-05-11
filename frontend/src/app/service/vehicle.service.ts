@@ -30,7 +30,7 @@ export class VehicleService {
   }
 
   modifyvehicle(vehicle: Vehiculo): Observable<Vehiculo> {
-    return this.http.put<Vehiculo>(this.vehicleUrl + 'modificar/' + vehicle.id, vehicle, httpOptions);
+    return this.http.put<Vehiculo>(this.vehicleUrl + 'modificar/', vehicle, httpOptions);
   }
 
   deleteOneVehicle(id: Number): Observable<any> {
