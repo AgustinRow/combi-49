@@ -11,13 +11,13 @@ function jwtToken(user) {
       email: user.email,
     },
     process.env.TOKEN_SECRET,
-    { expiresIn: 1200 }
+    { expiresIn: 120000 }
   );
 }
 //buscar un usuario
 const findUser = async (req, res) => {
-  const user = req.body;
-  model.Usuario.findOne({ where: { email: user.email } }).then((response) => {
+  const userId = req.params.id;
+  model.Usuario.findOne({ where: { id: userId, tipo: 2 } }).then((response) => {
     try {
       if (response) {
         res.status(200).json({ data: parse(response) });
@@ -58,22 +58,13 @@ const login = async (req, res) => {
 //listar choferes
 const getAllDrivers = async (req, res) => {
   try {
-    const userId = req.params.id;
-    model.Usuario.findOne({ where: { id: userId } }).then((response) => {
-      // Solo administrador
-      if (response && response.tipo === 1) {
-        model.Usuario.findAll({ where: { habilitado: true, tipo: 2 } }).then(
-          (response) => {
-            res.json({ data: parseUsersData(response) });
-            res.status(200);
-          }
-        );
-      } else {
-        res.status(400).json({ message: "Unauthorized" });
+    model.Usuario.findAll({ where: { habilitado: true, tipo: 2 } }).then(
+      (response) => {
+        res.json({ data: parseUsersData(response) });
+        res.status(200);
       }
-    });
+    );
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Internal Server error" });
   }
   function parseUsersData(users) {
@@ -155,12 +146,15 @@ const register = async (req, res) => {
   }
 };
 //modificar chofer
-consgitt updateDriver = async (req, res) => {
+const updateDriver = async (req, res) => {
   const updatedUser = parse(req.body);
-  const oldUser = await findDuplicates(updatedUser).then(
-    (response) => response[0].dataValues
-  );
-  console.log(oldUser.id);
+  const oldUser = await findDuplicates(updatedUser).then((response) => {
+    try {
+      return response[0].dataValues;
+    } catch {
+      res.status(400).json({ message: "This user does not exist" });
+    }
+  });
   if (oldUser.id == updatedUser.id) {
     model.Usuario.update(updatedUser, {
       where: {
@@ -168,7 +162,7 @@ consgitt updateDriver = async (req, res) => {
       },
     }).then((response) => {
       try {
-        res.status(201).json({ created: parse(response) });
+        res.status(201).json({ modified: updatedUser });
       } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal server error" });
@@ -187,10 +181,30 @@ consgitt updateDriver = async (req, res) => {
   }
 };
 
+const remove = async (req, res) => {
+  const id = req.params.id;
+  model.Usuario.findOne({ where: { id: id } }).then((response) => {
+    try {
+      if (response.dataValues.habilitado) {
+        model.Usuario.update({ habilitado: false }, { where: { id: id } }).then(
+          (res) => {
+            res.status(200).json({ message: "removed" });
+          }
+        );
+      } else {
+        res.status(400).json({ message: "This user has been removed already" });
+      }
+    } catch (err) {
+      res.status(400).json({ message: "Bad Request" });
+    }
+  });
+};
+
 module.exports = {
   getAllDrivers,
   register,
   login,
   findUser,
   updateDriver,
+  remove,
 };
