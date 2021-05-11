@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Ciudad } from '../module/ciudad.module';
+import { Provincia } from '../module/provincia.module';
+import { MockService } from '../service/mock.service.';
 
 @Component({
   selector: 'app-lista-ciudad',
@@ -6,10 +10,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lista-ciudad.component.css']
 })
 export class ListaCiudadComponent implements OnInit {
+  listCiudades: Ciudad[] = [];
+  ciudadSeleccionada: Ciudad;
 
-  constructor() { }
+  constructor(
+    private modalService: NgbModal,
+    private mockService: MockService
+  ) { }
 
   ngOnInit(): void {
+    this.listCiudades = this.mockService.lCiudades;
+  }
+
+  openModal(contentEdit, select: Ciudad) {
+    this.ciudadSeleccionada = select;
+    this.modalService.open(contentEdit);
+  }
+
+  deleteCiudad(select: Ciudad) {
+    var i = this.listCiudades.indexOf(select);
+    i !== -1 && this.listCiudades.splice(i, 1);
+  }
+
+  addCity(newCity: Ciudad) {
+    this.listCiudades.push(newCity);
   }
 
 }

@@ -23,5 +23,4 @@ export class ProvinciaEditarComponent implements OnInit {
       this.submitted = true;
     }
   }
-
 }
