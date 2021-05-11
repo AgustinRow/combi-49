@@ -1,1 +1,64 @@
-<p>lista-parada works!</p>
+<div class="container">
+    <h2>Paradas</h2>
+    <p>Lista de paradas disponibles:</p>
+
+    <button class="btn btn-primary m-2" (click)="openModal(contentNew, paradaSeleccionada)">
+        Agregar parada
+    </button>
+
+    <table class="table table-hover">
+        <thead>
+            <tr scope="row">
+                <th>Nombre</th>
+                <th>Direccion</th>
+                <th>Ciudad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let parada of listParadas">
+                <td data-title="Nombre">{{parada.nombre}}</td>
+                <td data-title="Direccion">{{parada.direccion}}</td>
+                <td data-title="Ciudad">{{parada.ciudad}}</td>
+                <td data-title="Acciones">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-warning"
+                            (click)="openModal(contentEdit, parada)">Editar</button>
+                        <button type="button" class="btn btn-danger"
+                            (click)="deleteParada(parada)">Eliminar</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-template #contentEdit let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Editar parada</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-parada-editar [(paradaModificada)]="paradaSeleccionada" (stopEditEvent)="c('Close click')">
+            Cargando</app-parada-editar>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<ng-template #contentNew let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Nuevo parada</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-parada-nuevo (paradaNewEvent)="addCity($event); c('Close click')">Cargando</app-parada-nuevo>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>

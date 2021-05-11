@@ -32,6 +32,7 @@ export class ListaProvinciaComponent implements OnInit {
   }
 
   addProv(newProv: Provincia) {
-    this.listProvincias.push(newProv);
+    //this.listProvincias.push(newProv);
+    this.mockService.lProvincia.push(newProv);
   }
 }

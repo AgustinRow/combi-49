@@ -1,7 +1,7 @@
 import { Parada } from "./parada.module";
 
 export class Ruta{
-    idRuta: number;
+    id: number;
     nombre: string;
     distancia: string;
     origen: Parada;

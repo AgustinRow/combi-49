@@ -1,7 +1,6 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Ciudad } from '../module/ciudad.module';
-import { Provincia } from '../module/provincia.module';
 import { MockService } from '../service/mock.service.';
 
 @Component({
