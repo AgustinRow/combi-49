@@ -125,7 +125,7 @@ export function tokenGetter() {
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,

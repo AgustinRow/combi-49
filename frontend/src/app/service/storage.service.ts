@@ -18,6 +18,7 @@ export class StorageService {
     this.currentSession = session;    
     this.currentSession.token = localStorage.getItem('access_token');
     this.localStorageService.setItem('currentUser', JSON.stringify(session));
+    console.log(this.currentSession);
   }
   
   setCurrentToken(token: string): void {
@@ -53,7 +54,6 @@ export class StorageService {
   }
 
   login(session: Session): void{
-    console.log(session);
     this.logChange.emit(true);
     this.setCurrentSession(session);
   }
