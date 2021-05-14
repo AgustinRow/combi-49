@@ -55,6 +55,7 @@ import { AuthenticationService } from "./service/authentication.service";
 import { UserService } from './service/user.service';
 import { VehicleService } from './service/vehicle.service';
 import { MockService } from "./service/mock.service.";
+import { JwtModule } from '@auth0/angular-jwt';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -66,6 +67,14 @@ const appRoutes: Routes = [
   { path: 'Viajes', component: ListaViajeComponent },
   { path: 'Vehiculos', component: ListaVehiculoComponent }
 ];
+
+const USUARIO_ADMINISTRADOR = 1;
+const USUARIO_CHOFER = 2;
+const USUARIO_PASAJERO = 3;
+
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
 
 @NgModule({
   declarations: [
@@ -119,7 +128,14 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ['localhost:3000'],
+        disallowedRoutes: []
+      }
+    })
   ],
   exports: [
     RouterModule

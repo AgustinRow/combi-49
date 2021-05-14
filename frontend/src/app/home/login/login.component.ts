@@ -43,8 +43,8 @@ export class LoginComponent implements OnInit {
       this.usuario.password = this.sessionForm.get('inputPassword').value;
       this.authService.loginUser(this.usuario).subscribe(
         (data: any) => {
-          if (data != null) {
-            this.correctLogin(data);
+          if (data.data != null) {
+            this.correctLogin(data.data);
           }
           else {
             console.log("Login fallo ");
@@ -63,14 +63,12 @@ export class LoginComponent implements OnInit {
     else {
       console.log("Formulario no valido");
     }
-    this.storageService.logChange.emit(true);
   }
 
   private correctLogin(data: Usuario) {
-    console.log("correctLogin");
-    this.storageService.setCurrentSession(new Session(data));
+    this.storageService.login(new Session(data));
     this.submittedLogin.emit();
-    this.router.navigate(['/']);
+    //this.router.navigate(['/']);
   }
 
   cancel() {
