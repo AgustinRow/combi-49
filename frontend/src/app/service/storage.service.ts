@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from '../module/usuario.module';
 import { Session } from '../module/session.module';
@@ -7,7 +7,7 @@ import { Session } from '../module/session.module';
 export class StorageService {
   private localStorageService;
   private currentSession : Session = null;
-  logChange = new EventEmitter<boolean>();
+  @Output() logChange = new EventEmitter<boolean>();
 
   constructor(private router: Router) {
     this.localStorageService = localStorage;
@@ -15,8 +15,14 @@ export class StorageService {
   }
 
   setCurrentSession(session: Session): void {
-    this.currentSession = session;
+    this.currentSession = session;    
+    this.currentSession.token = localStorage.getItem('access_token');
     this.localStorageService.setItem('currentUser', JSON.stringify(session));
+    console.log(this.currentSession);
+  }
+  
+  setCurrentToken(token: string): void {
+    this.localStorageService.setItem('access_token', JSON.stringify(token));
   }
 
   loadSessionData(): Session{
@@ -43,6 +49,12 @@ export class StorageService {
   };
   
   logout(): void{
+    this.logChange.emit(false);
     this.removeCurrentSession();
+  }
+
+  login(session: Session): void{
+    this.logChange.emit(true);
+    this.setCurrentSession(session);
   }
 }

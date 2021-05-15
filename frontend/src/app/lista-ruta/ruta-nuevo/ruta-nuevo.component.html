@@ -1,1 +1,32 @@
-<p>ruta-nuevo works!</p>
+<form (ngSubmit)="newRoute(newRouteForm)" #newRouteForm="ngForm">
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" [(ngModel)]="rutaNueva.nombre" name="nombre" required>
+    </div>
+
+    <div class="form-group">
+        <label for="distancia">Distancia:</label>
+        <input type="number" class="form-control" id="distancia" [(ngModel)]="rutaNueva.distancia" name="direccion"
+            required>
+    </div>
+
+    <div class="form-group">
+        <label for="origen">Origen:</label>
+        <select type="text" class="form-control" id="origen" name="origen" [(ngModel)]="rutaNueva.origen" required>
+            <option *ngFor="let origen of listParadas; index as i" value="{{origen.nombre}}">{{ origen.nombre }}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="destino">Destino:</label>
+        <select type="text" class="form-control" id="destino" name="destino" [(ngModel)]="rutaNueva.destino" required>
+            <ng-container *ngFor="let destino of listParadas; index as i">
+                <option value="{{destino.nombre}}" *ngIf="rutaNueva.origen != destino.nombre">{{ destino.nombre }}
+                </option>
+            </ng-container>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="!newRouteForm.form.valid">Guardar</button>
+</form>

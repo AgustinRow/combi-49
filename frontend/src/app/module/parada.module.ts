@@ -1,9 +1,9 @@
 import { Ciudad } from "./ciudad.module";
 
 export class Parada{
-    idParada: number;
+    id: number;
     nombre: string;
     direccion: string;
-    ciudad: Ciudad;
+    ciudad: string; //Ciudad; <- Para corregir en app-parada
     borradoLogico: number;  //activo
 }

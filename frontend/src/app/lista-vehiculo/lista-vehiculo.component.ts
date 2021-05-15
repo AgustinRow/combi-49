@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Vehiculo } from '../module/vehiculo.module';
+import { Vehiculo } from "../module/vehiculo.module";
+import { VehicleService } from '../service/vehicle.service';
 
 @Component({
   selector: 'app-lista-vehiculo',
@@ -8,49 +9,38 @@ import { Vehiculo } from '../module/vehiculo.module';
   styleUrls: ['./lista-vehiculo.component.css']
 })
 export class ListaVehiculoComponent implements OnInit {
-  listaV : Vehiculo[] = [];
+  listaV: Vehiculo[] = [];
   vehiculoSeleccionado: Vehiculo;
-  constructor(private modalService: NgbModal)
-  { }
+
+  constructor(
+    private vehicleService: VehicleService,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit(): void {
-     //Para borrar
-     var v1 = new Vehiculo()
-     v1.marca = "unMarca";
-     v1.modelo = "unModelo";
-     v1.patente = "unaPatente";
-     v1.cantAsientos = 60;
-     v1.confort = "SemiCama";
-     this.listaV.push(v1);
-
-     var v2 = new Vehiculo()
-     v2.marca = "otraMarca";
-     v2.modelo = "otroModelo";
-     v2.patente = "otraPatente";
-     v2.cantAsientos = 60;
-     v2.confort = "Cama";
-     this.listaV.push(v2);
-
-
+    this.refreshList();
   }
 
-
-  openModal(contentEdit,  vehiculoselect: Vehiculo) {    
-    console.log("openModal");
+  openModal(contentEdit, vehiculoselect: Vehiculo) {
     this.vehiculoSeleccionado = vehiculoselect;
     this.modalService.open(contentEdit);
   }
 
-  deleteVehiculo(vehiculoselect: Vehiculo){
-    var i = this.listaV.indexOf( vehiculoselect );
-    i !== -1 && this.listaV.splice( i, 1 );
-  }
-  
-  addVehiculo(vehiculoNew: Vehiculo){
-    this.listaV.push(vehiculoNew);
+  deleteVehiculo(vehiculoselect: Vehiculo) {
+    var i = this.listaV.indexOf(vehiculoselect);
+    i !== -1 && this.listaV.splice(i, 1);
   }
 
-
-
+  refreshList(){
+    this.vehicleService.getvehicles().subscribe(
+      (list: any) => {
+        this.listaV = list.data as Vehiculo[];
+      },
+      (error) => {
+        console.log(error);
+        alert("El servidor reporta estado: " + error.status);
+      }
+    )
+  }
 
 }

@@ -1,8 +1,7 @@
 <form (ngSubmit)="modifyVehiculo(vehiculoForm)" #vehiculoForm="ngForm">
     <div class="form-group">
         <label for="marca">Marca:</label>
-        <input type="text" class="form-control" id="marca" required [(ngModel)]="vehiculoModificado.marca"
-            name="marca">
+        <input type="text" class="form-control" id="marca" required [(ngModel)]="vehiculoModificado.marca" name="marca">
     </div>
     <div class="form-group">
         <label for="modelo">Modelo:</label>
@@ -10,19 +9,19 @@
             name="modelo">
     </div>
 
-
     <div class="form-group">
-        <label for="cantAsientos">Cantidad de asientos:</label>
-        <input type="text" class="form-control" id="cantAsientos" required [(ngModel)]="vehiculoModificado.cantAsientos"
-            name="cantAsientos">
+        <label for="asientos">Cantidad de asientos:</label>
+        <input type="text" class="form-control" id="asientos" required [(ngModel)]="vehiculoModificado.asientos"
+            name="asientos">
     </div>
 
     <div class="form-group">
         <label for="confort">Confort:</label>
-        <input type="text" class="form-control" id="confort" required [(ngModel)]="vehiculoModificado.confort"
-            name="confort">
+        <select class="form-control" id="confort" name="confort" [(ngModel)]="vehiculoModificado.confort" required>
+            <option value="Cama">Cama</option>
+            <option value="Semicama">Semicama</option>
+        </select>
     </div>
 
-    
     <button type="submit" class="btn btn-success" [disabled]="!vehiculoForm.form.valid">Guardar</button>
 </form>

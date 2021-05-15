@@ -1,35 +1,38 @@
-<form (ngSubmit)="newVehiculo(vehiculoForm)" #vehiculoForm="ngForm"> 
-    
+<form (ngSubmit)="newVehiculo(newVehicleForm)" #newVehicleForm="ngForm">
+    <div class="form-group">
+        <label for="unidad">Unidad:</label>
+        <input type="number" class="form-control" id="unidad" [(ngModel)]="vehiculoNuevo.unidad" name="unidad">
+    </div>
+
     <div class="form-group">
         <label for="marca">Marca:</label>
-        <input type="text" class="form-control" id="marca" required [(ngModel)]="vehiculoNuevo.marca"
-            name="marca">
+        <input type="text" class="form-control" id="marca" [(ngModel)]="vehiculoNuevo.marca" name="marca" required>
     </div>
+    
     <div class="form-group">
         <label for="modelo">Modelo:</label>
-        <input type="text" class="form-control" id="modelo" required [(ngModel)]="vehiculoNuevo.modelo"
-            name="modelo">
+        <input type="text" class="form-control" id="modelo" [(ngModel)]="vehiculoNuevo.modelo" name="modelo" required>
     </div>
 
     <div class="form-group">
         <label for="patente">Patente:</label>
-        <input type="text" class="form-control" id="patente" required [(ngModel)]="vehiculoNuevo.patente"
-            name="patente">
+        <input type="text" class="form-control" id="patente" [(ngModel)]="vehiculoNuevo.patente"
+            name="patente" required>
     </div>
 
     <div class="form-group">
-        <label for="cantAsientos">Cantidad de Asientos:</label>
-        <input type="number" class="form-control" id="cantAsientos" required [(ngModel)]="vehiculoNuevo.cantAsientos"
-            name="cantASientos">
+        <label for="asientos">Cantidad de Asientos:</label>
+        <input type="number" class="form-control" id="asientos" [(ngModel)]="vehiculoNuevo.asientos"
+            name="asientos" required>
     </div>
-
 
     <div class="form-group">
         <label for="confort">Confort:</label>
-        <input type="text" class="form-control" id="confort" required [(ngModel)]="vehiculoNuevo.confort"
-            name="confort">
+        <select type="text" class="form-control" id="confort" name="confort" [(ngModel)]="vehiculoNuevo.confort" required>
+            <option value="Cama">Cama</option>
+            <option value="Semicama">Semicama</option>
+        </select>
     </div>
 
-
-    <button type="submit" class="btn btn-success" [disabled]="!vehiculoForm.form.valid">Guardar</button>
+    <button type="submit" class="btn btn-success" [disabled]="!newVehicleForm.form.valid">Guardar</button>
 </form>

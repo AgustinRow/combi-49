@@ -38,7 +38,7 @@ const login = async (req, res) => {
         if (user.password === response.password) {
           const token = jwtToken(response);
 
-          res.header("auth-token", token).send({ data: parse(response) });
+          res.header("auth-token", token).send({ data: parse(response), token: token });
           //res.json({ data: parse(response) });
           //res.status(200);
         } else {

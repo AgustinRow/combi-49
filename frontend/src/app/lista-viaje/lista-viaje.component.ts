@@ -1,15 +1,61 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
+import { Viaje } from "../module/viaje.module";
+import { Ruta } from "../module/ruta.module";
+import { Parada } from "../module/parada.module";
+import { Ciudad } from "../module/ciudad.module";
+import { Provincia } from "../module/provincia.module";
+import { MockService } from '../service/mock.service.';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-lista-viaje',
   templateUrl: './lista-viaje.component.html',
-  styleUrls: ['./lista-viaje.component.css']
+  styleUrls: ['./lista-viaje.component.css'],
+  providers: [
+    MockService]
 })
 export class ListaViajeComponent implements OnInit {
+  viajeSeleccionado: Viaje;
+  ver: String = "viajes";
+  lViajes: Viaje[] = [];
+  @Input() lRutas: Ruta[] = [];
+  @Input() lParadas: Parada[] = [];
+  @Input() lCiudades: Ciudad[] = [];
+  @Input() lProvincia: Provincia[] = [];
 
-  constructor() { }
+  constructor(
+    private modalService: NgbModal,
+    private mockService: MockService
+  ) { }
 
   ngOnInit(): void {
+    this.lViajes = this.mockService.lViajes;
   }
 
+  onSelect(selction: String) {
+    this.ver = selction;
+  }
+
+  ngOnChange(){
+    this.lViajes = this.mockService.lViajes;
+    this.lRutas = this.mockService.lRutas;
+    this.lParadas = this.mockService.lParadas;
+    this.lCiudades = this.mockService.lCiudades;
+    this.lProvincia = this.mockService.lProvincia;
+  }
+
+  
+  openModal(contentEdit, select: Viaje) {
+    this.viajeSeleccionado = select;
+    this.modalService.open(contentEdit);
+  }
+
+  deleteTravel(select: Viaje) {
+    var i = this.lViajes.indexOf(select);
+    i !== -1 && this.lViajes.splice(i, 1);
+  }
+
+  addTravel(newTravel: Viaje) {
+    this.lViajes.push(newTravel);
+  }
 }

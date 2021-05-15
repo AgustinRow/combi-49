@@ -1,1 +1,20 @@
-<p>parada-editar works!</p>
+<form (ngSubmit)="modifyStop(modifyStopForm)" #modifyStopForm="ngForm">
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" [(ngModel)]="paradaModificada.nombre" name="nombre" required>
+    </div>
+
+    <div class="form-group">
+        <label for="direccion">Direccion:</label>
+        <input type="text" class="form-control" id="direccion" [(ngModel)]="paradaModificada.direccion" name="direccion" required>
+    </div>
+
+    <div class="form-group">
+        <label for="ciudad">ciudad:</label>
+        <select type="text" class="form-control" id="ciudad" name="ciudad" [(ngModel)]="paradaModificada.ciudad" required>
+            <option *ngFor="let ciudad of listCiudades; index as i" value="{{ciudad.nombre}}">{{ ciudad.nombre }}</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="!modifyStopForm.form.valid">Guardar</button>
+</form>
