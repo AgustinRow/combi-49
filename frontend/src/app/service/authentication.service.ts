@@ -15,10 +15,10 @@ export class AuthenticationService {
   ) { }
 
   public loginUser(user: Usuario): Observable<any> {
-    return this.http.post<{ access_token: string }>(this.basePath + 'usuario/login', user, httpOptions).pipe(
+    return this.http.post<{ access_token: any }>(this.basePath + 'usuario/login', user, httpOptions).pipe(
       tap(
         res => {
-          localStorage.setItem('access_token', res.access_token);
+          localStorage.setItem('access_token', res.token);
         }
       )
     )

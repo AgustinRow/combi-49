@@ -5,7 +5,7 @@ const verify = require("../controller/verifyToken");
 
 router.post("/alta", Vehiculo.addVehicle);
 router.get("/listar", Vehiculo.listVehicle);
-router.get("/", Vehiculo.findOneVehicle);
+router.get("/buscar/(:id)", Vehiculo.findOneVehicle);
 router.put("/modificar", Vehiculo.updateVehicle);
-
+router.delete("/borrar/(:id)", Vehiculo.remove)
 module.exports = router;

@@ -16,8 +16,8 @@ function jwtToken(user) {
 }
 //buscar un usuario
 const findUser = async (req, res) => {
-  const user = req.body;
-  model.Usuario.findOne({ where: { email: user.email } }).then((response) => {
+  const userId = req.params.id;
+  model.Usuario.findOne({ where: { id: userId, tipo: 2 } }).then((response) => {
     try {
       if (response) {
         res.status(200).json({ data: parse(response) });
@@ -32,31 +32,29 @@ const findUser = async (req, res) => {
 
 const login = async (req, res) => {
   const user = req.body;
-  model.Usuario.findOne({ where: { email: user.email } }).then(
-    (response) => {
-      try {
-        if (response.habilitado) {
-          if (user.password === response.password) {
-            const token = jwtToken(response);
+  model.Usuario.findOne({ where: { email: user.email } }).then((response) => {
+    try {
+      if (response.habilitado) {
+        if (user.password === response.password) {
+          const token = jwtToken(response);
 
-            res.header("auth-token", token).send({ data: parse(response) });
-            //res.json({ data: parse(response) });
-            //res.status(200);
-          } else {
-            res
-              .status(400)
-              .json({ error: "Bad request. Incorrect email or passowrd" });
-          }
+          res.header("auth-token", token).send({ data: parse(response), token: token });
+          //res.json({ data: parse(response) });
+          //res.status(200);
         } else {
-          res.status(401).json({ error: "Not Found" });
+          res
+            .status(400)
+            .json({ error: "Bad request. Incorrect email or passowrd" });
         }
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({ error: "Internal server error" });
+      } else {
+        res.status(401).json({ error: "Not Found" });
       }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
   });
 };
-
 //listar choferes
 const getAllDrivers = async (req, res) => {
   try {
@@ -108,9 +106,9 @@ const register = async (req, res) => {
   model.Usuario.findAll({
     where: {
       [Op.or]: [
-        //{ username: user.username },
+        { username: user.username },
         { email: user.email },
-        //{ dni: user.dni },
+        { dni: user.dni },
       ],
     },
   }).then((response) => {
@@ -154,7 +152,7 @@ const updateDriver = async (req, res) => {
     try {
       return response[0].dataValues;
     } catch {
-      res.status(401).json({ message: "This user does not exist" });
+      res.status(400).json({ message: "This user does not exist" });
     }
   });
   if (oldUser.id == updatedUser.id) {
@@ -183,10 +181,30 @@ const updateDriver = async (req, res) => {
   }
 };
 
+const remove = async (req, res) => {
+  const id = req.params.id;
+  model.Usuario.findOne({ where: { id: id } }).then((response) => {
+    try {
+      if (response.dataValues.habilitado) {
+        model.Usuario.update({ habilitado: false }, { where: { id: id } }).then(
+          (res) => {
+            res.status(200).json({ message: "removed" });
+          }
+        );
+      } else {
+        res.status(400).json({ message: "This user has been removed already" });
+      }
+    } catch (err) {
+      res.status(400).json({ message: "Bad Request" });
+    }
+  });
+};
+
 module.exports = {
   getAllDrivers,
   register,
   login,
   findUser,
   updateDriver,
+  remove,
 };

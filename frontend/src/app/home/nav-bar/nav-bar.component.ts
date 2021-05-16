@@ -18,6 +18,7 @@ export class NavBarComponent implements OnInit, OnChanges {
   @Input() componentList: [];
   isCollapsed: boolean;
   usuarioIdentificado: Usuario;
+  USUARIO_ADMINISTRADOR = UserService.USUARIO_ADMINISTRADOR;
 
   constructor(
     private router: Router,
@@ -29,6 +30,7 @@ export class NavBarComponent implements OnInit, OnChanges {
     this.storageService.logChange.subscribe(
       (newState: boolean) => {
         this.isLoggedNavbar = newState;
+        this.isLogged();
         console.log('newState : ', newState);
       },
       (error) => {
@@ -45,7 +47,7 @@ export class NavBarComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes) {
     console.log(changes);
-    this.isLogged();
+    this.storageService.logChange.emit(true);
   }
 
   isLogged() {

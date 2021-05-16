@@ -11,14 +11,11 @@ export class StorageService {
 
   constructor(private router: Router) {
     this.localStorageService = localStorage;
-    this.currentSession = this.loadSessionData();
+    this.localStorageService.setItem('logChange', this.logChange);
   }
 
   setCurrentSession(session: Session): void {
-    this.currentSession = session;    
-    this.currentSession.token = localStorage.getItem('access_token');
-    this.localStorageService.setItem('currentUser', JSON.stringify(session));
-    console.log(this.currentSession);
+    this.localStorageService.setItem('currentSession', JSON.stringify(session));
   }
   
   setCurrentToken(token: string): void {
@@ -26,17 +23,16 @@ export class StorageService {
   }
 
   loadSessionData(): Session{
-    var sessionStr = this.localStorageService.getItem('currentUser');
+    var sessionStr = this.localStorageService.getItem('currentSession');
     return (sessionStr) ? <Session> JSON.parse(sessionStr) : null;
   }
 
   getCurrentSession(): Session {
-    return this.currentSession;
+    return this.loadSessionData();
   }
 
   removeCurrentSession(): void {
-    this.localStorageService.removeItem('currentUser');
-    this.currentSession = null;
+    this.localStorageService.removeItem('currentSession');
   }
   
   getCurrentUser(): Usuario {
@@ -49,12 +45,12 @@ export class StorageService {
   };
   
   logout(): void{
-    this.logChange.emit(false);
     this.removeCurrentSession();
+    this.logChange.emit(false);
   }
 
   login(session: Session): void{
-    this.logChange.emit(true);
     this.setCurrentSession(session);
+    this.logChange.emit(true);
   }
 }

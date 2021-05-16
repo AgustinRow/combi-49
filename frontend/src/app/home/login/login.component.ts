@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
       this.authService.loginUser(this.usuario).subscribe(
         (data: any) => {
           if (data.data != null) {
-            this.correctLogin(data.data);
+            this.correctLogin(data);
           }
           else {
             console.log("Login fallo ");
@@ -65,8 +65,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  private correctLogin(data: Usuario) {
-    this.storageService.login(new Session(data));
+  private correctLogin( object: any) {
+    this.storageService.login(new Session(object));
     this.submittedLogin.emit();
     //this.router.navigate(['/']);
   }

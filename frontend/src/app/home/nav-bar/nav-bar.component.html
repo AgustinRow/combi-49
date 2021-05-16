@@ -1,47 +1,48 @@
-<nav class="navbar navbar-expand-sm" style="background-color: #3eb7db;" *ngIf="isLoggedNavbar; else BlockLogin">
+<ng-container *ngIf="isLoggedNavbar; else BlockLogin">
+    <nav class="navbar navbar-expand-sm" style="background-color: #3eb7db;">
+        <a class="nav-link" routerLink="/" [routerLinkActiveOptions]="{exact: true}">
+            <img src="/assets/image/Combi19.png" width="80px">
+        </a>
 
-    <a class="nav-link" routerLink="/" [routerLinkActiveOptions]="{exact: true}">
-        <img src="/assets/image/Combi19.png" width="80px">
-    </a>
 
+        <button class="navbar-toggler" type="button" (click)="c.toggle()">
+            <span class="navbar-toggler-icon">Lista</span>
+        </button>
 
-    <button class="navbar-toggler" type="button" (click)="c.toggle()">
-        <span class="navbar-toggler-icon">Lista</span>
-    </button>
+        <div class="collapse navbar-collapse" #c="ngbCollapse" [(ngbCollapse)]="isCollapsed">
 
-    <div class="collapse navbar-collapse" #c="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/Viajes">Mis pasajes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/MyAcount">Mi cuenta</a>
+                </li>
+            </ul>
 
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" routerLink="/Viajes">Mis pasajes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" routerLink="/MyAcount">Mi cuenta</a>
-            </li>
-        </ul>
+            <ul class="navbar-nav" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/Usuarios">Usuarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/Choferes">Choferes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/Viajes">Viajes</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" routerLink="/Vehiculos">Vehiculos</a>
+                </li>
+            </ul>
 
-        <ul class="navbar-nav" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
-            <li class="nav-item">
-                <a class="nav-link" routerLink="/Usuarios">Usuarios</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" routerLink="/Choferes">Choferes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" routerLink="/Viajes">Viajes</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" routerLink="/Vehiculos">Vehiculos</a>
-            </li>
-        </ul>
-
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="btn btn-danger" (click)="onSelect(logOut)">Cerrar sesion</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="btn btn-danger" (click)="onSelect(logOut)">Cerrar sesion</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</ng-container>
 
 <ng-template #BlockLogin>
     <nav class="navbar navbar-expand-sm" style="background-color: #3eb7db;">
@@ -83,7 +84,8 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-login (submittedLogin)="c('Close click')">Cargando formulario</app-login> <!-- this.isLoggedNavbar = true; -->
+        <app-login (submittedLogin)="ngOnChanges(); c('Close click')">Cargando formulario</app-login>
+        <!--this.isLoggedNavbar = true -->
     </div>
 </ng-template>
 

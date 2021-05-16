@@ -68,10 +68,6 @@ const appRoutes: Routes = [
   { path: 'Vehiculos', component: ListaVehiculoComponent }
 ];
 
-const USUARIO_ADMINISTRADOR = 1;
-const USUARIO_CHOFER = 2;
-const USUARIO_PASAJERO = 3;
-
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
