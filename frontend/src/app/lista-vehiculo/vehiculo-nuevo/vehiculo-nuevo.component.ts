@@ -33,10 +33,12 @@ export class VehiculoNuevoComponent implements OnInit {
           }
         },
         (error) => {
-          /// we never get here, no matter there was a Promise.reject(), throw Error(), etc.
-          console.log(error);
-          alert("El servidor reporta estado: " + error.status);
-          //this.router.navigate(['/Logout']);
+          if (error.status >= 500) {
+            alert("Problemas para conectarse con el servidor");
+          }
+          else {
+            alert("El servidor reporta estado  " + error.status + ": " + error.error.message);
+          }
         }
       );
       this.submitted = true;

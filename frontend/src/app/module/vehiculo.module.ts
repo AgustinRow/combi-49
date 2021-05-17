@@ -1,6 +1,5 @@
 export class Vehiculo {
     id: number;
-    unidad: number;
     marca: string;
     modelo: string;
     patente: string;

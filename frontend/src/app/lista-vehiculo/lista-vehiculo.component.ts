@@ -27,18 +27,37 @@ export class ListaVehiculoComponent implements OnInit {
   }
 
   deleteVehiculo(vehiculoselect: Vehiculo) {
-    var i = this.listaV.indexOf(vehiculoselect);
-    i !== -1 && this.listaV.splice(i, 1);
+    this.vehicleService.deleteOneVehicle(vehiculoselect.id).subscribe(
+      (data: Vehiculo) => {
+        if (data != null) {
+          alert("Se ha eliminado el vehiculo correctamente");
+          var i = this.listaV.indexOf(vehiculoselect);
+          i !== -1 && this.listaV.splice(i, 1);
+        }
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado  " + error.status + ": " + error.error.message);
+        }
+      }
+    );
   }
 
-  refreshList(){
+  refreshList() {
     this.vehicleService.getvehicles().subscribe(
       (list: any) => {
         this.listaV = list.data as Vehiculo[];
       },
       (error) => {
-        console.log(error);
-        alert("El servidor reporta estado: " + error.status);
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado  " + error.status + ": " + error.error.message);
+        }
       }
     )
   }

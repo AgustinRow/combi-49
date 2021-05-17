@@ -1,8 +1,14 @@
 <form (ngSubmit)="modifyVehiculo(vehiculoForm)" #vehiculoForm="ngForm">
     <div class="form-group">
+        <label for="patente">Patente:</label>
+        <input type="text" class="form-control" id="patente" required [(ngModel)]="vehiculoModificado.patente" name="patente" disabled>
+    </div>
+
+    <div class="form-group">
         <label for="marca">Marca:</label>
         <input type="text" class="form-control" id="marca" required [(ngModel)]="vehiculoModificado.marca" name="marca">
     </div>
+
     <div class="form-group">
         <label for="modelo">Modelo:</label>
         <input type="text" class="form-control" id="modelo" required [(ngModel)]="vehiculoModificado.modelo"

@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     modelo: DataTypes.STRING,
     marca: DataTypes.STRING,
     confort: DataTypes.STRING,
-    unidad: DataTypes.INTEGER,
     habilitado: DataTypes.BOOLEAN
   }, {
     sequelize,
