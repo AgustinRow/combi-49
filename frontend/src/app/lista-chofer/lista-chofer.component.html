@@ -14,15 +14,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let user of listaC">
-                <td data-title="Nombre">{{user.nombre}}</td>
-                <td data-title="Apellido">{{user.apellido}}</td>
-                <td data-title="Usuario">{{user.username}}</td>
+            <tr *ngFor="let chofer of listaC">
+                <td data-title="Nombre">{{chofer.nombre}}</td>
+                <td data-title="Apellido">{{chofer.apellido}}</td>
+                <td data-title="Usuario">{{chofer.username}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-info" (click)="openModal(contentShow, user)">Informacion</button>
-                        <button type="button" class="btn btn-warning" (click)="openModal(contentEdit, user)">Editar</button>
-                        <button type="button" class="btn btn-danger" (click)="deleteUser(user)">Eliminar</button>
+                        <button type="button" class="btn btn-info" (click)="openModal(contentShow, chofer)">Informacion</button>
+                        <button type="button" class="btn btn-warning" (click)="openModal(contentEdit, chofer)">Editar</button>
+                        <button type="button" class="btn btn-danger" (click)="deleteChofer(chofer)">Eliminar</button>
                     </div>
                 </td>
             </tr>
@@ -38,7 +38,7 @@
       </button>
     </div>
     <div class="modal-body">
-        <app-chofer-editar [(usuarioModificado)]="choferSeleccionado" (userEditEvent)="c('Close click')">Cargando</app-chofer-editar>
+        <app-chofer-editar [(choferModificado)]="choferSeleccionado" (choferModifyEvent)="c('Close click')">Cargando</app-chofer-editar>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
@@ -68,7 +68,7 @@
           </button>
         </div>
         <div class="modal-body">
-            <app-chofer-nuevo (userNewEvent)="addUser(($event)); c('Close click')">Cargando</app-chofer-nuevo>
+            <app-chofer-nuevo (choferNewEvent)="refreshList(); c('Close click')">Cargando</app-chofer-nuevo>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>

@@ -1,1 +1,27 @@
-<p>chofer-nuevo works!</p>
+<form (ngSubmit)="newChofer(choferForm)" #choferForm="ngForm">
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" [(ngModel)]="choferNuevo.nombre" name="nombre" required>
+    </div>
+    <div class="form-group">
+        <label for="apellido">Apellido:</label>
+        <input type="text" class="form-control" id="apellido" [(ngModel)]="choferNuevo.apellido" name="apellido" required>
+    </div>
+    <div class="form-group">
+        <label for="username">Usuario:</label>
+        <input type="text" class="form-control" id="username" [(ngModel)]="choferNuevo.username" name="username" required>
+    </div>    
+    <div class="form-group">
+        <label for="contrasenia">Contraseña:</label>
+        <input type="password" class="form-control" id="contrasenia" [(ngModel)]="choferNuevo.password" name="contrasenia" required>
+    </div>  
+    <div class="form-group">
+        <label for="dni">DNI:</label>
+        <input type="number" class="form-control" id="dni" [(ngModel)]="choferNuevo.dni" name="dni" required>
+    </div>
+    <div class="form-group">
+        <label for="email">E-mail:</label>
+        <input type="text" class="form-control" id="email" [(ngModel)]="choferNuevo.email" name="email" required>
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="!choferForm.form.valid">Guardar</button>
+</form>

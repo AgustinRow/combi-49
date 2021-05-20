@@ -14,29 +14,43 @@ export class ListaChoferComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    userService: UserService
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
-    //this.refreshList();
+    this.refreshList();
   }
 
-  openModal(contentEdit, choferselect: Usuario) {    
-    console.log(this.listaC);
+  openModal(contentEdit, choferselect: Usuario) {   
     this.choferSeleccionado = choferselect;
     this.modalService.open(contentEdit);
   }
 
-  deletechofer(choferselect: Usuario){
-    var i = this.listaC.indexOf( choferselect );
-    i !== -1 && this.listaC.splice( i, 1 );
+  deleteChofer(choferselect: Usuario){
+    this.userService.deleteOneUser(choferselect.id).subscribe(
+      (data: any) => {
+        console.log(data);
+        if (data != null) {
+          alert("Se ha eliminado el vehiculo correctamente");
+          this.refreshList();
+        }
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado  " + error.status + ": " + error.error.message);
+        }
+      }
+    );
   }
   
   addChofer(choferNew: Usuario){
     this.listaC.push(choferNew);
   }
   
-  /*refreshList() {
+  refreshList() {
     this.userService.getUsers().subscribe(
       (list: any) => {
         this.listaC = list.data as Usuario[];
@@ -50,5 +64,5 @@ export class ListaChoferComponent implements OnInit {
         }
       }
     )
-  }*/
+  }
 }
