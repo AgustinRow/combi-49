@@ -1,1 +1,85 @@
-<p>lista-vehiculo works!</p>
+<div class="container">
+    <h2>Vehiculos </h2>
+    <p>Lista de Vehiculos Adminsitracion :</p>
+
+    <button class="btn btn-primary m-2" (click)="openModal(contentNewVehiculo, vehiculoSeleccionado)">
+        Agregar Vehiculo
+    </button>
+
+    <table class="table  table-hover">
+        <thead>
+            <tr scope="row">
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Patente</th>
+                <th>Asientos</th>
+                <th>Confort</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let vehiculo of listaV">
+                <td data-title="Marca">{{vehiculo.marca}}</td>
+                <td data-title="Modelo">{{vehiculo.modelo}}</td>
+                <td data-title="Patente">{{vehiculo.patente}}</td>
+                <td data-title="asientos">{{vehiculo.asientos}}</td>
+                <td data-title="confort">{{vehiculo.confort}}</td>
+                <td data-title="Acciones">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info"
+                            (click)="openModal(contentShow, vehiculo)">Informacion</button>
+                        <button type="button" class="btn btn-warning"
+                            (click)="openModal(contentEdit, vehiculo)">Editar</button>
+                        <button type="button" class="btn btn-danger"
+                            (click)="deleteVehiculo(vehiculo)">Eliminar</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-template #contentEdit let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Editar vehiculo</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-vehiculo-editar [(vehiculoModificado)]="vehiculoSeleccionado" (vehiculoEditEvent)="c('Close click')">
+            Cargando</app-vehiculo-editar>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<ng-template #contentShow let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Informacion del vehiculo</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-vehiculo [(vehiculoConInfo)]="vehiculoSeleccionado">Cargando</app-vehiculo>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<ng-template #contentNewVehiculo let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Nuevo vehiculo</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-vehiculo-nuevo (vehiculoNewEvent)="refreshList(); c('Close click')">Cargando</app-vehiculo-nuevo>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>

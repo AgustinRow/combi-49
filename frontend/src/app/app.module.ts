@@ -14,7 +14,6 @@ import { NavBarComponent } from './home/nav-bar/nav-bar.component';
 import { SingUpComponent } from './home/sing-up/sing-up.component';
 import { AcountComponent } from './home/acount/acount.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { StorageService } from './service/storage.service';
 import { ListaUsuarioComponent } from './lista-usuario/lista-usuario.component';
 import { UsuarioComponent } from './lista-usuario/usuario/usuario.component';
 import { UsuarioNuevoComponent } from './lista-usuario/usuario-nuevo/usuario-nuevo.component';
@@ -50,19 +49,33 @@ import { ProvinciaEditarComponent } from './lista-provincia/provincia-editar/pro
 import { ListaValoracionComponent } from './lista-valoracion/lista-valoracion.component';
 import { ValoracionComponent } from './lista-valoracion/valoracion/valoracion.component';
 import { ValoracionNuevoComponent } from './lista-valoracion/valoracion-nuevo/valoracion-nuevo.component';
+
+import { StorageService } from './service/storage.service';
 import { AuthenticationService } from "./service/authentication.service";
+import { UserService } from './service/user.service';
+import { VehicleService } from './service/vehicle.service';
+import { MockService } from "./service/mock.service.";
+import { JwtModule } from '@auth0/angular-jwt';
+import { ListaChoferComponent } from './lista-chofer/lista-chofer.component';
+import { ChoferComponent } from './lista-chofer/chofer/chofer.component';
+import { ChoferEditarComponent } from './lista-chofer/chofer-editar/chofer-editar.component';
+import { ChoferNuevoComponent } from './lista-chofer/chofer-nuevo/chofer-nuevo.component';
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent},
-  { path: 'SignUp', component: SingUpComponent},
-  { path: 'Login', component: LoginComponent},
-  { path: 'Logout', component: LogoutComponent},
-  { path: 'MyAcount', component: AcountComponent},
-  { path: 'Usuarios', component: ListaUsuarioComponent},
-  { path: 'Viajes', component: ListaViajeComponent},
-  { path: 'Vehiculos', component: ListaVehiculoComponent}
-  ];
-  
+  { path: '', component: HomeComponent },
+  { path: 'SignUp', component: SingUpComponent },
+  { path: 'Login', component: LoginComponent },
+  { path: 'Logout', component: LogoutComponent },
+  { path: 'MyAcount', component: AcountComponent },
+  { path: 'Usuarios', component: ListaUsuarioComponent },
+  { path: 'Viajes', component: ListaViajeComponent },
+  { path: 'Vehiculos', component: ListaVehiculoComponent },
+  { path: 'Choferes', component: ListaChoferComponent }
+
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -106,19 +119,37 @@ const appRoutes: Routes = [
     ProvinciaEditarComponent,
     ListaValoracionComponent,
     ValoracionComponent,
-    ValoracionNuevoComponent
+    ValoracionNuevoComponent,
+    ListaChoferComponent,
+    ChoferComponent,
+    ChoferEditarComponent,
+    ChoferNuevoComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ['localhost:3000'],
+        disallowedRoutes: []
+      }
+    })
+  ],
+  exports: [
+    RouterModule
   ],
   providers: [
     StorageService,
-    AuthenticationService
+    AuthenticationService,
+    UserService,
+    VehicleService,
+    MockService
   ],
   bootstrap: [AppComponent]
 })

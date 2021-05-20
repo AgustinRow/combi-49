@@ -38,7 +38,7 @@ const login = async (req, res) => {
         if (user.password === response.password) {
           const token = jwtToken(response);
 
-          res.header("auth-token", token).send({ data: parse(response) });
+          res.header("auth-token", token).send({ data: parse(response), token: token });
           //res.json({ data: parse(response) });
           //res.status(200);
         } else {
@@ -84,6 +84,7 @@ const parse = (user) => {
     username: user.username,
     nombre: user.nombre,
     apellido: user.apellido,
+    password: user.password,
     dni: user.dni,
     tipo: user.tipo,
   };
@@ -170,13 +171,13 @@ const updateDriver = async (req, res) => {
     });
   } else {
     if (oldUser.email === updatedUser.email) {
-      res.status(401).json({ message: "This email already exist" });
+      res.status(401).json({ message: "El e-mail ya se encuentra registrado" });
     }
     if (oldUser.dni === updatedUser.dni) {
-      res.status(401).json({ message: "This DNI already exist" });
+      res.status(401).json({ message: "El DNI ya se encuentra registrado" });
     }
     if (oldUser.username === updatedUser.username) {
-      res.status(401).json({ message: "This username already exist" });
+      res.status(401).json({ message: "EL username ya se encuentra registrado" });
     }
   }
 };
@@ -186,11 +187,18 @@ const remove = async (req, res) => {
   model.Usuario.findOne({ where: { id: id } }).then((response) => {
     try {
       if (response.dataValues.habilitado) {
-        model.Usuario.update({ habilitado: false }, { where: { id: id } }).then(
-          (res) => {
-            res.status(200).json({ message: "removed" });
-          }
-        );
+        model.Usuario.update(
+          {
+            habilitado: false
+          },
+          {
+            where: { id: id }
+          })
+          .then(
+            (response) => {
+              res.status(200).json({ message: "removed" });
+            }
+          );
       } else {
         res.status(400).json({ message: "This user has been removed already" });
       }

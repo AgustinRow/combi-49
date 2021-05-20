@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Usuario } from 'src/app/module/usuario.module';
 import { StorageService } from 'src/app/service/storage.service';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -11,23 +12,29 @@ import { StorageService } from 'src/app/service/storage.service';
   providers: [
     StorageService]
 })
-export class NavBarComponent implements OnInit {
-  @Input() isLoggedNavbar = false;
+export class NavBarComponent implements OnInit, OnChanges {
+  @Input() isLoggedNavbar: boolean = false;
   @Output() submitNewCommentEvent = new EventEmitter<Component>();
   @Input() componentList: [];
   isCollapsed: boolean;
   usuarioIdentificado: Usuario;
+  USUARIO_ADMINISTRADOR = UserService.USUARIO_ADMINISTRADOR;
 
   constructor(
     private router: Router,
     private storageService: StorageService,
+    private userService: UserService,
     private modalCommentService: NgbModal
   ) {
-    this.isLogged();
+    //Ver porque no lo toma
     this.storageService.logChange.subscribe(
       (newState: boolean) => {
         this.isLoggedNavbar = newState;
-      }
+        this.isLogged();
+      },
+      (error) => {
+        console.log('ERROR verify : ', error);
+      },
     );
   }
 
@@ -38,7 +45,8 @@ export class NavBarComponent implements OnInit {
   }
 
   ngOnChanges(changes) {
-    this.isLogged();
+    this.storageService.logChange.emit(true);
+
   }
 
   isLogged() {
@@ -57,7 +65,6 @@ export class NavBarComponent implements OnInit {
 
   logout() {
     this.storageService.logout();
-    this.isLogged();
     this.router.navigate(['/']);
   }
 }

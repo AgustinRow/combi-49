@@ -8,7 +8,6 @@ function parse(vehiculo) {
     modelo: vehiculo.modelo,
     marca: vehiculo.marca,
     confort: vehiculo.confort,
-    unidad: vehiculo.unidad,
     habilitado: true,
   };
 }
@@ -35,10 +34,8 @@ const addVehicle = async (req, res) => {
   const vehiculo = req.body;
   const oldVehicleExist = await findDuplicates(vehiculo);
   if (oldVehicleExist[0]) {
-    res.status(401).json({ message: "This vehicle already exist" });
+    res.status(401).json({ message: "La patente ya se encuentra registrada en otro vehiculo" });
   } else {
-    const unidad = await countVehicle();
-    vehiculo.unidad = unidad;
     model.Vehiculo.create(parse(vehiculo)).then(() => {
       try {
         res.status(200).json({ created: parse(vehiculo) });
@@ -67,7 +64,7 @@ const updateVehicle = async (req, res, next) => {
     try {
       return response[0].dataValues;
     } catch {
-      res.status(401).json({ message: "This vehicle does not exist" });
+      res.status(401).json({ message: "El vehiculo no se encuentra registrado" });
     }
   });
   if (oldVehicle.patente == vehiculo.patente) {

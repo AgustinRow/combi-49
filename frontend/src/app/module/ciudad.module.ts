@@ -1,8 +1,8 @@
 import { Provincia } from "./provincia.module";
 
 export class Ciudad{
-    idCiudad: number;
+    id: number;
     nombre: string;
-    provincia: Provincia;
+    provincia: string; //Provincia; <- corregir en app-lista-ciudad
     borradoLogico: number;  //activo
 }

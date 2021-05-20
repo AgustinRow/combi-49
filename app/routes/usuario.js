@@ -7,8 +7,8 @@ const auth = require("../controller/auth");
 router.get("/lista_usuarios", Usuario.getAllDrivers);
 router.post("/alta_chofer", Usuario.register);
 router.post("/registrar", Usuario.register);
-router.put("/modificar_usuario", Usuario.updateDriver);
-router.get("/login", Usuario.login);
+router.put("/modificar_usuario/(:id)", Usuario.updateDriver);
+router.post("/login", Usuario.login);
 router.get("/buscar/(:id)", Usuario.findUser);
 router.delete("/borrar/(:id)", Usuario.remove);
 

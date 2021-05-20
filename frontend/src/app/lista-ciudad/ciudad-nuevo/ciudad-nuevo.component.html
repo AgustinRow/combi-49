@@ -1,1 +1,15 @@
-<p>ciudad-nuevo works!</p>
+<form (ngSubmit)="newCity(newCityForm)" #newCityForm="ngForm">
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" [(ngModel)]="ciudadNueva.nombre" name="nombre" required>
+    </div>
+
+    <div class="form-group">
+        <label for="provincia">Provincia:</label>
+        <select type="text" class="form-control" id="provincia" name="provincia" [(ngModel)]="ciudadNueva.provincia" required>
+            <option *ngFor="let provincia of listProvincias; index as i" value="{{provincia.nombre}}">{{ provincia.nombre }}</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="!newCityForm.form.valid">Guardar</button>
+</form>
