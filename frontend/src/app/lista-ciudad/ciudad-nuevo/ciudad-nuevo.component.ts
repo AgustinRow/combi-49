@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Ciudad } from 'src/app/module/ciudad.module';
 import { Provincia } from 'src/app/module/provincia.module';
 import { MockService } from 'src/app/service/mock.service.';
@@ -14,6 +14,7 @@ export class CiudadNuevoComponent implements OnInit {
   @Input() listProvincias: Provincia[];
   @Output() ciudadNewEvent = new EventEmitter<Ciudad>();
   submitted = false;
+  form: FormGroup;
 
   constructor(
     private mockService: MockService
@@ -21,12 +22,17 @@ export class CiudadNuevoComponent implements OnInit {
 
   ngOnInit(): void {
     this.listProvincias = this.mockService.lProvincia;
-    console.log(this.listProvincias);
+
+    this.form = new FormGroup({
+      'nombre': new FormControl({}),
+      'provincia': new FormControl({})
+    });
   }
 
-  newCity(formulario: NgForm) {
-    if(formulario.valid) 
+  newCity() {
+    if(this.form.valid) 
     {
+      this.ciudadNueva.provincia = this.listProvincias[this.form.value.provincia];
       this.submitted = true;
       this.ciudadNewEvent.emit(this.ciudadNueva);
     }
