@@ -17,12 +17,6 @@ module.exports = {
       habilitado: {
         type: Sequelize.BOOLEAN,
       },
-      origen_id: {
-        type: Sequelize.INTEGER,
-      },
-      destino_id: {
-        type: Sequelize.INTEGER,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
