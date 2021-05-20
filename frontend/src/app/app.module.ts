@@ -71,7 +71,6 @@ const appRoutes: Routes = [
   { path: 'Viajes', component: ListaViajeComponent },
   { path: 'Vehiculos', component: ListaVehiculoComponent },
   { path: 'Choferes', component: ListaChoferComponent }
-];
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');

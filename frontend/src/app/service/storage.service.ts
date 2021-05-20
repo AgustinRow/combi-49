@@ -45,6 +45,7 @@ export class StorageService {
   };
   
   logout(): void{
+    this.logChange.emit(false);
     this.removeCurrentSession();
     this.logChange.emit(false);
   }
@@ -52,5 +53,10 @@ export class StorageService {
   login(session: Session): void{
     this.setCurrentSession(session);
     this.logChange.emit(true);
+  }
+
+  login(session: Session): void{
+    this.logChange.emit(true);
+    this.setCurrentSession(session);
   }
 }
