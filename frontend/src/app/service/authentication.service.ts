@@ -18,8 +18,7 @@ export class AuthenticationService {
     return this.http.post<{ access_token: any }>(this.basePath + 'usuario/login', user, httpOptions).pipe(
       tap(
         res => {
-          console.log(res);
-          localStorage.setItem('access_token', res.access_token);
+          localStorage.setItem('access_token', res.token);
         }
       )
     )

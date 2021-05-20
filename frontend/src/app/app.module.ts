@@ -56,6 +56,10 @@ import { UserService } from './service/user.service';
 import { VehicleService } from './service/vehicle.service';
 import { MockService } from "./service/mock.service.";
 import { JwtModule } from '@auth0/angular-jwt';
+import { ListaChoferComponent } from './lista-chofer/lista-chofer.component';
+import { ChoferComponent } from './lista-chofer/chofer/chofer.component';
+import { ChoferEditarComponent } from './lista-chofer/chofer-editar/chofer-editar.component';
+import { ChoferNuevoComponent } from './lista-chofer/chofer-nuevo/chofer-nuevo.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -65,12 +69,8 @@ const appRoutes: Routes = [
   { path: 'MyAcount', component: AcountComponent },
   { path: 'Usuarios', component: ListaUsuarioComponent },
   { path: 'Viajes', component: ListaViajeComponent },
-  { path: 'Vehiculos', component: ListaVehiculoComponent }
-];
-
-const USUARIO_ADMINISTRADOR = 1;
-const USUARIO_CHOFER = 2;
-const USUARIO_PASAJERO = 3;
+  { path: 'Vehiculos', component: ListaVehiculoComponent },
+  { path: 'Choferes', component: ListaChoferComponent }
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -119,7 +119,11 @@ export function tokenGetter() {
     ProvinciaEditarComponent,
     ListaValoracionComponent,
     ValoracionComponent,
-    ValoracionNuevoComponent
+    ValoracionNuevoComponent,
+    ListaChoferComponent,
+    ChoferComponent,
+    ChoferEditarComponent,
+    ChoferNuevoComponent
   ],
   imports: [
     BrowserModule,

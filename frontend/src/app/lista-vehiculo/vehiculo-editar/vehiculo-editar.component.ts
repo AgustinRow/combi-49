@@ -28,7 +28,7 @@ export class VehiculoEditarComponent implements OnInit {
       this.vehicleService.modifyvehicle(this.vehiculoModificado).subscribe(
         (data: Vehiculo) => {
           if (data != null) {
-            alert("Se ha creado el vehiculo correctamente");
+            alert("Se ha modificado el vehiculo correctamente");
             this.vehiculoEditEvent.emit();
           }
         },

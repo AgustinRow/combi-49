@@ -1,10 +1,5 @@
 <form (ngSubmit)="newVehiculo(newVehicleForm)" #newVehicleForm="ngForm">
     <div class="form-group">
-        <label for="unidad">Unidad:</label>
-        <input type="number" class="form-control" id="unidad" [(ngModel)]="vehiculoNuevo.unidad" name="unidad">
-    </div>
-
-    <div class="form-group">
         <label for="marca">Marca:</label>
         <input type="text" class="form-control" id="marca" [(ngModel)]="vehiculoNuevo.marca" name="marca" required>
     </div>

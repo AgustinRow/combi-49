@@ -20,7 +20,7 @@
                 </li>
             </ul>
 
-            <ul class="navbar-nav" *ngIf="usuarioIdentificado.tipo === 1">
+            <ul class="navbar-nav" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/Usuarios">Usuarios</a>
                 </li>
@@ -84,8 +84,8 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-login (submittedLogin)="this.isLoggedNavbar = true; c('Close click')">Cargando formulario</app-login>
-        <!-- -->
+        <app-login (submittedLogin)="ngOnChanges(); c('Close click')">Cargando formulario</app-login>
+        <!--this.isLoggedNavbar = true -->
     </div>
 </ng-template>
 
