@@ -29,7 +29,7 @@ export class ChoferEditarComponent implements OnInit {
           //console.log(data.created);
           if(data != null)
           {
-            alert("Se ha creado el usuario correctamente");
+            alert("Se ha modificado el usuario correctamente");
             this.choferModifyEvent.emit(this.choferModificado);
           }
         },

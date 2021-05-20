@@ -84,6 +84,7 @@ const parse = (user) => {
     username: user.username,
     nombre: user.nombre,
     apellido: user.apellido,
+    password: user.password,
     dni: user.dni,
     tipo: user.tipo,
   };
