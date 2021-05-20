@@ -31,7 +31,6 @@ export class NavBarComponent implements OnInit, OnChanges {
       (newState: boolean) => {
         this.isLoggedNavbar = newState;
         this.isLogged();
-        console.log('newState : ', newState);
       },
       (error) => {
         console.log('ERROR verify : ', error);
@@ -46,8 +45,8 @@ export class NavBarComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes) {
-    console.log(changes);
     this.storageService.logChange.emit(true);
+
   }
 
   isLogged() {
