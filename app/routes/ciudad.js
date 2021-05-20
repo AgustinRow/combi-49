@@ -3,9 +3,11 @@ var router = express.Router();
 const Ciudad = require("../controller/ciudad");
 const verify = require("../controller/verifyToken");
 
-router.get("/listar", Ciudad.listCities);
-//router.put("/modificar/(:id)", verify, Ciudad.update);
-router.get("/buscar/(:id)", verify, Ciudad.find);
-router.post("/alta", verify, Ciudad.create);
-//router.put("/baja(:id)", verify, Ciudad.delete)
+router.get("/listar", Ciudad.list);
+router.put("/modificar",  Ciudad.update);
+router.get("/buscar/(:id)", Ciudad.find);
+router.post("/alta", Ciudad.create);
+//router.put("/baja", Ciudad.delete)
+router.get("/listar_rutas/(:id)", Ciudad.listRoutesForCity);
+
 module.exports = router;
