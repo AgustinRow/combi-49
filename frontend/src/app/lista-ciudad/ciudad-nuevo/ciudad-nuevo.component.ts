@@ -21,10 +21,11 @@ export class CiudadNuevoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listProvincias = this.mockService.lProvincia;
+    this.listProvincias = this.mockService.getProvincia();
 
     this.form = new FormGroup({
       'nombre': new FormControl({}),
+      'codigoPostal': new FormControl({}),
       'provincia': new FormControl({})
     });
   }

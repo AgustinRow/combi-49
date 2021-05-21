@@ -18,7 +18,7 @@ export class ListaCiudadComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listCiudades = this.mockService.lCiudades;
+    this.refresh();
   }
 
   openModal(contentEdit, select: Ciudad) {
@@ -29,10 +29,21 @@ export class ListaCiudadComponent implements OnInit {
   deleteCiudad(select: Ciudad) {
     var i = this.listCiudades.indexOf(select);
     i !== -1 && this.listCiudades.splice(i, 1);
+    this.mockService.setCiudad(this.listCiudades);
+    this.refresh();
   }
 
   addCity(newCity: Ciudad) {
     this.listCiudades.push(newCity);
+    this.mockService.setCiudad(this.listCiudades);
+    this.refresh();
   }
 
+  cityEdit(){
+    this.mockService.setCiudad(this.listCiudades);
+  }
+
+  refresh(){
+    this.listCiudades = this.mockService.getCiudad();
+  }
 }

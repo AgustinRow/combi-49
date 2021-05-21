@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ɵɵqueryRefresh } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Provincia } from '../module/provincia.module';
 import { MockService } from '../service/mock.service.';
@@ -18,7 +18,7 @@ export class ListaProvinciaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listProvincias = this.mockService.lProvincia;
+    this.refresh();
   }
 
   openModal(contentEdit, select: Provincia) {
@@ -29,10 +29,22 @@ export class ListaProvinciaComponent implements OnInit {
   deleteProvincia(select: Provincia) {
     var i = this.listProvincias.indexOf(select);
     i !== -1 && this.listProvincias.splice(i, 1);
+    this.mockService.setProvincia(this.listProvincias);
+    this.refresh();
   }
 
   addProv(newProv: Provincia) {
     //this.listProvincias.push(newProv);
     this.mockService.lProvincia.push(newProv);
+    this.mockService.setProvincia(this.listProvincias);
+    this.refresh();
+  }
+
+  provEdit(){
+    this.mockService.setProvincia(this.listProvincias);
+  }
+
+  refresh(){
+    this.listProvincias = this.mockService.getProvincia();
   }
 }

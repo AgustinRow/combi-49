@@ -20,7 +20,7 @@ export class CiudadEditarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listProvincias = this.mockService.lProvincia;
+    this.listProvincias = this.mockService.getProvincia();
   }
 
   modifyCity(formulario: NgForm) {

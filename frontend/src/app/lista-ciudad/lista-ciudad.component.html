@@ -10,12 +10,14 @@
         <thead>
             <tr scope="row">
                 <th>Nombre</th>
+                <th>Codigo Postal</th>
                 <th>Provincia</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let ciudad of listCiudades">
                 <td data-title="Nombre">{{ciudad.nombre}}</td>
+                <td data-title="Codigo Postal">{{ciudad.codigoPostal}}</td>
                 <td data-title="Provincia">{{ciudad.provincia.nombre}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
@@ -38,7 +40,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-ciudad-editar [(ciudadModificada)]="ciudadSeleccionada" (cityEditEvent)="c('Close click')">
+        <app-ciudad-editar [(ciudadModificada)]="ciudadSeleccionada" (cityEditEvent)="cityEdit(); c('Close click')">
             Cargando</app-ciudad-editar>
     </div>
     <div class="modal-footer">

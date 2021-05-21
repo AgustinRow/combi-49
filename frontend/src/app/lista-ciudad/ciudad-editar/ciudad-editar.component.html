@@ -5,6 +5,11 @@
     </div>
 
     <div class="form-group">
+        <label for="codigoPostal">Codigo Postal:</label>
+        <input type="text" class="form-control" id="codigoPostal" [(ngModel)]="ciudadModificada.codigoPostal" name="codigoPostal" required>
+    </div>
+    
+    <div class="form-group">
         <label for="provincia">Provincia:</label>
         <select type="text" class="form-control" id="provincia" name="provincia" [(ngModel)]="ciudadModificada.provincia" required>
             <option *ngFor="let provincia of listProvincias; index as i" value="{{provincia.nombre}}">{{ provincia.nombre }}</option>
