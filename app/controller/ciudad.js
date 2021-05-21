@@ -63,13 +63,15 @@ const find = async (req, res) => {
   const city = req.params.id;
   if (city != undefined) {
     try {
-      model.Ciudad.findOne({ where: { id: city } }).then((response) => {
-        try {
-          res.status(200).json({ data: parse(response) });
-        } catch (err) {
-          res.status(400).json({ message: "Id not found" });
+      model.Ciudad.findOne({ where: { id: city, habilitado: true } }).then(
+        (response) => {
+          try {
+            res.status(200).json({ data: parse(response) });
+          } catch (err) {
+            res.status(400).json({ message: "Id not found" });
+          }
         }
-      });
+      );
     } catch (err) {
       res.status(400).json({ message: "Bad Request" });
     }
@@ -115,10 +117,56 @@ const listRoutesForCity = async (req, res) => {
   }
 };
 
+const getCityById = async (id) => {
+  return model.Ciudad.findOne({ where: { id: id } }).then((response) => {
+    return response;
+  });
+};
+
+const hasOrigenOrDestiny = async (ciudad) => {
+  const origen = await ciudad.getOrigen().then((response) => {
+    return response;
+  });
+  const destino = await ciudad.getDestino().then((response) => {
+    return response;
+  });
+
+  if (origen.length || destino.length) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+const remove = async (req, res, next) => {
+  const { id } = req.params;
+  const ciudad = await getCityById(id);
+  if (ciudad != null) {
+    try {
+      const canBeRemoved = await hasOrigenOrDestiny(ciudad);
+      if (canBeRemoved) {
+        ciudad.update({ habilitado: false }).then((response) => {
+          res.status(200).json({ message: "Succesfully removed" });
+        });
+      } else {
+        res.status(400).json({
+          message:
+            "Cannot remove city due to it has an origen or a destiny associatied",
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    res.status(400).json({ message: "City not found" });
+  }
+};
+
 module.exports = {
   list,
   create,
   find,
   update,
+  remove,
   listRoutesForCity,
 };
