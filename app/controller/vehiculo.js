@@ -34,7 +34,11 @@ const addVehicle = async (req, res) => {
   const vehiculo = req.body;
   const oldVehicleExist = await findDuplicates(vehiculo);
   if (oldVehicleExist[0]) {
-    res.status(401).json({ message: "La patente ya se encuentra registrada en otro vehiculo" });
+    res
+      .status(401)
+      .json({
+        message: "La patente ya se encuentra registrada en otro vehiculo",
+      });
   } else {
     model.Vehiculo.create(parse(vehiculo)).then(() => {
       try {
@@ -64,10 +68,12 @@ const updateVehicle = async (req, res, next) => {
     try {
       return response[0].dataValues;
     } catch {
-      res.status(401).json({ message: "El vehiculo no se encuentra registrado" });
+      res
+        .status(401)
+        .json({ message: "El vehiculo no se encuentra registrado" });
     }
   });
-  if (oldVehicle.patente == vehiculo.patente) {
+  if (oldVehicle.patente == vehiculo.patente && oldVehicle.id == vehiculo.id) {
     model.Vehiculo.update(vehiculo, {
       where: { patente: vehiculo.patente },
     }).then((response) => {
