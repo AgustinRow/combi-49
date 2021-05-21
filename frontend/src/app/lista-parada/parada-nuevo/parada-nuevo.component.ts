@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { Ciudad } from 'src/app/module/ciudad.module';
 import { Parada } from 'src/app/module/parada.module';
 import { MockService } from 'src/app/service/mock.service.';
@@ -14,19 +14,26 @@ export class ParadaNuevoComponent implements OnInit {
   @Input() listCiudades: Ciudad[];
   @Output() paradaNewEvent = new EventEmitter<Parada>();
   submitted = false;
+  form: FormGroup;
 
   constructor(
     private mockService: MockService
   ) { }
 
   ngOnInit(): void {
-    this.listCiudades = this.mockService.lCiudades;
-    console.log(this.listCiudades);
+    this.listCiudades = this.mockService.getCiudad();
+
+    this.form = new FormGroup({
+      'nombre': new FormControl({}),
+      'direccion': new FormControl({}),
+      'ciudad': new FormControl({})
+    });
   }
 
-  newStop(formulario: NgForm) {
-    if(formulario.valid) 
+  newStop() {
+    if(this.form.valid) 
     {
+      this.paradaNueva.ciudad = this.listCiudades[this.form.value.ciudad];
       this.submitted = true;
       this.paradaNewEvent.emit(this.paradaNueva);
     }

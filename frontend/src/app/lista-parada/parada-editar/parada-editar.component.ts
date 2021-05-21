@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Ciudad } from 'src/app/module/ciudad.module';
 import { Parada } from 'src/app/module/parada.module';
 import { MockService } from 'src/app/service/mock.service.';
@@ -14,17 +14,26 @@ export class ParadaEditarComponent implements OnInit {
   @Input() paradaModificada = new Parada();
   @Output() stopEditEvent = new EventEmitter();
   submitted = false;
+  form: FormGroup;
 
   constructor(
     private mockService: MockService
   ) { }
 
   ngOnInit(): void {
-    this.listCiudades = this.mockService.lCiudades;
+    this.listCiudades = this.mockService.getCiudad();
+    
+    this.form = new FormGroup({
+      'nombre': new FormControl({}),
+      'direccion': new FormControl({}),
+      'ciudad': new FormControl({})
+    });
   }
 
-  modifyStop(formulario: NgForm) {
-    if (formulario.valid) {
+  modifyStop() {
+    if (this.form.valid) 
+    {
+      this.paradaModificada.ciudad = this.listCiudades[this.form.value.ciudad];
       this.stopEditEvent.emit();
       this.submitted = true;
     }

@@ -4,6 +4,6 @@ export class Parada{
     id: number;
     nombre: string;
     direccion: string;
-    ciudad: string; //Ciudad; <- Para corregir en app-parada
+    ciudad: Ciudad;
     borradoLogico: number;  //activo
 }

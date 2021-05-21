@@ -18,7 +18,8 @@ export class ListaParadaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listParadas = this.mockService.lParadas;
+    //this.mockService.setParada([]);
+    this.refresh();
   }
 
   openModal(contentEdit, select: Parada) {
@@ -29,9 +30,22 @@ export class ListaParadaComponent implements OnInit {
   deleteStop(select: Parada) {
     var i = this.listParadas.indexOf(select);
     i !== -1 && this.listParadas.splice(i, 1);
+    this.mockService.setParada(this.listParadas);
+    this.refresh();
   }
 
   addStop(newStop: Parada) {
     this.listParadas.push(newStop);
+    this.mockService.setParada(this.listParadas);
+    this.refresh();
+  }
+  
+  stopEdit(){
+    this.mockService.setParada(this.listParadas);
+  }
+
+  refresh(){
+    this.listParadas = this.mockService.getParada();
+    console.log(this.listParadas);
   }
 }

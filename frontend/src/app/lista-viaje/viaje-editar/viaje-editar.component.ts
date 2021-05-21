@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { Ruta } from 'src/app/module/ruta.module';
 import { Usuario } from 'src/app/module/usuario.module';
 import { Vehiculo } from 'src/app/module/vehiculo.module';
@@ -20,6 +20,7 @@ export class ViajeEditarComponent implements OnInit {
   @Input() viajeModificado = new Viaje();
   @Output() travelEditEvent = new EventEmitter();
   submitted = false;
+  form: FormGroup;
 
   constructor(
     private vehicleService: VehicleService,
@@ -28,13 +29,26 @@ export class ViajeEditarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listRutas = this.mockService.lRutas;
+    this.listRutas = this.mockService.getRuta();
     this.refreshListVehicle();
     this.refreshListUser();
+       
+    this.form = new FormGroup({
+      'ruta': new FormControl({}),
+      'fechaSalida': new FormControl({}),
+      'fechaLlegada': new FormControl({}),
+      'chofer': new FormControl({}),
+      'vehiculo': new FormControl({}),
+      'detalle': new FormControl({})
+    });
   }
 
-  modifyTravel(formulario: NgForm) {
-    if (formulario.valid) {
+  modifyTravel() {
+    if (this.form.valid) 
+    {
+      this.viajeModificado.ruta = this.listRutas[this.form.value.ruta];
+      this.viajeModificado.vehiculo = this.listVehiculos[this.form.value.vehiculo];
+      this.viajeModificado.chofer = this.listChoferes[this.form.value.chofer];
       this.travelEditEvent.emit();
       this.submitted = true;
     }

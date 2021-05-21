@@ -19,8 +19,8 @@
             <tr *ngFor="let ruta of listRutas">
                 <td data-title="Nombre">{{ruta.nombre}}</td>
                 <td data-title="Distancia">{{ruta.distancia}}</td>
-                <td data-title="Origen">{{ruta.origen}}</td>
-                <td data-title="Destino">{{ruta.destino}}</td>
+                <td data-title="Origen">{{ruta.origen.nombre}}</td>
+                <td data-title="Destino">{{ruta.destino.nombre}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
                         <button type="button" class="btn btn-warning"
@@ -42,7 +42,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-ruta-editar [(rutaModificada)]="rutaSeleccionada" (routeEditEvent)="c('Close click')">
+        <app-ruta-editar [(rutaModificada)]="rutaSeleccionada" (routeEditEvent)="routerEdit(); c('Close click')">
             Cargando</app-ruta-editar>
     </div>
     <div class="modal-footer">

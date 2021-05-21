@@ -18,6 +18,7 @@ export class ListaCiudadComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    //this.mockService.setCiudad([]);
     this.refresh();
   }
 
@@ -40,6 +41,7 @@ export class ListaCiudadComponent implements OnInit {
   }
 
   cityEdit(){
+    console.log(this.ciudadSeleccionada);
     this.mockService.setCiudad(this.listCiudades);
   }
 

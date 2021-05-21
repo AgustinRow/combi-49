@@ -45,11 +45,11 @@
         </thead>
         <tbody>
             <tr *ngFor="let viaje of lViajes">
-                <td data-title="Ruta">{{viaje.ruta}}</td>
+                <td data-title="Ruta">{{viaje.ruta.nombre}}</td>
                 <td data-title="Fecha de Salida">{{viaje.fechaSalida}}</td>
                 <td data-title="Fecha de Llegada">{{viaje.fechaLlegada}}</td>
-                <td data-title="Chofer">{{viaje.chofer}}</td>
-                <td data-title="Vehiculo">{{viaje.vehiculo}}</td>
+                <td data-title="Chofer">{{viaje.chofer.nombre}}</td>
+                <td data-title="Vehiculo">{{viaje.vehiculo.patente}}</td>
                 <td data-title="Detalles">{{viaje.detalle}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
@@ -73,7 +73,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-viaje-editar [(viajeModificado)]="viajeSeleccionado" (travelEditEvent)="c('Close click')">
+        <app-viaje-editar [(viajeModificado)]="viajeSeleccionado" (travelEditEvent)="travelEdit(); c('Close click')">
             Cargando</app-viaje-editar>
     </div>
     <div class="modal-footer">
