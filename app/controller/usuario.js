@@ -107,6 +107,7 @@ const register = async (req, res) => {
   model.Usuario.findAll({
     where: {
       [Op.or]: [
+        { username: user.username },
         { email: user.email },
         { dni: user.dni },
       ],
