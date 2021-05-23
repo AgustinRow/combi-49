@@ -51,7 +51,7 @@ export class ListaChoferComponent implements OnInit {
   }
   
   refreshList() {
-    this.userService.getUsers().subscribe(
+    this.userService.getChoffers().subscribe(
       (list: any) => {
         this.listaC = list.data as Usuario[];
       },

@@ -53,6 +53,8 @@
                 <td data-title="Detalles">{{viaje.detalle}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
+                        <button type="button" class="btn btn-info" 
+                            (click)="openModal(contentShow, viaje)">Informacion</button>
                         <button type="button" class="btn btn-warning"
                             (click)="openModal(contentEdit, viaje)">Editar</button>
                         <button type="button" class="btn btn-danger"
@@ -95,3 +97,19 @@
         <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
     </div>
 </ng-template>
+
+
+<ng-template #contentShow let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Informacion del vieje</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <app-viaje [(viajeConInfo)]="viajeSeleccionado">Cargando</app-viaje>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+  </ng-template>
