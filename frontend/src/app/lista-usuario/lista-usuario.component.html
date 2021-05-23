@@ -1,8 +1,8 @@
 <div class="container">
-    <h2>Usuarios </h2>
+    <h2>Lista de pasajeros</h2>
     <p>Lista de usuarios del sistema, usuarios Adninistradores, Usuarios compradores de Boletos y Choferes:</p>
     <button class="btn btn-primary m-2" (click)="openModal(contentNewUser, usuarioSeleccionado)">
-        Agregar Usuario
+        Agregar pasajero
     </button>
     <table class="table  table-hover">
         <thead>
@@ -10,7 +10,6 @@
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>E-mail</th>
-                <th>Tipo</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -19,7 +18,6 @@
                 <td data-title="Nombre">{{user.nombre}}</td>
                 <td data-title="Apellido">{{user.apellido}}</td>
                 <td data-title="Usuario">{{user.email}}</td>
-                <td data-title="Tipo">{{tipo[user.tipo-1]}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info" (click)="openModal(contentShow, user)">Informacion</button>

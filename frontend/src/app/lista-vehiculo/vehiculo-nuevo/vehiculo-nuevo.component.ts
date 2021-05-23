@@ -37,7 +37,7 @@ export class VehiculoNuevoComponent implements OnInit {
             alert("Problemas para conectarse con el servidor");
           }
           else {
-            alert("El servidor reporta estado  " + error.status + ": " + error.error.message);
+            alert("El servidor reporta estado: " + error.error.message);
           }
         }
       );

@@ -60,8 +60,12 @@ export class ViajeNuevoComponent implements OnInit {
         this.listChoferes = list.data as Usuario[];
       },
       (error) => {
-        console.log(error);
-        alert("El servidor reporta estado: " + error.status);
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
       }
     )
   }
@@ -72,8 +76,12 @@ export class ViajeNuevoComponent implements OnInit {
         this.listVehiculos = list.data as Vehiculo[];
       },
       (error) => {
-        console.log(error);
-        alert("El servidor reporta estado: " + error.status);
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
       }
     )
   }

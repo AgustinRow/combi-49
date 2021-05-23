@@ -19,13 +19,5 @@
         <label for="email">E-mail:</label>
         <input type="text" class="form-control" id="email" [(ngModel)]="usuarioNuevo.email" name="email" required>
     </div>
-    <div class="form-group">
-        <label for="tipo">Tipo</label>
-        <select class="form-control" id="tipo" name="tipo" [(ngModel)]="usuarioNuevo.tipo" required>
-            <option value="1">Pasajero</option>
-            <option value="2">Chofer</option>
-            <option value="3">Administrador</option>
-        </select>
-    </div>
     <button type="submit" class="btn btn-success" [disabled]="!userForm.form.valid">Guardar</button>
 </form>
