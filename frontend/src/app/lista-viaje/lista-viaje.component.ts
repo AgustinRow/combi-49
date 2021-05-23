@@ -29,7 +29,7 @@ export class ListaViajeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.mockService.setViajes([]);
+    //this.mockService.setViajes([]);
     this.lViajes = this.mockService.getViajes();
   }
 

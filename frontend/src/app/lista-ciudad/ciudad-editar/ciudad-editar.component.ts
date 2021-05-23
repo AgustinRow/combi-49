@@ -14,6 +14,7 @@ export class CiudadEditarComponent implements OnInit {
   @Input() ciudadModificada = new Ciudad();
   @Output() cityEditEvent = new EventEmitter();
   submitted = false;
+  provIndex: number;
   form: FormGroup;
 
   constructor(
@@ -26,14 +27,16 @@ export class CiudadEditarComponent implements OnInit {
     this.form = new FormGroup({
       'nombre': new FormControl({value: this.ciudadModificada.nombre}),
       'codigoPostal': new FormControl({value: this.ciudadModificada.codigoPostal}),
-      'provincia': new FormControl({value: this.listProvincias.indexOf(this.ciudadModificada.provincia)})
+      'provincia': new FormControl({value: this.ciudadModificada.provincia.nombre})
     });
+
+    this.provIndex = this.provIndex = this.listProvincias.findIndex(x => x.nombre === this.ciudadModificada.provincia.nombre)
   }
 
   modifyCity() {
     if (this.form.valid) {
       console.log(this.form.value.provincia);
-      console.log(this.listProvincias[this.form.value.provincia]);
+      console.log(this.listProvincias[this.form.value.provincia])
       this.ciudadModificada.provincia = this.listProvincias[this.form.value.provincia];
       this.cityEditEvent.emit();
       this.submitted = true;

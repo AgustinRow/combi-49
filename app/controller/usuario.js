@@ -107,7 +107,6 @@ const register = async (req, res) => {
   model.Usuario.findAll({
     where: {
       [Op.or]: [
-        { username: user.username },
         { email: user.email },
         { dni: user.dni },
       ],
@@ -149,7 +148,8 @@ const register = async (req, res) => {
 //modificar chofer
 const updateDriver = async (req, res) => {
   const updatedUser = parse(req.body);
-  const oldUser = await findDuplicates(updatedUser).then((response) => {
+  const oldUser = await findDuplicates(updatedUser).then(
+    (response) => {
     try {
       return response[0].dataValues;
     } catch {
@@ -175,9 +175,6 @@ const updateDriver = async (req, res) => {
     }
     if (oldUser.dni === updatedUser.dni) {
       res.status(401).json({ message: "El DNI ya se encuentra registrado" });
-    }
-    if (oldUser.username === updatedUser.username) {
-      res.status(401).json({ message: "EL username ya se encuentra registrado" });
     }
   }
 };

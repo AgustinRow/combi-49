@@ -1,7 +1,7 @@
 <form (ngSubmit)="modifyTravel()"[formGroup]="form">
     <div class="form-group">
         <label for="ruta">Ruta:</label>
-        <select type="text" class="form-control" formControlName="ruta" name="ruta" required>
+        <select type="text" class="form-control" formControlName="ruta" name="ruta" required  [(ngModel)]="rIndex">
                 <option *ngFor="let ruta of listRutas; index as i" [value]="i">{{ ruta.nombre }}</option>
         </select>
     </div>
@@ -18,14 +18,14 @@
     
     <div class="form-group">
         <label for="chofer">Chofer:</label>
-        <select type="text" class="form-control" formControlName="chofer" name="chofer" required>
+        <select type="text" class="form-control" formControlName="chofer" name="chofer" required [(ngModel)]="cIndex">
                 <option *ngFor="let chofer of listChoferes; index as i" [value]="i">{{ chofer.nombre }}</option>
         </select>
     </div>
     
     <div class="form-group">
         <label for="vehiculo">Vehiculo:</label>
-        <select type="text" class="form-control" formControlName="vehiculo" name="vehiculo" required>
+        <select type="text" class="form-control" formControlName="vehiculo" name="vehiculo" required [(ngModel)]="vIndex">
                 <option *ngFor="let vehiculo of listVehiculos; index as i" [value]="i">{{ vehiculo.patente }}</option>
         </select>
     </div>

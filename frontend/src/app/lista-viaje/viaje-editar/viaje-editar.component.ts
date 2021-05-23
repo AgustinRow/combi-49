@@ -21,6 +21,9 @@ export class ViajeEditarComponent implements OnInit {
   @Output() travelEditEvent = new EventEmitter();
   submitted = false;
   form: FormGroup;
+  rIndex: number;
+  cIndex: number;
+  vIndex: number;
 
   constructor(
     private vehicleService: VehicleService,
@@ -41,6 +44,8 @@ export class ViajeEditarComponent implements OnInit {
       'vehiculo': new FormControl({}),
       'detalle': new FormControl({})
     });
+    
+    this.rIndex = this.listRutas.findIndex(x => x.id === this.viajeModificado.ruta.id);
   }
 
   modifyTravel() {
@@ -58,6 +63,7 @@ export class ViajeEditarComponent implements OnInit {
     this.userService.getChoffers().subscribe(
       (list: any) => {
         this.listChoferes = list.data as Usuario[];
+        this.cIndex = this.listChoferes.findIndex(x => x.email === this.viajeModificado.chofer.email);
       },
       (error) => {
         console.log(error);
@@ -70,6 +76,7 @@ export class ViajeEditarComponent implements OnInit {
     this.vehicleService.getvehicles().subscribe(
       (list: any) => {
         this.listVehiculos = list.data as Vehiculo[];
+        this.vIndex = this.listVehiculos.findIndex(x => x.patente === this.viajeModificado.vehiculo.patente);
       },
       (error) => {
         console.log(error);

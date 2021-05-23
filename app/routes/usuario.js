@@ -5,7 +5,6 @@ const verify = require("../controller/verifyToken");
 const auth = require("../controller/auth");
 
 router.get("/lista_usuarios", Usuario.getAllDrivers);
-router.get("/lista_choferes", Usuario.getAllDrivers);
 router.post("/alta_chofer", Usuario.register);
 router.post("/registrar", Usuario.register);
 router.put("/modificar_usuario/(:id)", Usuario.updateDriver);

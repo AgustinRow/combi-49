@@ -11,7 +11,7 @@
 
     <div class="form-group">
         <label for="ciudad">ciudad:</label>
-        <select type="text" class="form-control" formControlName="ciudad" name="ciudad" required value="listCiudades.indexOf(this.paradaModificada.ciudad">
+        <select type="text" class="form-control" formControlName="ciudad" name="ciudad" required value="listCiudades.indexOf(this.paradaModificada.ciudad" [(ngModel)]="cityIndex">
             <option *ngFor="let ciudad of listCiudades; index as i" [value]="i">{{ ciudad.nombre }} - {{ ciudad.provincia.nombre }}</option>
         </select>
     </div>

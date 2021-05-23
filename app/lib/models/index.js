@@ -19,6 +19,8 @@ if (config.use_env_variable) {
   );
 }
 
+sequelize.sync({ alter: true });
+
 fs.readdirSync(__dirname)
   .filter((file) => {
     return (
@@ -38,7 +40,6 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
-
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

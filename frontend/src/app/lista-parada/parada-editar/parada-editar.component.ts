@@ -15,6 +15,7 @@ export class ParadaEditarComponent implements OnInit {
   @Output() stopEditEvent = new EventEmitter();
   submitted = false;
   form: FormGroup;
+  cityIndex: number;
 
   constructor(
     private mockService: MockService
@@ -28,6 +29,9 @@ export class ParadaEditarComponent implements OnInit {
       'direccion': new FormControl({}),
       'ciudad': new FormControl({})
     });
+
+    
+    this.cityIndex = this.listCiudades.findIndex(x => x.id === this.paradaModificada.ciudad.id)
   }
 
   modifyStop() {

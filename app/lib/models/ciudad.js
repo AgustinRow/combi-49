@@ -10,14 +10,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      
+      Ciudad.hasMany(models.Ruta, { as: "Origen", foreignKey: "origenId" });
+      Ciudad.hasMany(models.Ruta, { as: "Destino", foreignKey: "destinoId" });
     }
   }
   Ciudad.init(
     {
       nombre: DataTypes.STRING,
       habilitado: DataTypes.BOOLEAN,
-      codigoPostal: DataTypes.INTEGER
+      cp: DataTypes.INTEGER,
     },
     {
       sequelize,

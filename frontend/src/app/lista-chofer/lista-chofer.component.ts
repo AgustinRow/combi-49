@@ -31,7 +31,7 @@ export class ListaChoferComponent implements OnInit {
       (data: any) => {
         console.log(data);
         if (data != null) {
-          alert("Se ha eliminado el vehiculo correctamente");
+          alert("Se ha eliminado el usuario correctamente");
           this.refreshList();
         }
       },

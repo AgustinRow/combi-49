@@ -10,9 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      //Ruta.hasOne(models.Origen, { foreignKey: "id" });
-      Ruta.belongsTo(models.Ciudad, { as: 'Destino', foreignKey: "destino_id" });
-      Ruta.belongsTo(models.Ciudad, { as: 'Origen', foreignKey: "origen_id" });
+      Ruta.belongsTo(models.Ciudad, { as: "Origen", foreignKey: "origenId" });
+      Ruta.belongsTo(models.Ciudad, { as: "Destino", foreignKey: "destinoId" });
     }
   }
   Ruta.init(
@@ -20,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
       nombre: DataTypes.STRING,
       distancia: DataTypes.INTEGER,
       habilitado: DataTypes.BOOLEAN,
-      origen_id: DataTypes.INTEGER,
-      destino_id: DataTypes.INTEGER,
+      origenId: DataTypes.INTEGER,
+      destinoId: DataTypes.INTEGER,
     },
     {
       sequelize,
