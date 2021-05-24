@@ -49,7 +49,6 @@ export class ListaViajeComponent implements OnInit {
   openModal(contentEdit, select: Viaje) {
     this.viajeSeleccionado = select;
     this.modalService.open(contentEdit);
-    alert("Se ha modificado el viaje correctamente");
   }
 
   deleteTravel(select: Viaje) {
@@ -69,6 +68,7 @@ export class ListaViajeComponent implements OnInit {
   
   travelEdit(){
     this.mockService.setViajes(this.lViajes);
+    alert("Se ha modificado el viaje correctamente");
   }
 
   refresh(){
