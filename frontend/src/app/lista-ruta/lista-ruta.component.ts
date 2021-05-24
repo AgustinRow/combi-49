@@ -32,12 +32,14 @@ export class ListaRutaComponent implements OnInit {
     i !== -1 && this.listRutas.splice(i, 1);
     this.mockService.setRuta(this.listRutas);
     this.refresh();
+    alert("Se ha eliminado la ruta correctamente");
   }
 
   addRoute(newRoute: Ruta) {
     this.listRutas.push(newRoute);
     this.mockService.setRuta(this.listRutas);
     this.refresh();
+    alert("Se ha agregado la ciudad correctamente");
   }
   
   routerEdit(){
@@ -46,6 +48,5 @@ export class ListaRutaComponent implements OnInit {
 
   refresh(){
     this.listRutas = this.mockService.getRuta();
-    console.log(this.listRutas);
   }
 }

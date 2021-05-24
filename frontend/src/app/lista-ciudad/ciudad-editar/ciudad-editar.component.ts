@@ -12,7 +12,7 @@ import { MockService } from 'src/app/service/mock.service.';
 export class CiudadEditarComponent implements OnInit {
   @Input() listProvincias: Provincia[];
   @Input() ciudadModificada = new Ciudad();
-  @Output() cityEditEvent = new EventEmitter();
+  @Output() cityEditEvent = new EventEmitter<Ciudad>();
   submitted = false;
   provIndex: number;
   form: FormGroup;
@@ -38,7 +38,7 @@ export class CiudadEditarComponent implements OnInit {
       console.log(this.form.value.provincia);
       console.log(this.listProvincias[this.form.value.provincia])
       this.ciudadModificada.provincia = this.listProvincias[this.form.value.provincia];
-      this.cityEditEvent.emit();
+      this.cityEditEvent.emit(this.ciudadModificada);
       this.submitted = true;
     }
   }

@@ -13,7 +13,6 @@ export class CiudadNuevoComponent implements OnInit {
   @Input() ciudadNueva = new Ciudad();
   @Input() listProvincias: Provincia[];
   @Output() ciudadNewEvent = new EventEmitter<Ciudad>();
-  submitted = false;
   form: FormGroup;
 
   constructor(
@@ -33,8 +32,8 @@ export class CiudadNuevoComponent implements OnInit {
   newCity() {
     if(this.form.valid) 
     {
+      console.log(this.form);
       this.ciudadNueva.provincia = this.listProvincias[this.form.value.provincia];
-      this.submitted = true;
       this.ciudadNewEvent.emit(this.ciudadNueva);
     }
   }

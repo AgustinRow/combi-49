@@ -22,7 +22,7 @@
         <label for="destino">Destino:</label>
         <select type="text" class="form-control" formControlName="destino" name="destino" required>
             <ng-container *ngFor="let destino of listParadas; index as i">
-                <option [value]="i" *ngIf="rutaNueva.origen != destino.nombre">{{ destino.nombre }}
+                <option [value]="i" *ngIf="form.value.origen != i">{{ destino.nombre }}
                 </option>
             </ng-container>
         </select>

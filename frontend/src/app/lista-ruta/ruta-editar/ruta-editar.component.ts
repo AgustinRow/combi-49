@@ -32,10 +32,8 @@ export class RutaEditarComponent implements OnInit {
       'destino': new FormControl({})
     });
     
-    this.oIndex = this.listParadas.findIndex(x => x.id === this.rutaModificada.origen.id);
-    this.dIndex = this.listParadas.findIndex(x => x.id === this.rutaModificada.destino.id);
-    console.log(this.dIndex);
-    console.log(this.rutaModificada.destino.id);
+    this.oIndex = this.listParadas.findIndex(x => x.nombre === this.rutaModificada.origen.nombre);
+    this.dIndex = this.listParadas.findIndex(x => x.nombre === this.rutaModificada.destino.nombre);
   }
 
   modifyRoute() {

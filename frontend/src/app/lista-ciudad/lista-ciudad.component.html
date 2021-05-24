@@ -40,7 +40,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-ciudad-editar [(ciudadModificada)]="ciudadSeleccionada" (cityEditEvent)="cityEdit(); c('Close click')">
+        <app-ciudad-editar [ciudadModificada]="ciudadSeleccionada" (cityEditEvent)="cityEdit($event); c('Close click')">
             Cargando</app-ciudad-editar>
     </div>
     <div class="modal-footer">

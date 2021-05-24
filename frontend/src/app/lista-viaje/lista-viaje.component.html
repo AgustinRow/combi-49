@@ -40,7 +40,6 @@
                 <th>Fecha de llegada</th>
                 <th>Chofer</th>
                 <th>Vehiculo</th>
-                <th>Detalles</th>
             </tr>
         </thead>
         <tbody>
@@ -50,7 +49,6 @@
                 <td data-title="Fecha de Llegada">{{viaje.fechaLlegada}}</td>
                 <td data-title="Chofer">{{viaje.chofer.nombre}}</td>
                 <td data-title="Vehiculo">{{viaje.vehiculo.patente}}</td>
-                <td data-title="Detalles">{{viaje.detalle}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info" 
@@ -97,7 +95,6 @@
         <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
     </div>
 </ng-template>
-
 
 <ng-template #contentShow let-c="close" let-d="dismiss">
     <div class="modal-header">

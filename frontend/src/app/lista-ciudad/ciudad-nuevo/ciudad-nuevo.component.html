@@ -12,6 +12,7 @@
     <div class="form-group">
         <label for="provincia">Provincia:</label>
         <select type="text" class="form-control" formControlName="provincia" name="provincia"  required>
+            <option disabled [value]="0">Seleccione una provincia</option>
             <option *ngFor="let provincia of listProvincias; index as i" [value]="i">{{ provincia.nombre }}</option>
         </select>
     </div>
