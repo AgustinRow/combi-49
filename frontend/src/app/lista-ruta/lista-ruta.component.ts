@@ -39,7 +39,7 @@ export class ListaRutaComponent implements OnInit {
     this.listRutas.push(newRoute);
     this.mockService.setRuta(this.listRutas);
     this.refresh();
-    alert("Se ha agregado la ciudad correctamente");
+    alert("Se ha agregado la ruta correctamente");
   }
   
   routerEdit(){

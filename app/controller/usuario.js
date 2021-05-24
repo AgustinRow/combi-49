@@ -116,7 +116,7 @@ const register = async (req, res) => {
       if (response.length) {
         res.status(400)
         .json({
-          message: "Ya se encuentra registradoe el mail o DNI",
+          message: "Ya se encuentra registradoe el mail o DNI y no ha registrado",
         });
       } else {
         createUser(user);
