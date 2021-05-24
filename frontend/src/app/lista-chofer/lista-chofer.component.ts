@@ -36,13 +36,9 @@ export class ListaChoferComponent implements OnInit {
   deleteChofer(choferselect: Usuario) {
     this.lViajes = this.mockService.getViajes();
     var hoy = new Date(Date.now());
-    console.log(hoy);
-    console.log(new Date(this.lViajes[0].fechaSalida));
-    console.log(new Date(this.lViajes[0].fechaSalida) < hoy);
     var index = this.lViajes.findIndex(v => (v.chofer.id == choferselect.id));
     if (index === -1) {
       //No tiene viajes pendientes
-      console.log("No tiene viajes pendientes");
       this.userService.deleteOneUser(choferselect.id).subscribe(
         (data: any) => {
           console.log(data);
@@ -63,10 +59,11 @@ export class ListaChoferComponent implements OnInit {
     }
     else {
       //Tiene viajes
-      console.log("Tiene viajes pendientes");
       var tienePendientes = false;
-      this.lViajes.forEach( viaje => {
-        tienePendientes ||= (new Date(viaje.fechaSalida)) >= hoy
+      this.lViajes.forEach(viaje => {
+        if (viaje.chofer.id == choferselect.id) { 
+          tienePendientes ||= (new Date(viaje.fechaSalida)) >= hoy; 
+        }
       });
       if (!tienePendientes) {
         //No tiene pendientes
