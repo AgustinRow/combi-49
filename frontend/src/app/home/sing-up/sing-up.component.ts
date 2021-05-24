@@ -34,10 +34,12 @@ export class SingUpComponent implements OnInit {
           }
         },
         (error) => {
-          /// we never get here, no matter there was a Promise.reject(), throw Error(), etc.
-          console.log(error);
-          alert("El servidor reporta estado: "+error.status);
-          this.router.navigate(['/Logout']);
+          if (error.status >= 500) {
+            alert("Problemas para conectarse con el servidor");
+          }
+          else {
+            alert("El servidor reporta estado: " + error.error.message);
+          }
         }
       );
       this.userNewEvent.emit(this.usuarioNuevo);

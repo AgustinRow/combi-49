@@ -114,8 +114,9 @@ const register = async (req, res) => {
   }).then((response) => {
     try {
       if (response.length) {
-        res.status(400).json({
-          data: "Bad request. This user already exist",
+        res.status(400)
+        .json({
+          message: "Ya se encuentra registradoe el mail o DNI",
         });
       } else {
         createUser(user);
