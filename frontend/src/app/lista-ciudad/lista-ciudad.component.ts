@@ -11,7 +11,8 @@ import { CiudadComponent } from './ciudad/ciudad.component';
 })
 export class ListaCiudadComponent implements OnInit {
   listCiudades: Ciudad[] = [];
-  @Output() ciudadSeleccionada: Ciudad;
+  private ciudadSeleccionada: number;
+  @Output() aux: Ciudad;
 
   constructor(
     private modalService: NgbModal,
@@ -24,7 +25,12 @@ export class ListaCiudadComponent implements OnInit {
   }
 
   openModal(contentEdit, select: Ciudad) {
-    this.ciudadSeleccionada = select;
+    this.ciudadSeleccionada = this.listCiudades.indexOf(select);
+    this.aux = new Ciudad();
+    this.aux.nombre = select.nombre ;
+    this.aux.provincia = select.provincia ;
+    this.aux.id = select.id ;
+    this.aux.codigoPostal = select.codigoPostal ;
     this.modalService.open(contentEdit);
   }
 
@@ -49,8 +55,10 @@ export class ListaCiudadComponent implements OnInit {
   }
 
   cityEdit(modifyCity: Ciudad) {
-    if (this.listCiudades.findIndex(x => x.codigoPostal === modifyCity.codigoPostal) === -1) {
-      this.ciudadSeleccionada = modifyCity;
+    var index = this.listCiudades.findIndex(x => x.codigoPostal === modifyCity.codigoPostal)
+    if ( index === -1) {
+      this.listCiudades[this.ciudadSeleccionada] = modifyCity;
+      console.log( this.listCiudades);
       this.mockService.setCiudad(this.listCiudades);
       alert("Se ha modificado la ciudad correctamente");
     }

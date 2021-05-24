@@ -35,8 +35,6 @@ export class CiudadEditarComponent implements OnInit {
 
   modifyCity() {
     if (this.form.valid) {
-      console.log(this.form.value.provincia);
-      console.log(this.listProvincias[this.form.value.provincia])
       this.ciudadModificada.provincia = this.listProvincias[this.form.value.provincia];
       this.cityEditEvent.emit(this.ciudadModificada);
       this.submitted = true;

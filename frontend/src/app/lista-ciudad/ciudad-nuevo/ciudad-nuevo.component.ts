@@ -32,7 +32,6 @@ export class CiudadNuevoComponent implements OnInit {
   newCity() {
     if(this.form.valid) 
     {
-      console.log(this.form);
       this.ciudadNueva.provincia = this.listProvincias[this.form.value.provincia];
       this.ciudadNewEvent.emit(this.ciudadNueva);
     }

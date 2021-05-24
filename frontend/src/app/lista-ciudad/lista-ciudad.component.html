@@ -2,7 +2,7 @@
     <h2>Ciudades</h2>
     <p>Lista de ciudades disponibles:</p>
 
-    <button class="btn btn-primary m-2" (click)="openModal(contentNew, ciudadSeleccionada)">
+    <button class="btn btn-primary m-2" (click)="openModal(contentNew, aux)">
         Agregar ciudad
     </button>
 
@@ -40,7 +40,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-ciudad-editar [ciudadModificada]="ciudadSeleccionada" (cityEditEvent)="cityEdit($event); c('Close click')">
+        <app-ciudad-editar [ciudadModificada]="aux" (cityEditEvent)="cityEdit($event); c('Close click')">
             Cargando</app-ciudad-editar>
     </div>
     <div class="modal-footer">

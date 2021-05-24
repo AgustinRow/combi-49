@@ -49,6 +49,7 @@ export class ListaViajeComponent implements OnInit {
   openModal(contentEdit, select: Viaje) {
     this.viajeSeleccionado = select;
     this.modalService.open(contentEdit);
+    alert("Se ha modificado el viaje correctamente");
   }
 
   deleteTravel(select: Viaje) {
@@ -56,12 +57,14 @@ export class ListaViajeComponent implements OnInit {
     i !== -1 && this.lViajes.splice(i, 1);
     this.mockService.setViajes(this.lViajes);
     this.refresh();
+    alert("Se ha eliminado el viaje correctamente");
   }
 
   addTravel(newTravel: Viaje) {
     this.lViajes.push(newTravel);
     this.mockService.setViajes(this.lViajes);
     this.refresh();
+    alert("Se ha agregado el viaje correctamente");
   }
   
   travelEdit(){
