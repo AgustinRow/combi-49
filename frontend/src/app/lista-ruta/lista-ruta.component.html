@@ -3,7 +3,7 @@
     <p>Lista de rutas disponibles:</p>
 
     <button class="btn btn-primary m-2" (click)="openModal(contentNew, rutaSeleccionada)">
-        Agregar parada
+        Agregar ruta
     </button>
 
     <table class="table table-hover">
@@ -11,18 +11,16 @@
             <tr scope="row">
                 <th>Nombre</th>
                 <th>Distancia</th>
-                <th>Origen</th>
-                <th>Destino</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let ruta of listRutas">
                 <td data-title="Nombre">{{ruta.nombre}}</td>
                 <td data-title="Distancia">{{ruta.distancia}}</td>
-                <td data-title="Origen">{{ruta.origen}}</td>
-                <td data-title="Destino">{{ruta.destino}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
+                        <button type="button" class="btn btn-info" 
+                            (click)="openModal(contentShow, ruta)">Informacion</button>
                         <button type="button" class="btn btn-warning"
                             (click)="openModal(contentEdit, ruta)">Editar</button>
                         <button type="button" class="btn btn-danger"
@@ -42,7 +40,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-ruta-editar [(rutaModificada)]="rutaSeleccionada" (routeEditEvent)="c('Close click')">
+        <app-ruta-editar [(rutaModificada)]="rutaSeleccionada" (routeEditEvent)="routerEdit(); c('Close click')">
             Cargando</app-ruta-editar>
     </div>
     <div class="modal-footer">
@@ -64,3 +62,18 @@
         <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
     </div>
 </ng-template>
+
+<ng-template #contentShow let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Informacion del vieje</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <app-ruta [(rutaConInfo)]="rutaSeleccionada">Cargando</app-ruta>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+  </ng-template>

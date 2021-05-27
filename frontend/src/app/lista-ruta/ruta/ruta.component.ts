@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Ruta } from 'src/app/module/ruta.module';
 
 @Component({
   selector: 'app-ruta',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ruta.component.css']
 })
 export class RutaComponent implements OnInit {
+  @Input() rutaConInfo: Ruta;
 
   constructor() { }
 

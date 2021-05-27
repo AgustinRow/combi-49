@@ -4,7 +4,7 @@ export class Ruta{
     id: number;
     nombre: string;
     distancia: string;
-    origen: string; //Parada; <- Para corregir en app-ruta
-    destino: string; //Parada; <- Para corregir en app-ruta
+    origen: Parada;
+    destino: Parada;
     borradoLogico: number;  //activo
 }

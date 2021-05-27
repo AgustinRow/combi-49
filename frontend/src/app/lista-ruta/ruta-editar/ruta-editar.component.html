@@ -1,32 +1,30 @@
-<form (ngSubmit)="modifyRoute(modifyRouteForm)" #modifyRouteForm="ngForm">
+<form (ngSubmit)="modifyRoute()" [formGroup]="form">
     <div class="form-group">
         <label for="nombre">Nombre:</label>
-        <input type="text" class="form-control" id="nombre" [(ngModel)]="rutaModificada.nombre" name="nombre" required>
+        <input type="text" class="form-control" formControlName="nombre" [(ngModel)]="rutaModificada.nombre" name="nombre" required>
     </div>
 
     <div class="form-group">
         <label for="distancia">Distancia:</label>
-        <input type="number" class="form-control" id="distancia" [(ngModel)]="rutaModificada.distancia" name="direccion"
+        <input type="number" class="form-control" formControlName="distancia" [(ngModel)]="rutaModificada.distancia" name="direccion"
             required>
     </div>
 
     <div class="form-group">
         <label for="origen">Origen:</label>
-        <select type="text" class="form-control" id="origen" name="origen" [(ngModel)]="rutaModificada.origen" required>
-            <option *ngFor="let origen of listParadas; index as i" value="{{origen.nombre}}">{{ origen.nombre }}
-            </option>
+        <select type="text" class="form-control" formControlName="origen" name="origen" required [(ngModel)]="oIndex">
+            <option *ngFor="let origen of listParadas; index as i" [value]="i">{{ origen.nombre }}</option>
         </select>
     </div>
 
     <div class="form-group">
         <label for="destino">Destino:</label>
-        <select type="text" class="form-control" id="destino" name="destino" [(ngModel)]="rutaModificada.destino" required>
+        <select type="text" class="form-control" formControlName="destino" name="destino" required [(ngModel)]="dIndex">
             <ng-container *ngFor="let destino of listParadas; index as i">
-                <option value="{{destino.nombre}}" *ngIf="rutaModificada.origen != destino.nombre">{{ destino.nombre }}
-                </option>
+                <option [value]="i" *ngIf="form.value.origen != i">{{ destino.nombre }}</option>
             </ng-container>
         </select>
     </div>
 
-    <button type="submit" class="btn btn-success" [disabled]="!modifyRouteForm.form.valid">Guardar</button>
+    <button type="submit" class="btn btn-success" [disabled]="!form.valid">Guardar</button>
 </form>

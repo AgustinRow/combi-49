@@ -29,20 +29,21 @@ export class ListaViajeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.lViajes = this.mockService.lViajes;
+    //this.mockService.setViajes([]);
+    this.lViajes = this.mockService.getViajes();
   }
 
   onSelect(selction: String) {
     this.ver = selction;
   }
 
-  ngOnChange(){
+  /*ngOnChange(){
     this.lViajes = this.mockService.lViajes;
     this.lRutas = this.mockService.lRutas;
     this.lParadas = this.mockService.lParadas;
     this.lCiudades = this.mockService.lCiudades;
     this.lProvincia = this.mockService.lProvincia;
-  }
+  }*/
 
   
   openModal(contentEdit, select: Viaje) {
@@ -53,9 +54,24 @@ export class ListaViajeComponent implements OnInit {
   deleteTravel(select: Viaje) {
     var i = this.lViajes.indexOf(select);
     i !== -1 && this.lViajes.splice(i, 1);
+    this.mockService.setViajes(this.lViajes);
+    this.refresh();
+    alert("Se ha eliminado el viaje correctamente");
   }
 
   addTravel(newTravel: Viaje) {
     this.lViajes.push(newTravel);
+    this.mockService.setViajes(this.lViajes);
+    this.refresh();
+    alert("Se ha agregado el viaje correctamente");
+  }
+  
+  travelEdit(){
+    this.mockService.setViajes(this.lViajes);
+    alert("Se ha modificado el viaje correctamente");
+  }
+
+  refresh(){
+    this.lViajes = this.mockService.getViajes();
   }
 }

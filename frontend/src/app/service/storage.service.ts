@@ -54,9 +54,4 @@ export class StorageService {
     this.setCurrentSession(session);
     this.logChange.emit(true);
   }
-
-  login(session: Session): void{
-    this.logChange.emit(true);
-    this.setCurrentSession(session);
-  }
 }

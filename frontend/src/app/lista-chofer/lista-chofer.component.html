@@ -9,7 +9,7 @@
             <tr scope="row">
                 <th>Nombre</th>
                 <th>Apellido</th>
-                <th>Usuario</th>
+                <th>E-mail</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -17,7 +17,7 @@
             <tr *ngFor="let chofer of listaC">
                 <td data-title="Nombre">{{chofer.nombre}}</td>
                 <td data-title="Apellido">{{chofer.apellido}}</td>
-                <td data-title="Usuario">{{chofer.username}}</td>
+                <td data-title="Usuario">{{chofer.email}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info" (click)="openModal(contentShow, chofer)">Informacion</button>

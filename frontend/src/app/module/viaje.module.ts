@@ -1,5 +1,6 @@
 import { Vehiculo } from "./vehiculo.module";
 import { Ruta } from "./ruta.module";
+import { Usuario } from "./usuario.module";
 
 export class Viaje{
     id: number;
@@ -7,7 +8,7 @@ export class Viaje{
     fechaLlegada: Date;
     detalle: string;
     borradoLogico: number;  //activo
-    chofer: string; //Usuario; <- corregir en app-viaje
-    vehiculo: string //Vehiculo; <- corregir en app-viaje
-    ruta: string //Ruta; <- corregir en app-viaje
+    chofer: Usuario;
+    vehiculo: Vehiculo;
+    ruta: Ruta;
 }

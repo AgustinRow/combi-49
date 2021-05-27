@@ -21,7 +21,6 @@ export class ListaUsuarioComponent implements OnInit {
     var aux = new Usuario()
     aux.nombre = "Agustin";
     aux.apellido = "Colla";
-    aux.username = "acolla";
     aux.email = "acolla@grupo49.com";
     aux.password = "grupo49";
     aux.tipo = 1;
@@ -29,7 +28,6 @@ export class ListaUsuarioComponent implements OnInit {
     aux = new Usuario()
     aux.nombre = "Agustin";
     aux.apellido = "Diaz";
-    aux.username = "adiaz";
     aux.email = "adiaz@grupo49.com";
     aux.password = "grupo49";
     aux.tipo = 2;
@@ -37,7 +35,6 @@ export class ListaUsuarioComponent implements OnInit {
     aux = new Usuario()
     aux.nombre = "Julio Cesar";
     aux.apellido = "Contreras Benitez";
-    aux.username = "jcontreras";
     aux.email = "jcontreras@grupo49.com";
     aux.password = "grupo49";
     aux.tipo = 3;
@@ -45,7 +42,6 @@ export class ListaUsuarioComponent implements OnInit {
     aux = new Usuario()
     aux.nombre = "Maximiliano";
     aux.apellido = "Teodosio";
-    aux.username = "mteodosio";
     aux.email = "mteodosio@grupo49.com";
     aux.password = "grupo49";
     aux.tipo = 1;
