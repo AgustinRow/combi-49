@@ -38,7 +38,9 @@ const login = async (req, res) => {
         if (user.password === response.password) {
           const token = jwtToken(response);
 
-          res.header("auth-token", token).send({ data: parse(response), token: token });
+          res
+            .header("auth-token", token)
+            .send({ data: parse(response), token: token });
           //res.json({ data: parse(response) });
           //res.status(200);
         } else {
@@ -81,7 +83,6 @@ const parse = (user) => {
   return {
     id: user.id,
     email: user.email,
-    username: user.username,
     nombre: user.nombre,
     apellido: user.apellido,
     password: user.password,
@@ -93,38 +94,31 @@ const parse = (user) => {
 const findDuplicates = async (user) => {
   return model.Usuario.findAll({
     where: {
-      [Op.or]: [
-        { username: user.username },
-        { email: user.email },
-        { dni: user.dni },
-      ],
+      [Op.or]: [{ email: user.email }, { dni: user.dni }],
     },
   });
 };
 //registrar usuario
 const register = async (req, res) => {
   const user = req.body;
-  model.Usuario.findAll({
-    where: {
-      [Op.or]: [
-        { email: user.email },
-        { dni: user.dni },
-      ],
-    },
-  }).then((response) => {
-    try {
+  try {
+    model.Usuario.findAll({
+      where: {
+        [Op.or]: [{ email: user.email }, { dni: user.dni }],
+      },
+    }).then((response) => {
+      console.log(response);
       if (response.length) {
-        res.status(400)
-        .json({
-          message: "Ya se encuentra registradoe el mail o DNI",
+        res.status(400).json({
+          message: "El usuario ya existe, ingrese otro email o dni",
         });
       } else {
         createUser(user);
       }
-    } catch (err) {
-      res.status(500).json({ data: "Internal server error" });
-    }
-  });
+    });
+  } catch (err) {
+    res.status(500).json({ data: "Internal server error" });
+  }
 
   function createUser(user) {
     model.Usuario.create({
@@ -138,23 +132,24 @@ const register = async (req, res) => {
       habilitado: true,
     }).then(() => {
       try {
-        res.status(201).json({ created: parse(user) });
+        res.status(201).json({ data: parse(user) });
       } catch (err) {
         console.log(err);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(400).json({ message: "Bad request" });
       }
     });
   }
 };
 //modificar chofer
 const updateDriver = async (req, res) => {
-  const updatedUser = parse(req.body);
-  const oldUser = await findDuplicates(updatedUser).then(
-    (response) => {
+  const updatedUser = req.body;
+  const oldUser = await findDuplicates(updatedUser).then((response) => {
     try {
       return response[0].dataValues;
     } catch {
-      res.status(400).json({ message: "This user does not exist" });
+      res
+        .status(400)
+        .json({ message: "El usuario que intenta modificar no existe" });
     }
   });
   if (oldUser.id == updatedUser.id) {
@@ -164,7 +159,7 @@ const updateDriver = async (req, res) => {
       },
     }).then((response) => {
       try {
-        res.status(201).json({ modified: updatedUser });
+        res.status(201).json({ data: updatedUser });
       } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal server error" });
@@ -187,24 +182,23 @@ const remove = async (req, res) => {
       if (response.dataValues.habilitado) {
         model.Usuario.update(
           {
-            habilitado: false
+            habilitado: false,
           },
           {
-            where: { id: id }
-          })
-          .then(
-            (response) => {
-              res.status(200).json({ message: "removed" });
-            }
-          );
+            where: { id: id },
+          }
+        ).then((response) => {
+          res.status(200).json({ message: "removed" });
+        });
       } else {
-        res.status(400).json({ message: "This user has been removed already" });
+        res.status(400).json({ message: "Este usuario no existe" });
       }
     } catch (err) {
       res.status(400).json({ message: "Bad Request" });
     }
   });
 };
+
 
 module.exports = {
   getAllDrivers,

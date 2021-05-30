@@ -3,6 +3,7 @@ const Op = require("sequelize").Op;
 
 function parse(vehiculo) {
   return {
+    id: vehiculo.id,
     patente: vehiculo.patente,
     asientos: vehiculo.asientos,
     modelo: vehiculo.modelo,
@@ -13,9 +14,7 @@ function parse(vehiculo) {
 }
 const findDuplicates = async (vehicle) => {
   return model.Vehiculo.findAll({
-    where: {
-      [Op.or]: [{ patente: vehicle.patente }],
-    },
+    where: { patente: vehicle.patente, habilitado: true },
   });
 };
 const countVehicle = async () => {
@@ -34,11 +33,9 @@ const addVehicle = async (req, res) => {
   const vehiculo = req.body;
   const oldVehicleExist = await findDuplicates(vehiculo);
   if (oldVehicleExist[0]) {
-    res
-      .status(401)
-      .json({
-        message: "La patente ya se encuentra registrada en otro vehiculo",
-      });
+    res.status(401).json({
+      message: "La patente ya se encuentra registrada en otro vehiculo",
+    });
   } else {
     model.Vehiculo.create(parse(vehiculo)).then(() => {
       try {
