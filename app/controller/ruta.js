@@ -1,13 +1,14 @@
 const model = require("../lib/models");
 const Op = require("sequelize").Op;
 
-async function checkDuplicates(origen, destino) {
+const checkDuplicates = async (origen, destino) => {
   return await model.Ruta.findOne({
     where: { origenId: origen.id, destinoId: destino.id, habilitado: true },
   }).then((response) => {
-    return response != null;
+    return response;
   });
-}
+};
+
 // sin duplicados, origen y destino obligatorio, origen != destino
 const create = async (req, res) => {
   const ruta = req.body;
@@ -20,8 +21,9 @@ const create = async (req, res) => {
         where: { id: ruta.destino, habilitado: true },
       }).then((response) => response);
       if (origen && destino) {
-        if (await checkDuplicates(origen, destino)) {
-          res.status(401).json({ message: "Route already exist" });
+        const result = await checkDuplicates(origen, destino);
+        if (result != null) {
+          res.status(401).json({ message: "La ruta ya existe" });
         } else {
           model.Ruta.create({
             nombre: ruta.nombre,
@@ -33,32 +35,49 @@ const create = async (req, res) => {
               response.setDestino(ruta.destino);
               res.status(201).json({ data: response, origen, destino });
             } catch (err) {
-              res.status(400).json({ message: "error on origen or destiny" });
+              res.status(400).json({ message: "Error en origen o destino" });
             }
           });
         }
       }
     } else {
-      res.status(400).json({ message: "Origen and Destiny are equal" });
+      res.status(400).json({ message: "Origen y destino son iguales" });
     }
   } catch {
     res.status(500).json({ message: "Internal Server error" });
   }
 };
 
+const parseRoute = async (routes) => {
+  let result = [];
+  for (var i = 0; i < routes.length; i++) {
+    console.log(routes[i]);
+    const origen = await routes[i].getDestino();
+    const destino = await routes[i].getDestino();
+    let ruta = {
+      ruta: routes[i],
+      origen: origen,
+      destino: destino,
+    };
+    result.unshift(ruta);
+  }
+  return await result;
+};
+
 const list = async (req, res) => {
   try {
-    model.Ruta.findAll().then((response) => {
-      try {
-        res.status(200).json(response);
-      } catch (err) {
-        console.log(err);
-      }
+    const rutas = await model.Ruta.findAll({
+      where: { habilitado: true },
+    }).then((response) => {
+      return response;
     });
+    const result = await parseRoute(rutas);
+    res.status(200).json({ data: result });
   } catch (err) {
     console.log(err);
   }
 };
+
 //solo de prueba
 const listOrigin = async (req, res) => {
   const cityId = req.params.id;
@@ -105,11 +124,41 @@ const getRoute = async (req, res) => {
   }
 };
 
+const remove = async (req, res) => {
+  const { id } = req.params;
+  //para eliminar una ruta no debe tener viaje en asignado
+};
+
 //TODO modificar una ruta
+const update = async (req, res) => {
+  const ruta = req.body;
+  model.Ruta.findOne({ where: { id: ruta.id, habilitado: true } }).then(
+    (response) => {
+      const result = checkDuplicates(ruta.origen, ruta.destino);
+      if (result.id == response.id) {
+        if (ruta.origen != ruta.destino) {
+          response.update(ruta).then((response) => {
+            res.status(200).json({ data: response });
+          });
+        } else {
+          res
+            .status(400)
+            .json({ message: "Origen y Destino deben ser distintos" });
+        }
+      } else {
+        res
+          .status(400)
+          .json({ message: "Esta ruta ya esta asignada a otra ciudad" });
+      }
+    }
+  );
+};
 
 module.exports = {
   list,
   create,
   listOrigin,
   getRoute,
+  remove,
+  update,
 };

@@ -21,11 +21,13 @@ const list = async (req, res) => {
 };
 
 const findDuplicates = async (city) => {
-  return model.Ciudad.findOne({ where: { cp: city.cp } });
+  return model.Ciudad.findOne({ where: { cp: city.cp, habilitado: true } });
 };
 
 const findDuplicateById = async (city) => {
-  const result = await model.Ciudad.findOne({ where: { id: city.id } });
+  const result = await model.Ciudad.findOne({
+    where: { id: city.id, habilitado: true },
+  });
   return result;
 };
 
@@ -38,23 +40,32 @@ function parse(city) {
 }
 
 //alta ciudad
+// chequear que la ciudad este disponible (habilitado: true)
 const create = async (req, res) => {
   const city = req.body;
   const oldCity = await findDuplicates(city);
   if (oldCity) {
-    res.status(401).json({ message: "This City already exist" });
+    res.status(401).json({ message: "La ciudad ya existe" });
   } else {
-    model.Ciudad.create({
-      nombre: city.nombre,
-      cp: city.cp,
-      habilitado: true,
-    }).then(() => {
-      try {
-        res.status(201).json({ created: city });
-      } catch (err) {
-        res.status(500).json({ message: "Internal server error" });
-      }
-    });
+    const provincia = await model.Provincia.findOne({
+      where: { id: city.provincia },
+    }).then((response) => response);
+    if (provincia) {
+      model.Ciudad.create({
+        nombre: city.nombre,
+        cp: city.cp,
+        provinciaId: provincia.id,
+        habilitado: true,
+      }).then(() => {
+        try {
+          res.status(201).json({ data: city });
+        } catch (err) {
+          res.status(500).json({ message: "Internal server error" });
+        }
+      });
+    } else {
+      res.status(400).json({ message: "Error, id de provincia invalido" });
+    }
   }
 };
 
@@ -80,7 +91,8 @@ const find = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-// modificar
+//TODO: actualizar la modificacion para la provincia y la parada
+
 const update = async (req, res) => {
   const city = req.body;
   const exist = await findDuplicates(city);
