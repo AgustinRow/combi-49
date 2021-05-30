@@ -5,6 +5,9 @@ import { Ciudad } from "../module/ciudad.module";
 import { Provincia } from "../module/provincia.module";
 import { MockService } from '../service/mock.service.';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from '../service/user.service';
+import { Usuario } from '../module/usuario.module';
+import { StorageService } from '../service/storage.service';
 
 @Component({
   selector: 'app-lista-viaje',
@@ -20,29 +23,25 @@ export class ListaViajeComponent implements OnInit {
   @Input() lRutas: Ruta[] = [];
   @Input() lCiudades: Ciudad[] = [];
   @Input() lProvincia: Provincia[] = [];
+  
+  usuarioIdentificado: Usuario;
+  USUARIO_ADMINISTRADOR = UserService.USUARIO_ADMINISTRADOR;
 
   constructor(
     private modalService: NgbModal,
+    private userService: UserService,
+    private storageService: StorageService,
     private mockService: MockService
   ) { }
 
   ngOnInit(): void {
     //this.mockService.setViajes([]);
-    this.lViajes = this.mockService.getViajes();
+    this.refresh();
   }
 
   onSelect(selction: String) {
     this.ver = selction;
   }
-
-  /*ngOnChange(){
-    this.lViajes = this.mockService.lViajes;
-    this.lRutas = this.mockService.lRutas;
-    this.lParadas = this.mockService.lParadas;
-    this.lCiudades = this.mockService.lCiudades;
-    this.lProvincia = this.mockService.lProvincia;
-  }*/
-
   
   openModal(contentEdit, select: Viaje) {
     this.viajeSeleccionado = select;
@@ -71,5 +70,7 @@ export class ListaViajeComponent implements OnInit {
 
   refresh(){
     this.lViajes = this.mockService.getViajes();
+    this.usuarioIdentificado = this.storageService.getCurrentUser();
   }
+
 }

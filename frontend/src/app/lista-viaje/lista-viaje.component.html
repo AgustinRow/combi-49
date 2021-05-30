@@ -1,13 +1,10 @@
-<nav class="navbar navbar-expand-sm justify-content-center" style="background-color: #27b970;">
+<nav class="navbar navbar-expand-sm justify-content-center" style="background-color: #27b970;" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" (click)="onSelect('viajes')">Lista Viajes</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" (click)="onSelect('rutas')">Rutas</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" (click)="onSelect('paradas')">Paradas</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" (click)="onSelect('ciudades')">Ciudades</a>
@@ -19,7 +16,6 @@
 </nav>
 
 <app-lista-ruta [(listaRuta)]="lRutas" *ngIf="ver == 'rutas'">Carcgando rutas...</app-lista-ruta>
-<app-lista-parada [(listParadas)]="lParadas" *ngIf="ver == 'paradas'">Carcgando paradas...</app-lista-parada>
 <app-lista-ciudad [(listCiudades)]="lCiudades" *ngIf="ver == 'ciudades'">Carcgando ciudades...</app-lista-ciudad>
 <app-lista-provincia *ngIf="ver == 'provincias'">Carcgando provincias...</app-lista-provincia>
 
@@ -28,7 +24,7 @@
     <p>Para realizar la compra de un viaje puede selecionar en la tabla, los viajes son dado de alta por la empresa y se
         disponen para los usuarios :</p>
     
-    <button class="btn btn-primary m-2" (click)="openModal(contentNew, viajeSeleccionado)">
+    <button class="btn btn-primary m-2" (click)="openModal(contentNew, viajeSeleccionado)" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
         Crear viaje
     </button>
 
@@ -38,8 +34,9 @@
                 <th>Ruta</th>
                 <th>Fecha de salida</th>
                 <th>Fecha de llegada</th>
-                <th>Chofer</th>
                 <th>Vehiculo</th>
+                <th *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">Chofer</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -47,9 +44,9 @@
                 <td data-title="Ruta">{{viaje.ruta.nombre}}</td>
                 <td data-title="Fecha de Salida">{{viaje.fechaSalida}}</td>
                 <td data-title="Fecha de Llegada">{{viaje.fechaLlegada}}</td>
-                <td data-title="Chofer">{{viaje.chofer.nombre}}</td>
                 <td data-title="Vehiculo">{{viaje.vehiculo.patente}}</td>
-                <td data-title="Acciones">
+                <td data-title="Chofer" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">{{viaje.chofer.nombre}}</td>
+                <td data-title="Acciones" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR; else buyBlock">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info" 
                             (click)="openModal(contentShow, viaje)">Informacion</button>
@@ -59,6 +56,11 @@
                             (click)="deleteTravel(viaje)">Eliminar</button>
                     </div>
                 </td>
+                <ng-template #buyBlock>
+                    <td data-title="Acciones">
+                        <button type="button" class="btn btn-danger">Comprar</button>
+                    </td>
+                </ng-template>
             </tr>
         </tbody>
     </table>
