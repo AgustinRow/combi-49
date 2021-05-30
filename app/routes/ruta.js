@@ -5,8 +5,8 @@ const verify = require("../controller/verifyToken");
 
 router.get("/listar", Ruta.list);
 router.post("/alta", Ruta.create);
-router.get("/listar_rutas_origen/(:id)", Ruta.listOrigin);
+//router.get("/listar_rutas_origen/(:id)", Ruta.listOrigin);
 router.get("/detalle", Ruta.getRoute);
-//router.get("/modificar", Ruta.update)
-
+router.put("/modificar", Ruta.update);
+//router.get("/baja/(:id), Ruta.remove")
 module.exports = router;

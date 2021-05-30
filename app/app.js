@@ -11,6 +11,9 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/usuario");
 const ciudadRouter = require("./routes/ciudad");
 const rutasRouter = require("./routes/ruta");
+const viajeRouter = require("./routes/viaje");
+const provinciaRouter = require("./routes/provincia");
+const paradaRouter = require("./routes/parada");
 
 var app = express();
 
@@ -30,6 +33,9 @@ app.use("/api/ciudad", ciudadRouter);
 app.use("/api/usuario", usersRouter);
 app.use("/api/ruta", rutasRouter);
 app.use("/api/vehiculo", vehiculoRouter);
+app.use("/api/viaje", viajeRouter);
+app.use("/api/provincia", provinciaRouter);
+app.use("/api/parada", paradaRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
