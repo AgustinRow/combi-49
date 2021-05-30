@@ -1,0 +1,8 @@
+<form (ngSubmit)="newProv(newProvForm)" #newProvForm="ngForm">
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" [(ngModel)]="provinciaNueva.nombre" name="nombre" required>
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="!newProvForm.form.valid">Guardar</button>
+</form>

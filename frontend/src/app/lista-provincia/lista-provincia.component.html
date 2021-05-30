@@ -1,0 +1,60 @@
+<div class="container">
+    <h2>Provincias</h2>
+    <p>Lista de provincias disponibles:</p>
+
+    <button class="btn btn-primary m-2" (click)="openModal(contentNew, provinciaSeleccionada)">
+        Agregar Provincia
+    </button>
+
+    <table class="table table-hover">
+        <thead>
+            <tr scope="row">
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let provincia of listProvincias">
+                <td data-title="Nombre">{{provincia.nombre}}</td>
+                <td data-title="Acciones">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-warning"
+                            (click)="openModal(contentEdit, provincia)">Editar</button>
+                        <button type="button" class="btn btn-danger"
+                            (click)="deleteProvincia(provincia)">Eliminar</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-template #contentEdit let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Editar provincia</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-provincia-editar [(provinciaModificada)]="provinciaSeleccionada" (provEditEvent)="provEdit(); c('Close click')">
+            Cargando</app-provincia-editar>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<ng-template #contentNew let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Nuevo provincia</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-provincia-nuevo (provinciaNewEvent)="addProv($event); c('Close click')">Cargando</app-provincia-nuevo>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>

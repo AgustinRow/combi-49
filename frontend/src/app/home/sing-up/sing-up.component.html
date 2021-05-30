@@ -1,0 +1,52 @@
+<div class="container">
+    <div class="abs-center">
+        <p>Para realizar la compra de pasajes , ustede debe registrase en el sistema ingrese sus datos y podra operar
+            con nosotros:</p>
+        <form (ngSubmit)="newUser(userForm)" #userForm="ngForm">
+            <div class="form-group row">
+                <label for="email" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" placeholder="Email" id="email"
+                        [(ngModel)]="usuarioNuevo.email" name="email" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="contrasenia" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" placeholder="Password" id="contrasenia"
+                        [(ngModel)]="usuarioNuevo.password" name="contrasenia" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="nombre" id="nombre"
+                        [(ngModel)]="usuarioNuevo.nombre" name="nombre" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="apellido" class="col-sm-2 col-form-label">Apellido</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="apellido" id="apellido"
+                        [(ngModel)]="usuarioNuevo.apellido" name="apellido" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="dni" class="col-sm-2 col-form-label">DNI</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="dni" id="dni" [(ngModel)]="usuarioNuevo.dni"
+                        name="dni" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
