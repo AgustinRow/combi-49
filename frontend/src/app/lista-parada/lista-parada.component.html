@@ -18,7 +18,7 @@
             <tr *ngFor="let parada of listParadas">
                 <td data-title="Nombre">{{parada.nombre}}</td>
                 <td data-title="Direccion">{{parada.direccion}}</td>
-                <td data-title="Ciudad">{{parada.ciudad}}</td>
+                <td data-title="Ciudad">{{parada.ciudad.nombre}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
                         <button type="button" class="btn btn-warning"
@@ -40,7 +40,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-parada-editar [(paradaModificada)]="paradaSeleccionada" (stopEditEvent)="c('Close click')">
+        <app-parada-editar [(paradaModificada)]="paradaSeleccionada" (stopEditEvent)="stopEdit(); c('Close click')">
             Cargando</app-parada-editar>
     </div>
     <div class="modal-footer">

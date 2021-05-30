@@ -18,7 +18,8 @@ export class ListaRutaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listRutas = this.mockService.lRutas;
+    //this.mockService.setParada([]);
+    this.refresh();
   }
 
   openModal(contentEdit, select: Ruta) {
@@ -29,9 +30,23 @@ export class ListaRutaComponent implements OnInit {
   deleteRoute(select: Ruta) {
     var i = this.listRutas.indexOf(select);
     i !== -1 && this.listRutas.splice(i, 1);
+    this.mockService.setRuta(this.listRutas);
+    this.refresh();
+    alert("Se ha eliminado la ruta correctamente");
   }
 
   addRoute(newRoute: Ruta) {
     this.listRutas.push(newRoute);
+    this.mockService.setRuta(this.listRutas);
+    this.refresh();
+    alert("Se ha agregado la ciudad correctamente");
+  }
+  
+  routerEdit(){
+    this.mockService.setRuta(this.listRutas);
+  }
+
+  refresh(){
+    this.listRutas = this.mockService.getRuta();
   }
 }

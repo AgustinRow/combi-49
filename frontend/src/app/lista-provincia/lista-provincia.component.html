@@ -36,7 +36,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-provincia-editar [(provinciaModificada)]="provinciaSeleccionada" (provEditEvent)="c('Close click')">
+        <app-provincia-editar [(provinciaModificada)]="provinciaSeleccionada" (provEditEvent)="provEdit(); c('Close click')">
             Cargando</app-provincia-editar>
     </div>
     <div class="modal-footer">

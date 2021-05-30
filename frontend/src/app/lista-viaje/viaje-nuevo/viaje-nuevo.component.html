@@ -1,39 +1,39 @@
-<form (ngSubmit)="newTravel(newTravelForm)" #newTravelForm="ngForm">
+<form (ngSubmit)="newTravel()" [formGroup]="form">
     <div class="form-group">
         <label for="ruta">Ruta:</label>
-        <select type="text" class="form-control" id="ruta" name="ruta" [(ngModel)]="viajeNuevo.ruta" required>
-                <option value="{{ruta.nombre}}" *ngFor="let ruta of listRutas; index as i">{{ ruta.nombre }}</option>
+        <select type="text" class="form-control" formControlName="ruta" name="ruta" required>
+                <option *ngFor="let ruta of listRutas; index as i" [value]="i">{{ ruta.nombre }}</option>
         </select>
     </div>
 
     <div class="form-group">
         <label for="fechaSalida">Fecha de salida:</label>
-        <input type="date" class="form-control" id="fechaSalida" [(ngModel)]="viajeNuevo.fechaSalida" name="fechaSalida" required>
+        <input type="date" class="form-control" formControlName="fechaSalida" [(ngModel)]="viajeNuevo.fechaSalida" name="fechaSalida" required>
     </div>
 
     <div class="form-group">
         <label for="fechaLlegada">Fecha de Llegada:</label>
-        <input type="date" class="form-control" id="fechaLlegada" [(ngModel)]="viajeNuevo.fechaLlegada" name="fechaLlegada" required>
+        <input type="date" class="form-control" formControlName="fechaLlegada" [(ngModel)]="viajeNuevo.fechaLlegada" name="fechaLlegada" min="{{viajeNuevo.fechaSalida | date:'yyyy-MM-dd'}}" required>
     </div>
     
     <div class="form-group">
         <label for="chofer">Chofer:</label>
-        <select type="text" class="form-control" id="chofer" name="chofer" [(ngModel)]="viajeNuevo.chofer" required>
-                <option value="{{chofer.nombre}} {{chofer.apellido}}" *ngFor="let chofer of listChoferes; index as i">{{ chofer.nombre }}</option>
+        <select type="text" class="form-control" formControlName="chofer" name="chofer" required>
+                <option *ngFor="let chofer of listChoferes; index as i" [value]="i">{{ chofer.nombre }}</option>
         </select>
     </div>
     
     <div class="form-group">
         <label for="vehiculo">Vehiculo:</label>
-        <select type="text" class="form-control" id="vehiculo" name="vehiculo" [(ngModel)]="viajeNuevo.vehiculo" required>
-                <option value="{{vehiculo.patente}}" *ngFor="let vehiculo of listVehiculos; index as i">{{ vehiculo.patente }}</option>
+        <select type="text" class="form-control" formControlName="vehiculo" name="vehiculo" required>
+                <option *ngFor="let vehiculo of listVehiculos; index as i" [value]="i">{{ vehiculo.patente }}</option>
         </select>
     </div>
 
     <div class="form-group">
         <label for="detalle">Detalle:</label>
-        <textarea type="texta" class="form-control" id="detalle" [(ngModel)]="viajeNuevo.detalle" name="detalle" required></textarea>
+        <textarea type="texta" class="form-control" formControlName="detalle" [(ngModel)]="viajeNuevo.detalle" name="detalle" required></textarea>
     </div>
 
-    <button type="submit" class="btn btn-success" [disabled]="!newTravelForm.form.valid">Guardar</button>
+    <button type="submit" class="btn btn-success" [disabled]="!form.valid">Guardar</button>
 </form>

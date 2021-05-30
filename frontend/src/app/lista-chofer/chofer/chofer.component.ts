@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Usuario } from 'src/app/module/usuario.module';
 
 @Component({
   selector: 'app-chofer',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chofer.component.css']
 })
 export class ChoferComponent implements OnInit {
+  @Input() usuarioConInfo = new Usuario();
 
   constructor() { }
 

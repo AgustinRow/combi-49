@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Ciudad } from 'src/app/module/ciudad.module';
 import { Provincia } from 'src/app/module/provincia.module';
 import { MockService } from 'src/app/service/mock.service.';
@@ -12,20 +12,31 @@ import { MockService } from 'src/app/service/mock.service.';
 export class CiudadEditarComponent implements OnInit {
   @Input() listProvincias: Provincia[];
   @Input() ciudadModificada = new Ciudad();
-  @Output() cityEditEvent = new EventEmitter();
+  @Output() cityEditEvent = new EventEmitter<Ciudad>();
   submitted = false;
+  provIndex: number;
+  form: FormGroup;
 
   constructor(
     private mockService: MockService
   ) { }
 
   ngOnInit(): void {
-    this.listProvincias = this.mockService.lProvincia;
+    this.listProvincias = this.mockService.getProvincia();
+    
+    this.form = new FormGroup({
+      'nombre': new FormControl({value: this.ciudadModificada.nombre}),
+      'codigoPostal': new FormControl({value: this.ciudadModificada.codigoPostal}),
+      'provincia': new FormControl({value: this.ciudadModificada.provincia.nombre})
+    });
+
+    this.provIndex = this.provIndex = this.listProvincias.findIndex(x => x.nombre === this.ciudadModificada.provincia.nombre)
   }
 
-  modifyCity(formulario: NgForm) {
-    if (formulario.valid) {
-      this.cityEditEvent.emit();
+  modifyCity() {
+    if (this.form.valid) {
+      this.ciudadModificada.provincia = this.listProvincias[this.form.value.provincia];
+      this.cityEditEvent.emit(this.ciudadModificada);
       this.submitted = true;
     }
   }
