@@ -167,7 +167,7 @@ const register = async (req, res) => {
   }
 };
 //modificar chofer
-const updateDriver = async (req, res) => {
+const updateUser = async (req, res) => {
   const updatedUser = req.body;
   const oldUser = await findDuplicates(updatedUser).then((response) => {
     try {
@@ -232,6 +232,6 @@ module.exports = {
   register,
   login,
   findUser,
-  updateDriver,
+  updateUser,
   remove,
 };

@@ -37,7 +37,7 @@ export class UserService {
   }
 
   modifyUser(user: Usuario): Observable<Usuario> {
-    return this.http.put<Usuario>(this.usersUrl + 'modificar_usuario/' + user.id, user, httpOptions);
+    return this.http.put<Usuario>(this.usersUrl + 'modificar_usuario', user, httpOptions);
   }
 
   deleteOneUser(id: Number): Observable<any> {
