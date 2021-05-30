@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Parada } from 'src/app/module/parada.module';
+import { Ciudad } from 'src/app/module/ciudad.module';
 import { Ruta } from 'src/app/module/ruta.module';
 import { MockService } from 'src/app/service/mock.service.';
 
@@ -10,7 +10,7 @@ import { MockService } from 'src/app/service/mock.service.';
   styleUrls: ['./ruta-editar.component.css']
 })
 export class RutaEditarComponent implements OnInit {
-  @Input() listParadas: Parada[];
+  @Input() listCiudades: Ciudad[];
   @Input() rutaModificada = new Ruta();
   @Output() routeEditEvent = new EventEmitter();
   submitted = false;
@@ -23,7 +23,7 @@ export class RutaEditarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listParadas = this.mockService.getParada();
+    this.listCiudades = this.mockService.getCiudad();
         
     this.form = new FormGroup({
       'nombre': new FormControl({}),
@@ -32,15 +32,15 @@ export class RutaEditarComponent implements OnInit {
       'destino': new FormControl({})
     });
     
-    this.oIndex = this.listParadas.findIndex(x => x.nombre === this.rutaModificada.origen.nombre);
-    this.dIndex = this.listParadas.findIndex(x => x.nombre === this.rutaModificada.destino.nombre);
+    this.oIndex = this.listCiudades.findIndex(x => x.nombre === this.rutaModificada.origen.nombre);
+    this.dIndex = this.listCiudades.findIndex(x => x.nombre === this.rutaModificada.destino.nombre);
   }
 
   modifyRoute() {
     if (this.form.valid) 
     {
-      this.rutaModificada.origen = this.listParadas[this.form.value.origen];
-      this.rutaModificada.destino = this.listParadas[this.form.value.destino];
+      this.rutaModificada.origen = this.listCiudades[this.form.value.origen];
+      this.rutaModificada.destino = this.listCiudades[this.form.value.destino];
       this.routeEditEvent.emit();
       this.submitted = true;
     }

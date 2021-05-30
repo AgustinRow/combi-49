@@ -13,7 +13,7 @@
     <div class="form-group">
         <label for="origen">Origen:</label>
         <select type="text" class="form-control" formControlName="origen" name="origen" required>
-            <option *ngFor="let origen of listParadas; index as i" [value]="i">{{ origen.nombre }}
+            <option *ngFor="let origen of listCiudades; index as i" [value]="i">{{ origen.nombre }}
             </option>
         </select>
     </div>
@@ -21,7 +21,7 @@
     <div class="form-group">
         <label for="destino">Destino:</label>
         <select type="text" class="form-control" formControlName="destino" name="destino" required>
-            <ng-container *ngFor="let destino of listParadas; index as i">
+            <ng-container *ngFor="let destino of listCiudades; index as i">
                 <option [value]="i" *ngIf="form.value.origen != i">{{ destino.nombre }}
                 </option>
             </ng-container>
