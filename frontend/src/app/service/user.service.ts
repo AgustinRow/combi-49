@@ -44,7 +44,6 @@ export class UserService {
     return this.http.delete<Usuario>(this.usersUrl + 'borrar/' + id, httpOptions);
   }
 
-
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
