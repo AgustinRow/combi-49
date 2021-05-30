@@ -8,7 +8,7 @@
 
     <div class="form-group">
         <label for="fechaSalida">Fecha de salida:</label>
-        <input type="date" class="form-control" formControlName="fechaSalida" [(ngModel)]="viajeNuevo.fechaSalida" name="fechaSalida" required>
+        <input type="date" class="form-control" formControlName="fechaSalida" [(ngModel)]="viajeNuevo.fechaSalida" name="fechaSalida" min="{{hoy | date:'yyyy-MM-dd'}}" required>
     </div>
 
     <div class="form-group">

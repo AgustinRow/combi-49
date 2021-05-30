@@ -5,7 +5,7 @@ import { Viaje } from 'src/app/module/viaje.module';
 import { Usuario } from 'src/app/module/usuario.module';
 import { MockService } from 'src/app/service/mock.service.';
 import { VehicleService } from 'src/app/service/vehicle.service';
-import { FormControl, FormGroup, NgForm } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
 
 @Component({
@@ -21,6 +21,7 @@ export class ViajeNuevoComponent implements OnInit {
   @Output() travelNewEvent = new EventEmitter<Viaje>();
   submitted = false;
   form: FormGroup;
+  hoy = new Date(Date.now());
 
   constructor(
     private vehicleService: VehicleService,

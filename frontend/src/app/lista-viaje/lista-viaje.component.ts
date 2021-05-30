@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { Viaje } from "../module/viaje.module";
 import { Ruta } from "../module/ruta.module";
-import { Parada } from "../module/parada.module";
 import { Ciudad } from "../module/ciudad.module";
 import { Provincia } from "../module/provincia.module";
 import { MockService } from '../service/mock.service.';
@@ -19,7 +18,6 @@ export class ListaViajeComponent implements OnInit {
   ver: String = "viajes";
   lViajes: Viaje[] = [];
   @Input() lRutas: Ruta[] = [];
-  @Input() lParadas: Parada[] = [];
   @Input() lCiudades: Ciudad[] = [];
   @Input() lProvincia: Provincia[] = [];
 

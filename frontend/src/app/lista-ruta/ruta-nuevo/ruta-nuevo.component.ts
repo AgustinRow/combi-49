@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Parada } from 'src/app/module/parada.module';
+import { Ciudad } from 'src/app/module/ciudad.module';
 import { Ruta } from 'src/app/module/ruta.module';
 import { MockService } from 'src/app/service/mock.service.';
 
@@ -11,7 +11,7 @@ import { MockService } from 'src/app/service/mock.service.';
 })
 export class RutaNuevoComponent implements OnInit {
   @Input() rutaNueva = new Ruta();
-  @Input() listParadas: Parada[];
+  @Input() listCiudades: Ciudad[];
   @Output() rutaNewEvent = new EventEmitter<Ruta>();
   submitted = false;
   form: FormGroup;
@@ -21,7 +21,7 @@ export class RutaNuevoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listParadas = this.mockService.getParada();
+    this.listCiudades = this.mockService.getCiudad();
     
     this.form = new FormGroup({
       'nombre': new FormControl({}),
@@ -34,8 +34,8 @@ export class RutaNuevoComponent implements OnInit {
   newRoute() {
     if(this.form.valid) 
     {
-      this.rutaNueva.origen = this.listParadas[this.form.value.origen];
-      this.rutaNueva.destino = this.listParadas[this.form.value.destino];
+      this.rutaNueva.origen = this.listCiudades[this.form.value.origen];
+      this.rutaNueva.destino = this.listCiudades[this.form.value.destino];
       this.submitted = true;
       this.rutaNewEvent.emit(this.rutaNueva);
     }
