@@ -3,7 +3,67 @@ const { Op } = require("sequelize").Op;
 
 const update = async (req, res) => {};
 const remove = async (req, res) => {};
-const list = async (req, res) => {};
+
+const find = async (req, res) => {
+  const ruta = req.body;
+  try {
+    const origen = await model.Ruta.findAll({
+      where: { origenId: ruta.origen, habilitado: true },
+    }).then((response) => {
+      console.log(response);
+    });
+    const destino = await model.Ruta.findAll({
+      where: { destinoId: ruta.destino, habilitado: true },
+    });
+
+    origen.findOne({ where: { ViajeId: destino.ViajeId } }).then((response) => {
+      console.log(response);
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "internal server error" });
+  }
+};
+
+const parseViajes = async (res, viajes) => {
+  const result = [];
+  for (i = 0; i < viajes.length; i++) {
+    let vehiculo = await viajes[i].getVehiculo({ where: { habilitado: true } });
+    let chofer = await vehiculo.getChofer({ where: { habilitado: true } });
+    let ruta = await model.Ruta.findOne({
+      where: { ViajeId: viajes[i].id, habilitado: true },
+    });
+
+    let rutax = {
+      origen: await ruta.getOrigen({ where: { habilitado: true } }),
+      destino: await ruta.getDestino({ where: { habilitado: true } }),
+    };
+
+    let res = {
+      viaje: viajes[i],
+      vechiculo: vehiculo,
+      chofer: chofer,
+      ruta: rutax,
+    };
+    result.unshift(res);
+  }
+  res.status(200).json({ data: result });
+};
+
+const list = async (req, res) => {
+  const viaje = req.body;
+  try {
+    model.Viaje.findAll({
+      order: ["fecha_salida"],
+    }).then((response) => {
+      let result;
+      parseViajes(res, response);
+    });
+  } catch {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 const create = async (req, res, next) => {
   try {
     const viaje = req.body;
@@ -24,6 +84,7 @@ const create = async (req, res, next) => {
         hora: viaje.hora,
         asientos_disponibles: vehiculo.asientos,
         fecha_salida: viaje.fecha_salida,
+        habilitado: true,
       }).then((viajeCreado) => {
         model.Vehiculo.findOne({
           where: { id: viaje.vehiculo, habilitado: true },
@@ -44,7 +105,16 @@ const create = async (req, res, next) => {
   }
 };
 
-const getTravel = async (req, res) => {};
+const routeExist = async (origen, destino) => {};
+
+const getTravel = async (req, res) => {
+  const viaje = req.body;
+  try {
+    model.Ruta.findOne({ where: {} });
+  } catch {
+    res.status(500).json({ message: "Internal Serve Error" });
+  }
+};
 
 //asumo que el chofer y el vehiculo ya existen
 const asignDriverWithVehicule = async (res, next, choferId, vehiculoId) => {
@@ -89,4 +159,5 @@ module.exports = {
   update,
   create,
   getTravel,
+  find,
 };

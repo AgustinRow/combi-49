@@ -3,8 +3,8 @@ var router = express.Router();
 const Viaje = require("../controller/viaje");
 const verify = require("../controller/verifyToken");
 
-//router.get("/listar")
-//router.get("/buscar")
+router.get("/listar", Viaje.list);
+router.get("/buscar", Viaje.find);
 router.post("/alta", Viaje.create);
 //router.put("/modificar")
 //router.delete("/baja")

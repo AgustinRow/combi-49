@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       detalle: DataTypes.STRING,
       hora: DataTypes.TIME,
       asientos_disponibles: DataTypes.INTEGER,
+      habilitado: DataTypes.BOOLEAN,
     },
     {
       sequelize,
