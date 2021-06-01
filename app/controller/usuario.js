@@ -72,7 +72,7 @@ const getAllDrivers = async (req, res) => {
   function parseUsersData(users) {
     var result = [];
     users.forEach((element) => {
-      result.unshift(parse(element));
+      result.unshift(element);
     });
 
     return result;
@@ -198,7 +198,6 @@ const remove = async (req, res) => {
     }
   });
 };
-
 
 module.exports = {
   getAllDrivers,

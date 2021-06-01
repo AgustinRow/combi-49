@@ -52,7 +52,7 @@ const parseRoute = async (routes) => {
   let result = [];
   for (var i = 0; i < routes.length; i++) {
     console.log(routes[i]);
-    const origen = await routes[i].getDestino();
+    const origen = await routes[i].getOrigen();
     const destino = await routes[i].getDestino();
     let ruta = {
       ruta: routes[i],
