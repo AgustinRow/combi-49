@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Ruta.belongsTo(models.Ciudad, { as: "Origen", foreignKey: "origenId" });
       Ruta.belongsTo(models.Ciudad, { as: "Destino", foreignKey: "destinoId" });
-      Ruta.belongsTo(models.Viaje, { foreignKey: "ViajeId" });
+      Ruta.hasMany(models.Viaje, { foreignKey: "RutaId" });
     }
   }
   Ruta.init(
