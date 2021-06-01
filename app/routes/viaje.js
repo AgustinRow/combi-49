@@ -6,9 +6,8 @@ const verify = require("../controller/verifyToken");
 router.get("/listar", Viaje.list);
 router.get("/buscar", Viaje.find);
 router.post("/alta", Viaje.create);
-//router.put("/modificar")
+router.put("/modificar", Viaje.update);
+router.get("/choferes_viajes_libres", Viaje.driverAndTravel)
 //router.delete("/baja")
-//router.put("/asignar_vehiculo", Viaje.asignDriverWithVehicule);
-//router.put("/eliminar_vehiculo", Viaje.removeDriverWithVehicule);
 
 module.exports = router;
