@@ -28,6 +28,7 @@ const create = async (req, res) => {
           model.Ruta.create({
             nombre: ruta.nombre,
             distancia: ruta.distancia,
+            duracion: ruta.duracion,
             habilitado: true,
           }).then((response) => {
             try {
@@ -56,6 +57,8 @@ const parseRoute = async (routes) => {
     const destino = await routes[i].getDestino();
     let ruta = {
       ruta: routes[i],
+      duracion: routes[i].duracion,
+      distancia: routes[i].distancia,
       origen: origen,
       destino: destino,
     };
@@ -109,14 +112,14 @@ const getRoute = async (req, res) => {
             if (response.length) {
               res.status(200).json({ data: response, origen, destino });
             } else {
-              res.status(400).json({ message: "Route not found" });
+              res.status(400).json({ message: "Ruta no encontrada" });
             }
           });
       } else {
-        res.status(400).json({ message: "Cities not found" });
+        res.status(400).json({ message: "Ciduad no encontrada" });
       }
     } else {
-      res.status(400).json({ message: "Origen and Destiny are equal" });
+      res.status(400).json({ message: "El origen y el destino son iguales" });
     }
   } catch (err) {
     console.log(err);
