@@ -221,6 +221,20 @@ const listPassengers = async (req, res) => {
   }
 };
 
+const profile = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await model.Usuario.findOne({
+      where: { id: id, habilitado: true },
+    });
+    if (user != null) {
+      res.status(200).json({ data: user });
+    }
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getAllDrivers,
   register,
@@ -229,4 +243,5 @@ module.exports = {
   update,
   remove,
   listPassengers,
+  profile,
 };
