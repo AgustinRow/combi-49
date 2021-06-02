@@ -11,6 +11,7 @@ router.get("/perfil/(:id)", Usuario.profile);
 router.put("/modificar_usuario", Usuario.update);
 router.post("/registrar", Usuario.register);
 router.post("/login", Usuario.login);
+//router.put("/recuperar_passowrd", Usuario.recoverPassword);
 
 //ruta admin
 router.get("/lista_pasajeros", Usuario.listPassengers);

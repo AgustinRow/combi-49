@@ -235,6 +235,9 @@ const profile = async (req, res) => {
   }
 };
 
+//TODO: implementar el recuperar contraseñ
+const recoverPassword = async (req, res) => {};
+
 module.exports = {
   getAllDrivers,
   register,
@@ -244,4 +247,5 @@ module.exports = {
   remove,
   listPassengers,
   profile,
+  recoverPassword,
 };
