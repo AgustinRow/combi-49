@@ -46,5 +46,24 @@ const listCities = async (req, res) => {
     res.status(400).json({ message: "Province without cities associated" });
   }
 };
+const update = async (req, res) => {
+  const provincia = req.body;
+  try {
+    model.Provincia.update(
+      { nombre: provincia.nombre },
+      {
+        where: { id: provincia.id, habilitado: true },
+      }
+    ).then((response) => {
+      if (response > 0) {
+        res.status(200).json({ data: provincia });
+      } else {
+        res.status(400).json({ message: "No se pudo actualizar provincia" });
+      }
+    });
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
-module.exports = { list, create, listCities };
+module.exports = { list, create, listCities, update };
