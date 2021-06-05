@@ -61,7 +61,7 @@ export class ListaVehiculoComponent implements OnInit {
       //Tiene viajes
       var tienePendientes = false;
       this.lViajes.forEach(viaje => {
-        if (viaje.getVehiculo().id == vehiculoselect.id) { 
+        if (viaje.vehiculo.id == vehiculoselect.id) { 
           tienePendientes ||= (new Date(viaje.fechaSalida)) >= hoy; 
         }
       });

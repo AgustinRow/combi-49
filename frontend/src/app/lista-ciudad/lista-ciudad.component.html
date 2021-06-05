@@ -2,7 +2,7 @@
     <h2>Ciudades</h2>
     <p>Lista de ciudades disponibles:</p>
 
-    <button class="btn btn-primary m-2" (click)="openModal(contentNew, aux)">
+    <button class="btn btn-primary m-2" (click)="openModal(contentNew, null)">
         Agregar ciudad
     </button>
 
@@ -16,9 +16,9 @@
         </thead>
         <tbody>
             <tr *ngFor="let ciudad of listCiudades">
-                <td data-title="Nombre">{{ciudad.nombre}}</td>
-                <td data-title="Codigo Postal">{{ciudad.codigoPostal}}</td>
-                <td data-title="Provincia">{{ciudad.provincia.nombre}}</td>
+                <td data-title="Nombre">{{ ciudad.nombre }}</td>
+                <td data-title="Codigo Postal">{{ ciudad.cp }}</td>
+                <td data-title="Provincia">{{ ciudad.provincia.nombre }}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
                         <button type="button" class="btn btn-warning"
@@ -40,7 +40,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-ciudad-editar [ciudadModificada]="aux" (cityEditEvent)="cityEdit($event); c('Close click')">
+        <app-ciudad-editar [ciudadModificada]="aux" (cityEditEvent)="refreshList(); c('Close click')">
             Cargando</app-ciudad-editar>
     </div>
     <div class="modal-footer">
@@ -56,7 +56,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-ciudad-nuevo (ciudadNewEvent)="addCity($event); c('Close click')">Cargando</app-ciudad-nuevo>
+        <app-ciudad-nuevo (ciudadNewEvent)="refreshList(); c('Close click')">Cargando</app-ciudad-nuevo>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>

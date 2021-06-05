@@ -23,8 +23,7 @@ export class ProvinciaNuevoComponent implements OnInit {
   }
 
   newProv(formulario: NgForm) {
-    if(formulario.valid) 
-    {
+    if (formulario.valid) {
       this.provinceService.addProvince(this.provinciaNueva).subscribe(
         (data: any) => {
           if (data != null) {

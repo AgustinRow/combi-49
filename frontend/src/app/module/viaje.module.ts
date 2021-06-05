@@ -9,10 +9,6 @@ export class Viaje{
     detalle: string;
     borradoLogico: number;  //activo
     chofer: Usuario;// | Number;
-    vehiculo: Number | Vehiculo;
+    vehiculo: Vehiculo;
     ruta: Ruta;
-
-    getVehiculo():Vehiculo{
-        return this.vehiculo as Vehiculo;
-    }
 }
