@@ -80,7 +80,7 @@ export class ViajeEditarComponent implements OnInit {
     this.vehicleService.getvehicles().subscribe(
       (list: any) => {
         this.listVehiculos = list.data as Vehiculo[];
-        this.vIndex = this.listVehiculos.findIndex(x => x.patente === this.viajeModificado.vehiculo.patente);
+        this.vIndex = this.listVehiculos.findIndex(x => x.patente === this.viajeModificado.getVehiculo().patente);
       },
       (error) => {
         if (error.status >= 500) {

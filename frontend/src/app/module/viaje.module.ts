@@ -8,7 +8,11 @@ export class Viaje{
     fechaLlegada: Date;
     detalle: string;
     borradoLogico: number;  //activo
-    chofer: Usuario;
-    vehiculo: Vehiculo;
+    chofer: Usuario;// | Number;
+    vehiculo: Number | Vehiculo;
     ruta: Ruta;
+
+    getVehiculo():Vehiculo{
+        return this.vehiculo as Vehiculo;
+    }
 }
