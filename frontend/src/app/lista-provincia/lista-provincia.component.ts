@@ -1,24 +1,27 @@
 import { Component, Input, OnInit, ɵɵqueryRefresh } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Provincia } from '../module/provincia.module';
-import { MockService } from '../service/mock.service.';
+import { ProvinceService } from '../service/province.service';
 
 @Component({
   selector: 'app-lista-provincia',
   templateUrl: './lista-provincia.component.html',
-  styleUrls: ['./lista-provincia.component.css']
+  styleUrls: ['./lista-provincia.component.css'],
+  providers: [
+    ProvinceService,
+  ]
 })
 export class ListaProvinciaComponent implements OnInit {
   @Input() listProvincias: Provincia[] = [];
   provinciaSeleccionada: Provincia;
 
   constructor(
+    private provinceService: ProvinceService,
     private modalService: NgbModal,
-    private mockService: MockService
   ) { }
 
   ngOnInit(): void {
-    this.refresh();
+    this.refreshList();
   }
 
   openModal(contentEdit, select: Provincia) {
@@ -27,24 +30,37 @@ export class ListaProvinciaComponent implements OnInit {
   }
 
   deleteProvincia(select: Provincia) {
-    var i = this.listProvincias.indexOf(select);
-    i !== -1 && this.listProvincias.splice(i, 1);
-    this.mockService.setProvincia(this.listProvincias);
-    this.refresh();
+    this.provinceService.deleteProvince(select).subscribe(
+      (data: any) => {
+        if (data != null) {
+          alert("Se ha eliminado el vehiculo correctamente");
+        }
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
+      }
+    );
+    this.refreshList();
   }
 
-  addProv(newProv: Provincia) {
-    //this.listProvincias.push(newProv);
-    this.listProvincias.push(newProv);
-    this.mockService.setProvincia(this.listProvincias);
-    this.refresh();
-  }
-
-  provEdit(){
-    this.mockService.setProvincia(this.listProvincias);
-  }
-
-  refresh(){
-    this.listProvincias = this.mockService.getProvincia();
+  refreshList(){
+    this.provinceService.getProvinces().subscribe(
+      (list: any) => {
+        this.listProvincias = list.data as Provincia[];
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
+      }
+    )
   }
 }

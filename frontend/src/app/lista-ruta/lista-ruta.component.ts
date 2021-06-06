@@ -1,25 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Ruta } from '../module/ruta.module';
-import { MockService } from '../service/mock.service.';
+import { RouteService } from '../service/route.service';
 
 @Component({
   selector: 'app-lista-ruta',
   templateUrl: './lista-ruta.component.html',
-  styleUrls: ['./lista-ruta.component.css']
+  styleUrls: ['./lista-ruta.component.css'],
+  providers: [
+    RouteService
+  ]
 })
 export class ListaRutaComponent implements OnInit {
   listRutas: Ruta[] = [];
   rutaSeleccionada: Ruta;
 
   constructor(
-    private modalService: NgbModal,
-    private mockService: MockService
+    private routeService: RouteService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
-    //this.mockService.setParada([]);
-    this.refresh();
+    this.refreshList();
   }
 
   openModal(contentEdit, select: Ruta) {
@@ -28,25 +30,37 @@ export class ListaRutaComponent implements OnInit {
   }
 
   deleteRoute(select: Ruta) {
-    var i = this.listRutas.indexOf(select);
-    i !== -1 && this.listRutas.splice(i, 1);
-    this.mockService.setRuta(this.listRutas);
-    this.refresh();
-    alert("Se ha eliminado la ruta correctamente");
+    this.routeService.deleteRoute(select).subscribe(
+      (data: any) => {
+        if (data != null) {
+          alert("Se ha eliminado la Ruta correctamente");
+        }
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
+      }
+    );
+    this.refreshList();
   }
 
-  addRoute(newRoute: Ruta) {
-    this.listRutas.push(newRoute);
-    this.mockService.setRuta(this.listRutas);
-    this.refresh();
-    alert("Se ha agregado la ruta correctamente");
-  }
-  
-  routerEdit(){
-    this.mockService.setRuta(this.listRutas);
-  }
-
-  refresh(){
-    this.listRutas = this.mockService.getRuta();
+  refreshList(){
+    this.routeService.getRoutes().subscribe(
+      (list: any) => {
+        this.listRutas = list.data as Ruta[];
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
+      }
+    )
   }
 }

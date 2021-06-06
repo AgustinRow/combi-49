@@ -3,7 +3,11 @@ const Op = require("sequelize").Op;
 
 const checkDuplicates = async (origen, destino) => {
   return await model.Ruta.findOne({
-    where: { origenId: origen.id, destinoId: destino.id, habilitado: true },
+    where: {
+      origenId: origen.id,
+      destinoId: destino.id,
+      habilitado: true
+    },
   }).then((response) => {
     return response;
   });
@@ -13,31 +17,39 @@ const checkDuplicates = async (origen, destino) => {
 const create = async (req, res) => {
   const ruta = req.body;
   try {
-    if (ruta.origen != ruta.destino) {
+    if (ruta.origen.id != ruta.destino.id) {
       const origen = await model.Ciudad.findOne({
-        where: { id: ruta.origen, habilitado: true },
+        where: {
+          id: ruta.origen.id,
+          habilitado: true
+        },
       }).then((response) => response);
       const destino = await model.Ciudad.findOne({
-        where: { id: ruta.destino, habilitado: true },
+        where: {
+          id: ruta.destino.id,
+          habilitado: true
+        },
       }).then((response) => response);
       if (origen && destino) {
         const result = await checkDuplicates(origen, destino);
         if (result != null) {
           res.status(401).json({ message: "La ruta ya existe" });
-        } else {
+        }
+        else {
           model.Ruta.create({
             nombre: ruta.nombre,
             distancia: ruta.distancia,
             habilitado: true,
-          }).then((response) => {
-            try {
-              response.setOrigen(ruta.origen);
-              response.setDestino(ruta.destino);
-              res.status(201).json({ data: response, origen, destino });
-            } catch (err) {
-              res.status(400).json({ message: "Error en origen o destino" });
-            }
-          });
+          }).then(
+            (response) => {
+              try {
+                response.setOrigen(ruta.origen.id);
+                response.setDestino(ruta.destino.id);
+                res.status(201).json({ data: response, origen, destino });
+              } catch (err) {
+                res.status(400).json({ message: "Error en origen o destino" });
+              }
+            });
         }
       }
     } else {
@@ -51,26 +63,62 @@ const create = async (req, res) => {
 const parseRoute = async (routes) => {
   let result = [];
   for (var i = 0; i < routes.length; i++) {
-    console.log(routes[i]);
-    const origen = await routes[i].getOrigen();
+    /*const origen = await routes[i].getOrigen();
+    const oProv = await model.Provincia.findOne({ where: { id: origen.provinciaId } });
     const destino = await routes[i].getDestino();
+    const dProv = await model.Provincia.findOne({ where: { id: destino.provinciaId } });*/
     let ruta = {
-      ruta: routes[i],
-      origen: origen,
-      destino: destino,
+      id: routes[i].id,
+      nombre: routes[i].nombre,
+      distancia: routes[i].distancia,
+      origen: parseCity(routes[i].dataValues.Origen),
+      destino: parseCity(routes[i].dataValues.Destino),
     };
     result.unshift(ruta);
   }
   return await result;
 };
 
+function parseCity(city, province) {
+  return {
+    id: city.id,
+    nombre: city.nombre,
+    cp: city.cp,
+    provincia: {
+      id: city.Provincium.id,
+      nombre: city.Provincium.nombre
+    }
+  };
+}
+
+//Listar rutas
 const list = async (req, res) => {
   try {
     const rutas = await model.Ruta.findAll({
-      where: { habilitado: true },
-    }).then((response) => {
-      return response;
-    });
+      where: {
+        habilitado: true
+      },
+      include: [{
+        model: model.Ciudad,
+        as: 'Origen',
+        atributes: ['id', 'nombre', 'cp'],
+        include: [{
+          model: model.Provincia,
+          atributes: ['id', 'nombre']
+        }]
+      },{
+        model: model.Ciudad,
+        as: 'Destino',
+        atributes: ['id', 'nombre', 'cp'],
+        include: [{
+          model: model.Provincia,
+          atributes: ['id', 'nombre']
+        }]
+      }]
+    }).then(
+      (response) => {
+        return response;
+      });
     const result = await parseRoute(rutas);
     res.status(200).json({ data: result });
   } catch (err) {

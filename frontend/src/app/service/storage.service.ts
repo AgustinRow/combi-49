@@ -37,7 +37,7 @@ export class StorageService {
   
   getCurrentUser(): Usuario {
     var session: Session = this.getCurrentSession();
-    return (session && session.user) ? session.user : null;
+    return (session && session.user) ? session.user : (new Usuario);
   };
   
   isAuthenticated(): boolean {

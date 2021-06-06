@@ -47,4 +47,61 @@ const listCities = async (req, res) => {
   }
 };
 
-module.exports = { list, create, listCities };
+//modificar provincia
+const updateProvince = async (req, res) => {
+  const updateProvince = req.body;
+  try {
+    model.Provincia.findOne({ where: { id: updateProvince.id } }).then(
+      (response) => {
+        if (response) {
+          model.Provincia.update(updateProvince, {
+            where:
+            {
+              id: updateProvince.id
+            }
+          }).then(
+            (response) => {
+              res.status(200).json({ data: response });
+            });
+        } else {
+          res.status(400).json({ message: "No se encontro la provincia a modificar" });
+        }
+      }
+    );
+  } catch {
+    res.status(500).json({ message: "Internal serve error" });
+  }
+};
+
+//Eliminar provincia
+const remove = async (req, res) => {
+  const id = req.params.id;
+  model.Provincia.findOne({ where: { id: id } }).then((response) => {
+    try {
+      if (response.dataValues.habilitado) {
+        model.Provincia.update(
+          {
+            habilitado: false,
+          },
+          {
+            where: { id: id },
+          }
+        ).then((response) => {
+          res.status(200).json({ message: "removed" });
+        });
+      } else {
+        res.status(400).json({ message: "La provincia no existe" });
+      }
+    } catch (err) {
+      res.status(400).json({ message: "Bad Request" });
+    }
+  });
+};
+
+module.exports = {
+  list,
+  create,
+  listCities,
+  updateProvince,
+  remove
+};

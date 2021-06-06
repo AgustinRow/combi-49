@@ -3,6 +3,10 @@ const Op = require("sequelize").Op;
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+const USUARIO_ADMINISTRADOR = 1;
+const USUARIO_CHOFER = 2;
+const USUARIO_PASAJERO = 3;
+
 function jwtToken(user) {
   return jwt.sign(
     {
@@ -79,6 +83,28 @@ const getAllDrivers = async (req, res) => {
   }
 };
 
+//Listar usuarios pasajeros
+const getAllUsers = async (req, res) => {
+  try {
+    model.Usuario.findAll({ where: { habilitado: true, tipo: USUARIO_PASAJERO } }).then(
+      (response) => {
+        res.json({ data: parseUsersData(response) });
+        res.status(200);
+      }
+    );
+  } catch (err) {
+    res.status(500).json({ message: "Internal Server error" });
+  }
+  function parseUsersData(users) {
+    var result = [];
+    users.forEach((element) => {
+      result.unshift(parse(element));
+    });
+
+    return result;
+  }
+};
+
 const parse = (user) => {
   return {
     id: user.id,
@@ -141,7 +167,7 @@ const register = async (req, res) => {
   }
 };
 //modificar chofer
-const updateDriver = async (req, res) => {
+const updateUser = async (req, res) => {
   const updatedUser = req.body;
   const oldUser = await findDuplicates(updatedUser).then((response) => {
     try {
@@ -201,9 +227,10 @@ const remove = async (req, res) => {
 
 module.exports = {
   getAllDrivers,
+  getAllUsers,
   register,
   login,
   findUser,
-  updateDriver,
+  updateUser,
   remove,
 };

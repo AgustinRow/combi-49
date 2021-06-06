@@ -36,7 +36,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-provincia-editar [(provinciaModificada)]="provinciaSeleccionada" (provEditEvent)="provEdit(); c('Close click')">
+        <app-provincia-editar [(provinciaModificada)]="provinciaSeleccionada" (provEditEvent)="refreshList(); c('Close click')">
             Cargando</app-provincia-editar>
     </div>
     <div class="modal-footer">
@@ -52,7 +52,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-provincia-nuevo (provinciaNewEvent)="addProv($event); c('Close click')">Cargando</app-provincia-nuevo>
+        <app-provincia-nuevo (provinciaNewEvent)="refreshList(); c('Close click')">Cargando</app-provincia-nuevo>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>

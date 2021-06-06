@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Usuario } from '../module/usuario.module';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-lista-usuario',
   templateUrl: './lista-usuario.component.html',
-  styleUrls: ['./lista-usuario.component.css']
+  styleUrls: ['./lista-usuario.component.css'],
+  providers: [
+    UserService,
+  ]
 })
 export class ListaUsuarioComponent implements OnInit {
   listaU : Usuario[] = [];
@@ -13,43 +17,15 @@ export class ListaUsuarioComponent implements OnInit {
   usuarioSeleccionado: Usuario;
 
   constructor(
+    private userService: UserService,
     private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
-    //Para borrar
-    var aux = new Usuario()
-    aux.nombre = "Agustin";
-    aux.apellido = "Colla";
-    aux.email = "acolla@grupo49.com";
-    aux.password = "grupo49";
-    aux.tipo = 1;
-    this.listaU.push(aux);
-    aux = new Usuario()
-    aux.nombre = "Agustin";
-    aux.apellido = "Diaz";
-    aux.email = "adiaz@grupo49.com";
-    aux.password = "grupo49";
-    aux.tipo = 2;
-    this.listaU.push(aux);
-    aux = new Usuario()
-    aux.nombre = "Julio Cesar";
-    aux.apellido = "Contreras Benitez";
-    aux.email = "jcontreras@grupo49.com";
-    aux.password = "grupo49";
-    aux.tipo = 3;
-    this.listaU.push(aux);
-    aux = new Usuario()
-    aux.nombre = "Maximiliano";
-    aux.apellido = "Teodosio";
-    aux.email = "mteodosio@grupo49.com";
-    aux.password = "grupo49";
-    aux.tipo = 1;
-    this.listaU.push(aux);
+    this.refreshList();
   }
 
-  openModal(contentEdit, userselect: Usuario) {    
-    console.log(this.listaU);
+  openModal(contentEdit, userselect: Usuario) {  
     this.usuarioSeleccionado = userselect;
     this.modalService.open(contentEdit);
   }
@@ -61,5 +37,21 @@ export class ListaUsuarioComponent implements OnInit {
   
   addUser(userNew: Usuario){
     this.listaU.push(userNew);
+  }
+  
+  refreshList() {
+    this.userService.getUsers().subscribe(
+      (list: any) => {
+        this.listaU = list.data as Usuario[];
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
+      }
+    )
   }
 }

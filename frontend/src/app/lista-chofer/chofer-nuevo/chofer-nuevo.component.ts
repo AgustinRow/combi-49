@@ -22,10 +22,9 @@ export class ChoferNuevoComponent implements OnInit {
 
   newChofer(formulario: NgForm) {
     if (formulario.valid) {
-      this.choferNuevo.tipo = 2;
+      this.choferNuevo.tipo = UserService.USUARIO_CHOFER;
       this.userService.addUser(this.choferNuevo).subscribe(
         (data: any) => {
-          //console.log(data.created);
           if (data != null) {
             alert("Se ha creado el usuario correctamente");
             this.choferNewEvent.emit(this.choferNuevo);

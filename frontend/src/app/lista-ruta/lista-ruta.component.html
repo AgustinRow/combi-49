@@ -40,7 +40,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-ruta-editar [(rutaModificada)]="rutaSeleccionada" (routeEditEvent)="routerEdit(); c('Close click')">
+        <app-ruta-editar [(rutaModificada)]="rutaSeleccionada" (routeEditEvent)="refreshList(); c('Close click')">
             Cargando</app-ruta-editar>
     </div>
     <div class="modal-footer">
@@ -56,7 +56,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-ruta-nuevo (rutaNewEvent)="addRoute($event); c('Close click')">Cargando</app-ruta-nuevo>
+        <app-ruta-nuevo (rutaNewEvent)="refreshList(); c('Close click')">Cargando</app-ruta-nuevo>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>

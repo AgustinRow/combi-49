@@ -36,7 +36,7 @@ export class ListaVehiculoComponent implements OnInit {
   deleteVehiculo(vehiculoselect: Vehiculo) {
     this.lViajes = this.mockService.getViajes();
     var hoy = new Date(Date.now());
-    var index = this.lViajes.findIndex(v => (v.vehiculo.id == vehiculoselect.id));
+    var index = this.lViajes.findIndex(v => ((v.vehiculo as Vehiculo).id == vehiculoselect.id));
     if (index === -1) {
       //No tiene viajes pendientes
       this.vehicleService.deleteOneVehicle(vehiculoselect.id).subscribe(
@@ -62,7 +62,7 @@ export class ListaVehiculoComponent implements OnInit {
       var tienePendientes = false;
       this.lViajes.forEach(viaje => {
         if (viaje.vehiculo.id == vehiculoselect.id) { 
-          tienePendientes ||= (new Date(viaje.fechaSalida)) >= hoy; 
+          tienePendientes ||= (new Date(viaje.fecha_salida)) >= hoy; 
         }
       });
       if (!tienePendientes) {
