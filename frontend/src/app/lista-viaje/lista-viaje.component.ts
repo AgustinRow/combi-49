@@ -14,7 +14,7 @@ import { StorageService } from '../service/storage.service';
   templateUrl: './lista-viaje.component.html',
   styleUrls: ['./lista-viaje.component.css'],
   providers: [
-    MockService]
+    ]
 })
 export class ListaViajeComponent implements OnInit {
   viajeSeleccionado: Viaje;
