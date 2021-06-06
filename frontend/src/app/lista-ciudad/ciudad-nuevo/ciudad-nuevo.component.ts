@@ -3,7 +3,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Ciudad } from 'src/app/module/ciudad.module';
 import { Provincia } from 'src/app/module/provincia.module';
 import { CityService } from 'src/app/service/city.service';
-import { MockService } from 'src/app/service/mock.service.';
 import { ProvinceService } from 'src/app/service/province.service';
 
 @Component({
@@ -49,7 +48,6 @@ export class CiudadNuevoComponent implements OnInit {
   }
 
   newCity() {
-    console.log("newCity()");
     if (this.form.valid) {
       this.ciudadNueva.provincia = this.listProvincias[this.form.value.provincia];;
       this.cityService.addCity(this.ciudadNueva).subscribe(

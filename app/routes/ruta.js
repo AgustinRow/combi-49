@@ -8,5 +8,5 @@ router.post("/alta", Ruta.create);
 //router.get("/listar_rutas_origen/(:id)", Ruta.listOrigin);
 router.get("/detalle", Ruta.getRoute);
 router.put("/modificar", Ruta.update);
-//router.get("/baja/(:id), Ruta.remove")
+router.get("/borrar/(:id), Ruta.remove")
 module.exports = router;
