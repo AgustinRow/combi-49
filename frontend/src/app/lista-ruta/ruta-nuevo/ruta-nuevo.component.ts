@@ -57,8 +57,8 @@ export class RutaNuevoComponent implements OnInit {
       this.routeService.addRoute(this.rutaNueva).subscribe(
         (data: any) => {
           if (data != null) {
-            this.rutaNewEvent.emit(data.data);
             alert("Se ha creado la ruta correctamente");
+            this.rutaNewEvent.emit(data.data);
           }
         },
         (error) => {

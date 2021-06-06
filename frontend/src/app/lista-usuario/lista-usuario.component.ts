@@ -25,8 +25,7 @@ export class ListaUsuarioComponent implements OnInit {
     this.refreshList();
   }
 
-  openModal(contentEdit, userselect: Usuario) {    
-    console.log(this.listaU);
+  openModal(contentEdit, userselect: Usuario) {  
     this.usuarioSeleccionado = userselect;
     this.modalService.open(contentEdit);
   }

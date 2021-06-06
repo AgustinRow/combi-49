@@ -63,18 +63,16 @@ const create = async (req, res) => {
 const parseRoute = async (routes) => {
   let result = [];
   for (var i = 0; i < routes.length; i++) {
-    //console.log(routes[i]);
-    const origen = await routes[i].getOrigen();
+    /*const origen = await routes[i].getOrigen();
     const oProv = await model.Provincia.findOne({ where: { id: origen.provinciaId } });
     const destino = await routes[i].getDestino();
-    const dProv = await model.Provincia.findOne({ where: { id: destino.provinciaId } });
-    console.log(origen.dataValues);
+    const dProv = await model.Provincia.findOne({ where: { id: destino.provinciaId } });*/
     let ruta = {
       id: routes[i].id,
       nombre: routes[i].nombre,
       distancia: routes[i].distancia,
-      origen: parseCity(origen.dataValues, oProv),
-      destino: parseCity(destino.dataValues, dProv),
+      origen: parseCity(routes[i].dataValues.Origen),
+      destino: parseCity(routes[i].dataValues.Destino),
     };
     result.unshift(ruta);
   }
@@ -82,14 +80,13 @@ const parseRoute = async (routes) => {
 };
 
 function parseCity(city, province) {
-  //const prov = await mpdel.provincia.getProvincia();
   return {
     id: city.id,
     nombre: city.nombre,
     cp: city.cp,
     provincia: {
-      id: province.id,
-      nombre: province.nombre
+      id: city.Provincium.id,
+      nombre: city.Provincium.nombre
     }
   };
 }
@@ -98,7 +95,26 @@ function parseCity(city, province) {
 const list = async (req, res) => {
   try {
     const rutas = await model.Ruta.findAll({
-      where: { habilitado: true },
+      where: {
+        habilitado: true
+      },
+      include: [{
+        model: model.Ciudad,
+        as: 'Origen',
+        atributes: ['id', 'nombre', 'cp'],
+        include: [{
+          model: model.Provincia,
+          atributes: ['id', 'nombre']
+        }]
+      },{
+        model: model.Ciudad,
+        as: 'Destino',
+        atributes: ['id', 'nombre', 'cp'],
+        include: [{
+          model: model.Provincia,
+          atributes: ['id', 'nombre']
+        }]
+      }      ]
     }).then(
       (response) => {
         return response;

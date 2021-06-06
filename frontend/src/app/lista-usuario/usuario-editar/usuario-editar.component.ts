@@ -25,7 +25,6 @@ export class UsuarioEditarComponent implements OnInit {
       this.usuarioModificado.tipo = UserService.USUARIO_PASAJERO;
       this.userService.modifyUser(this.usuarioModificado).subscribe(
         (data: any) => {
-          //console.log(data.created);
           if (data != null) {
             alert("Se ha modificado el usuario correctamente");
             this.userEditEvent.emit();

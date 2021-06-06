@@ -41,7 +41,6 @@ export class ListaChoferComponent implements OnInit {
       //No tiene viajes pendientes
       this.userService.deleteOneUser(choferselect.id).subscribe(
         (data: any) => {
-          console.log(data);
           if (data != null) {
             alert("Se ha eliminado el usuario correctamente");
             this.refreshList();
@@ -69,7 +68,6 @@ export class ListaChoferComponent implements OnInit {
         //No tiene pendientes
         this.userService.deleteOneUser(choferselect.id).subscribe(
           (data: any) => {
-            console.log(data);
             if (data != null) {
               alert("Se ha eliminado el usuario correctamente");
               this.refreshList();

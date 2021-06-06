@@ -26,7 +26,6 @@ export class ChoferEditarComponent implements OnInit {
       this.choferModificado.tipo = UserService.USUARIO_CHOFER;
       this.userService.modifyUser(this.choferModificado).subscribe(
         (data: any)=>{
-          //console.log(data.created);
           if(data != null)
           {
             alert("Se ha modificado el usuario correctamente");
