@@ -3,40 +3,36 @@ import { Viaje } from "../module/viaje.module";
 import { Ruta } from "../module/ruta.module";
 import { Ciudad } from "../module/ciudad.module";
 import { Provincia } from "../module/provincia.module";
-import { MockService } from '../service/mock.service.';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../service/user.service';
 import { Usuario } from '../module/usuario.module';
 import { StorageService } from '../service/storage.service';
+import { TravelService } from '../service/travel.service';
 
 @Component({
   selector: 'app-lista-viaje',
   templateUrl: './lista-viaje.component.html',
   styleUrls: ['./lista-viaje.component.css'],
   providers: [
+      TravelService
     ]
 })
 export class ListaViajeComponent implements OnInit {
   viajeSeleccionado: Viaje;
   ver: String = "viajes";
   lViajes: Viaje[] = [];
-  @Input() lRutas: Ruta[] = [];
-  @Input() lCiudades: Ciudad[] = [];
-  @Input() lProvincia: Provincia[] = [];
   
   usuarioIdentificado: Usuario;
   USUARIO_ADMINISTRADOR = UserService.USUARIO_ADMINISTRADOR;
 
   constructor(
     private modalService: NgbModal,
-    private userService: UserService,
+    private travelService: TravelService,
     private storageService: StorageService,
-    private mockService: MockService
   ) { }
 
   ngOnInit(): void {
-    //this.mockService.setViajes([]);
-    this.refresh();
+    this.refreshList();
   }
 
   onSelect(selction: String) {
@@ -49,27 +45,38 @@ export class ListaViajeComponent implements OnInit {
   }
 
   deleteTravel(select: Viaje) {
-    var i = this.lViajes.indexOf(select);
-    i !== -1 && this.lViajes.splice(i, 1);
-    this.mockService.setViajes(this.lViajes);
-    this.refresh();
-    alert("Se ha eliminado el viaje correctamente");
+    this.travelService.deleteTravel(select).subscribe(
+      (data: any) => {
+        if (data != null) {
+          alert("Se ha eliminado el viaje correctamente");
+        }
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
+      }
+    );
+    this.refreshList();
   }
 
-  addTravel(newTravel: Viaje) {
-    this.lViajes.push(newTravel);
-    this.mockService.setViajes(this.lViajes);
-    this.refresh();
-    alert("Se ha agregado el viaje correctamente");
-  }
-  
-  travelEdit(){
-    this.mockService.setViajes(this.lViajes);
-    alert("Se ha modificado el viaje correctamente");
-  }
-
-  refresh(){
-    this.lViajes = this.mockService.getViajes();
+  refreshList(){
+    this.travelService.getTravels().subscribe(
+      (list: any) => {
+        this.lViajes = list.data as Viaje[];
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
+      }
+    );
     this.usuarioIdentificado = this.storageService.getCurrentUser();
   }
 

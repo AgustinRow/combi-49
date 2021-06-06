@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       //TODO: asignarle los id correspondientes
       Viaje.belongsTo(models.Ruta, { foreignKey: "RutaId" });
-      Viaje.hasOne(models.Vehiculo, { foreignKey: "ViajeId" });
+      Viaje.belongsTo(models.Usuario, { foreignKey: "UsuarioId" });
+      Viaje.belongsTo(models.Vehiculo, { foreignKey: "ViajeId" });
     }
   }
   Viaje.init(
@@ -20,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       fecha_salida: DataTypes.DATEONLY,
       detalle: DataTypes.STRING,
       hora: DataTypes.TIME,
-      asientos_disponibles: DataTypes.INTEGER,
+      //asientos_disponibles: DataTypes.INTEGER,
       habilitado: DataTypes.BOOLEAN,
     },
     {

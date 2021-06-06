@@ -114,7 +114,7 @@ const list = async (req, res) => {
           model: model.Provincia,
           atributes: ['id', 'nombre']
         }]
-      }      ]
+      }]
     }).then(
       (response) => {
         return response;

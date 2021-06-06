@@ -62,7 +62,7 @@ export class ListaVehiculoComponent implements OnInit {
       var tienePendientes = false;
       this.lViajes.forEach(viaje => {
         if (viaje.vehiculo.id == vehiculoselect.id) { 
-          tienePendientes ||= (new Date(viaje.fechaSalida)) >= hoy; 
+          tienePendientes ||= (new Date(viaje.fecha_salida)) >= hoy; 
         }
       });
       if (!tienePendientes) {
