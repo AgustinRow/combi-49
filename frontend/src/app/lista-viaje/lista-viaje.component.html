@@ -33,7 +33,7 @@
             <tr>
                 <th>Ruta</th>
                 <th>Fecha de salida</th>
-                <th>Fecha de llegada</th>
+                <th>Hora de Salida</th>
                 <th>Vehiculo</th>
                 <th *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">Chofer</th>
                 <th>Acciones</th>
@@ -43,7 +43,7 @@
             <tr *ngFor="let viaje of lViajes">
                 <td data-title="Ruta">{{viaje.ruta.nombre}}</td>
                 <td data-title="Fecha de Salida">{{viaje.fecha_salida}}</td>
-                <td data-title="Fecha de Llegada">{{viaje.fecha_llegada}}</td>
+                <td data-title="Hora de salida">{{viaje.hora | hh:mm}}</td>
                 <td data-title="Vehiculo">{{viaje.vehiculo.patente}}</td>
                 <td data-title="Chofer" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">{{viaje.chofer.nombre}}</td>
                 <td data-title="Acciones" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR; else buyBlock">

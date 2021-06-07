@@ -40,7 +40,7 @@ export class ViajeEditarComponent implements OnInit {
     this.form = new FormGroup({
       'ruta': new FormControl({}),
       'fecha_salida': new FormControl({}),
-      'fecha_llegada': new FormControl({}),
+      'hora': new FormControl({}),
       'chofer': new FormControl({}),
       'vehiculo': new FormControl({}),
       'detalle': new FormControl({})

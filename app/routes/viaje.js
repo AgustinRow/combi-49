@@ -4,7 +4,7 @@ const Viaje = require("../controller/viaje");
 const verify = require("../controller/verifyToken");
 
 router.get("/listar", Viaje.list);
-router.get("/buscar", Viaje.find);
+router.get("/buscar/{:origenId}/{:destinoId}/{:fecha}", Viaje.find);
 router.post("/alta", Viaje.create);
 router.put("/modificar", Viaje.update);
 router.get("/choferes_viajes_libres", Viaje.driverAndTravel)

@@ -19,6 +19,7 @@ export class NavBarComponent implements OnInit, OnChanges {
   isCollapsed: boolean;
   usuarioIdentificado: Usuario;
   USUARIO_ADMINISTRADOR = UserService.USUARIO_ADMINISTRADOR;
+  USUARIO_PASAJERO = UserService.USUARIO_PASAJERO;
 
   constructor(
     private router: Router,

@@ -59,12 +59,16 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => { };
 
+//Buscar por origen, destino y fecha
 const find = async (req, res) => {
-  const ruta = req.body;
+  //const ruta = req.body;
+  const origenId = req.params.origenId;
+  const destinoId = req.params.destinoId;
+  const fechaSolicitada = req.params.fecha;
   try {
     const rutax = await model.Ruta.findAll({
       where: {
-        [Op.and]: [{ origenId: ruta.origen }, { destinoId: ruta.destino }],
+        [Op.and]: [{ origenId: origenId }, { destinoId: destinoId }, { fecha: fechaSolicitada }],
       },
     });
     const result = await listTravel(rutax);
@@ -215,10 +219,10 @@ const create = async (req, res, next) => {
             nuevoViaje.setChofer(chofer.id);
             nuevoViaje.setVehiculo(vehiculo.id);
             nuevoViaje.setRuta(ruta.id);
-            res.status(201).json({ data: response, origen, destino });
+            res.status(201).json({ data: nuevoViaje });
           } catch (err) {
             console.log(err);
-            res.status(400).json({ message: "Error en origen o destino" });
+            res.status(400).json({ message: "No se pudo crear viaje" });
           }
         });
     }

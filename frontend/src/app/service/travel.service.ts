@@ -34,6 +34,10 @@ export class TravelService {
     return this.http.delete<Viaje>(this.usersUrl + 'borrar/' + province.id, httpOptions);
   }
 
+  findTravels(province: Viaje): Observable<Viaje[]> {
+    return this.http.get<Viaje[]>(this.usersUrl + 'buscar/'+province.ruta.origen.id+'/'+province.ruta.destino.id+'/'+province.fecha_salida.toDateString(), httpOptions);
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
