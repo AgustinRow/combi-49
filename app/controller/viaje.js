@@ -116,8 +116,11 @@ const list = async (req, res) => {
     model.Viaje.findAll({
       order: ["fecha_salida"],
     }).then((response) => {
-      let result;
-      parseViajes(res, response);
+      if (response != null) {
+        parseViajes(res, response);
+      } else {
+        res.status(200).json({ data: {} });
+      }
     });
   } catch {
     res.status(500).json({ message: "Internal Server Error" });

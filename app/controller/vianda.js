@@ -10,8 +10,6 @@ const findViandaWithName = async (vianda) => {
 
 const create = async (req, res) => {
   const vianda = req.body;
-  console.log(await exist(vianda));
-
   try {
     if ((await findViandaWithName(vianda)) != null) {
       res
@@ -24,7 +22,7 @@ const create = async (req, res) => {
         precio: vianda.precio,
         habiltiado: true,
       }).then((response) => {
-        res.status(200).json({ data: "Creado" });
+        res.status(200).json({ data: response });
       });
     }
   } catch (err) {
@@ -60,6 +58,7 @@ const update = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 module.exports = {
   create,
