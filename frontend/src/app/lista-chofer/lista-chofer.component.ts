@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Usuario } from '../module/usuario.module';
 import { Viaje } from '../module/viaje.module';
-import { MockService } from '../service/mock.service.';
 import { UserService } from '../service/user.service';
 
 @Component({
@@ -10,8 +9,8 @@ import { UserService } from '../service/user.service';
   templateUrl: './lista-chofer.component.html',
   styleUrls: ['./lista-chofer.component.css'],
   providers: [
-    UserService,
-    MockService]
+    UserService
+  ]
 })
 export class ListaChoferComponent implements OnInit {
   listaC: Usuario[] = [];
@@ -20,8 +19,7 @@ export class ListaChoferComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private userService: UserService,
-    private mockService: MockService
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -34,59 +32,23 @@ export class ListaChoferComponent implements OnInit {
   }
 
   deleteChofer(choferselect: Usuario) {
-    this.lViajes = this.mockService.getViajes();
-    var hoy = new Date(Date.now());
-    var index = this.lViajes.findIndex(v => (v.chofer.id == choferselect.id));
-    if (index === -1) {
-      //No tiene viajes pendientes
-      this.userService.deleteOneUser(choferselect.id).subscribe(
-        (data: any) => {
-          if (data != null) {
-            alert("Se ha eliminado el usuario correctamente");
-            this.refreshList();
-          }
-        },
-        (error) => {
-          if (error.status >= 500) {
-            alert("Problemas para conectarse con el servidor");
-          }
-          else {
-            alert("El servidor reporta estado: " + error.error.message);
-          }
+    //No tiene viajes pendientes
+    this.userService.deleteOneUser(choferselect.id).subscribe(
+      (data: any) => {
+        if (data != null) {
+          alert("Se ha eliminado el usuario correctamente");
+          this.refreshList();
         }
-      );
-    }
-    else {
-      //Tiene viajes
-      var tienePendientes = false;
-      this.lViajes.forEach(viaje => {
-        if (viaje.chofer.id == choferselect.id) { 
-          tienePendientes ||= (new Date(viaje.fecha_salida)) >= hoy; 
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
         }
-      });
-      if (!tienePendientes) {
-        //No tiene pendientes
-        this.userService.deleteOneUser(choferselect.id).subscribe(
-          (data: any) => {
-            if (data != null) {
-              alert("Se ha eliminado el usuario correctamente");
-              this.refreshList();
-            }
-          },
-          (error) => {
-            if (error.status >= 500) {
-              alert("Problemas para conectarse con el servidor");
-            }
-            else {
-              alert("El servidor reporta estado: " + error.error.message);
-            }
-          }
-        );
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
       }
-      else {
-        alert("No se pude eliminar un chofer con viajes pendientes")
-      }
-    }
+    );
   }
 
   addChofer(choferNew: Usuario) {

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Vehiculo } from "../module/vehiculo.module";
 import { Viaje } from '../module/viaje.module';
-import { MockService } from '../service/mock.service.';
 import { VehicleService } from '../service/vehicle.service';
 
 @Component({
@@ -10,8 +9,8 @@ import { VehicleService } from '../service/vehicle.service';
   templateUrl: './lista-vehiculo.component.html',
   styleUrls: ['./lista-vehiculo.component.css'],
   providers: [
-    VehicleService,
-    MockService]
+    VehicleService
+  ]
 })
 export class ListaVehiculoComponent implements OnInit {
   listaV: Vehiculo[] = [];
@@ -20,8 +19,7 @@ export class ListaVehiculoComponent implements OnInit {
 
   constructor(
     private vehicleService: VehicleService,
-    private modalService: NgbModal,
-    private mockService: MockService
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -34,60 +32,23 @@ export class ListaVehiculoComponent implements OnInit {
   }
 
   deleteVehiculo(vehiculoselect: Vehiculo) {
-    this.lViajes = this.mockService.getViajes();
-    var hoy = new Date(Date.now());
-    var index = this.lViajes.findIndex(v => ((v.vehiculo as Vehiculo).id == vehiculoselect.id));
-    if (index === -1) {
-      //No tiene viajes pendientes
-      this.vehicleService.deleteOneVehicle(vehiculoselect.id).subscribe(
-        (data: Vehiculo) => {
-          if (data != null) {
-            alert("Se ha eliminado el vehiculo correctamente");
-            var i = this.listaV.indexOf(vehiculoselect);
-            i !== -1 && this.listaV.splice(i, 1);
-          }
-        },
-        (error) => {
-          if (error.status >= 500) {
-            alert("Problemas para conectarse con el servidor");
-          }
-          else {
-            alert("El servidor reporta estado: " + error.error.message);
-          }
+    this.vehicleService.deleteOneVehicle(vehiculoselect.id).subscribe(
+      (data: Vehiculo) => {
+        if (data != null) {
+          alert("Se ha eliminado el vehiculo correctamente");
+          var i = this.listaV.indexOf(vehiculoselect);
+          i !== -1 && this.listaV.splice(i, 1);
         }
-      );
-    }
-    else {
-      //Tiene viajes
-      var tienePendientes = false;
-      this.lViajes.forEach(viaje => {
-        if (viaje.vehiculo.id == vehiculoselect.id) { 
-          tienePendientes ||= (new Date(viaje.fecha_salida)) >= hoy; 
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
         }
-      });
-      if (!tienePendientes) {
-        this.vehicleService.deleteOneVehicle(vehiculoselect.id).subscribe(
-          (data: Vehiculo) => {
-            if (data != null) {
-              alert("Se ha eliminado el vehiculo correctamente");
-              var i = this.listaV.indexOf(vehiculoselect);
-              i !== -1 && this.listaV.splice(i, 1);
-            }
-          },
-          (error) => {
-            if (error.status >= 500) {
-              alert("Problemas para conectarse con el servidor");
-            }
-            else {
-              alert("El servidor reporta estado: " + error.error.message);
-            }
-          }
-        );
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
       }
-      else {
-        alert("No se pude eliminar un vehiculo con viajes pendientes")
-      }
-    }
+    );
   }
 
   refreshList() {

@@ -11,10 +11,6 @@ footer {
   text-align: center;
 }
 
-nav .navbar-nav li a{
-  color: white !important;
-}
-
 footer.page-footer .footer-copyright {
   overflow: hidden;
   color: rgba(255,255,255,0.6);

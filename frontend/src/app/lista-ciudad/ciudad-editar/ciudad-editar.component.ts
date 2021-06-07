@@ -3,7 +3,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Ciudad } from 'src/app/module/ciudad.module';
 import { Provincia } from 'src/app/module/provincia.module';
 import { CityService } from 'src/app/service/city.service';
-import { MockService } from 'src/app/service/mock.service.';
 import { ProvinceService } from 'src/app/service/province.service';
 
 @Component({

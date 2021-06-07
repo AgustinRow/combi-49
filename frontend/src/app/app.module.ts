@@ -50,7 +50,6 @@ import { StorageService } from './service/storage.service';
 import { AuthenticationService } from "./service/authentication.service";
 import { UserService } from './service/user.service';
 import { VehicleService } from './service/vehicle.service';
-import { MockService } from "./service/mock.service.";
 import { JwtModule } from '@auth0/angular-jwt';
 import { ListaChoferComponent } from './lista-chofer/lista-chofer.component';
 import { ChoferComponent } from './lista-chofer/chofer/chofer.component';
@@ -141,8 +140,7 @@ export function tokenGetter() {
     StorageService,
     AuthenticationService,
     UserService,
-    VehicleService,
-    MockService
+    VehicleService
   ],
   bootstrap: [AppComponent]
 })
