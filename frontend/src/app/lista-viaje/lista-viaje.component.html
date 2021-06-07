@@ -49,11 +49,11 @@
                 <td data-title="Acciones" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR; else buyBlock">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info" 
-                            (click)="openModal(contentShow, viaje)">Informacion</button>
+                            (click)="openModal(contentShow, viaje)"><i class="bi bi-info-circle"></i></button>
                         <button type="button" class="btn btn-warning"
-                            (click)="openModal(contentEdit, viaje)">Editar</button>
+                            (click)="openModal(contentEdit, viaje)"><i class="bi bi-pencil-square"></i></button>
                         <button type="button" class="btn btn-danger"
-                            (click)="deleteTravel(viaje)">Eliminar</button>
+                            (click)="deleteTravel(viaje)"><i class="bi bi-trash"></i></button>
                     </div>
                 </td>
                 <ng-template #buyBlock>
@@ -100,7 +100,7 @@
 
 <ng-template #contentShow let-c="close" let-d="dismiss">
     <div class="modal-header">
-      <h4 class="modal-title">Informacion del vieje</h4>
+      <h4 class="modal-title"><i class="bi bi-info-circle"></i> del vieje</h4>
       <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>

@@ -26,11 +26,11 @@
                 <td data-title="Acciones">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info"
-                            (click)="openModal(contentShow, vehiculo)">Informacion</button>
+                            (click)="openModal(contentShow, vehiculo)"><i class="bi bi-info-circle"></i></button>
                         <button type="button" class="btn btn-warning"
-                            (click)="openModal(contentEdit, vehiculo)">Editar</button>
+                            (click)="openModal(contentEdit, vehiculo)"><i class="bi bi-pencil-square"></i></button>
                         <button type="button" class="btn btn-danger"
-                            (click)="deleteVehiculo(vehiculo)">Eliminar</button>
+                            (click)="deleteVehiculo(vehiculo)"><i class="bi bi-trash"></i></button>
                     </div>
                 </td>
             </tr>
@@ -56,7 +56,7 @@
 
 <ng-template #contentShow let-c="close" let-d="dismiss">
     <div class="modal-header">
-        <h4 class="modal-title">Informacion del vehiculo</h4>
+        <h4 class="modal-title"><i class="bi bi-info-circle"></i> del vehiculo</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>

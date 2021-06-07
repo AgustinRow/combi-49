@@ -20,9 +20,9 @@
                 <td data-title="Usuario">{{user.email}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-info" (click)="openModal(contentShow, user)">Informacion</button>
-                        <button type="button" class="btn btn-warning" (click)="openModal(contentEdit, user)">Editar</button>
-                        <button type="button" class="btn btn-danger" (click)="deleteUser(user)">Eliminar</button>
+                        <button type="button" class="btn btn-info" (click)="openModal(contentShow, user)"><i class="bi bi-info-circle"></i></button>
+                        <button type="button" class="btn btn-warning" (click)="openModal(contentEdit, user)"><i class="bi bi-pencil-square"></i></button>
+                        <button type="button" class="btn btn-danger" (click)="deleteUser(user)"><i class="bi bi-trash"></i></button>
                     </div>
                 </td>
             </tr>
@@ -47,7 +47,7 @@
 
   <ng-template #contentShow let-c="close" let-d="dismiss">
       <div class="modal-header">
-        <h4 class="modal-title">Informacion del usuario</h4>
+        <h4 class="modal-title"><i class="bi bi-info-circle"></i> del usuario</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
           <span aria-hidden="true">&times;</span>
         </button>
