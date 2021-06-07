@@ -92,7 +92,7 @@ const parseViajes = async (res, viajes) => {
   const result = [];
   for (i = 0; i < viajes.length; i++) {
     let vehiculo = await viajes[i].getVehiculo({ where: { habilitado: true } });
-    let chofer = await vehiculo.getChofer({ where: { habilitado: true } });
+    let chofer = await viajes[i].getChofer({ where: { habilitado: true } });
     let ruta = await model.Ruta.findOne({
       where: { id: viajes[i].RutaId },
     });
@@ -114,7 +114,6 @@ const parseViajes = async (res, viajes) => {
 
 //Listar viajes
 const list = async (req, res) => {
-  const viaje = req.body;
   try {
     model.Viaje.findAll({
       order: ["fecha_salida"],
@@ -130,7 +129,7 @@ const list = async (req, res) => {
 const initialize = async (viaje, res) => {
   try {
     const vehiculo = await model.Vehiculo.findOne({
-      where: { id: viaje.vehiculo },
+      where: { id: viaje.vehiculoId },
     }).then((response) => response);
     model.Viaje.create({
       nombre: viaje.nombre,
@@ -138,11 +137,11 @@ const initialize = async (viaje, res) => {
       hora: viaje.hora,
       asientos_disponibles: vehiculo.asientos,
       fecha_salida: viaje.fecha_salida,
-      RutaId: viaje.ruta,
+      RutaId: viaje.rutaId,
       habilitado: true,
     }).then((viajeCreado) => {
       model.Vehiculo.findOne({
-        where: { id: viaje.vehiculo, habilitado: true },
+        where: { id: viaje.vehiculoId, habilitado: true },
       }).then((response) => {
         response.setViaje(viajeCreado);
       });
@@ -158,78 +157,38 @@ const create = async (req, res, next) => {
   try {
     const viaje = req.body;
     const chofer = await model.Usuario.findOne({
-      where: {
-        id: viaje.chofer.id,
-        tipo: 2,
-        habilitado: true
-      },
-      NOT_IN: [{
-        model: model.Viaje,
-        atributes: ['fecha_salida'],
-        where: {
-          fecha_salida: viaje.fecha_salida
-        }
-      }]
-    }).then(
-      (choferLibre) => {
-        if (choferLibre == null) {
-          res.status(400).json({
-            message: "El chofer seleccionado ya tiene un viaje asignado",
-          });
-        }
-        return choferLibre
-      });
-    const vehiculo = await model.Vehiculo.findOne({
-      where: {
-        id: viaje.vehiculo.id,
-        habilitado: true
-      },
-      NOT_IN: [{
-        model: model.Viaje,
-        atributes: ['fecha_salida'],
-        where: {
-          fecha_salida: viaje.fecha_salida
-        }
-      }]
-    }).then((vehiculoLibre) => {
-      //TODO: un vehiculo puede asignarse a un viaje que sea otro dia.
-      if (vehiculoLibre == null) {
+      where: { id: viaje.choferId, tipo: 2, habilitado: true },
+    });
+    chofer.getVehiculo({ where: { habilitado: true } }).then((response) => {
+      if (response == null) {
+        model.Vehiculo.findOne({
+          where: { id: viaje.vehiculoId, habilitado: true },
+        }).then((vehiculo) => {
+          vehiculo
+            .getChofer({ where: { habilitado: true } })
+            .then((response) => {
+              //TODO: un vehiculo puede asignarse a un viaje que sea otro dia.
+              if (response == null) {
+                chofer.setVehiculo(vehiculo).then((response) => response);
+                initialize(viaje, res);
+              } else {
+                res.status(400).json({
+                  message:
+                    "El vehiculo seleccionado ya tiene un viaje asignado",
+                });
+              }
+            });
+        });
+      } else {
         res.status(400).json({
-          message:
-            "El vehiculo seleccionado ya tiene un viaje asignado",
+          message: "El chofer seleccionado ya tiene un viaje asignado",
         });
       }
-      return vehiculoLibre;
     });
-    const ruta = await model.Ruta.findOne({
-      where: {
-        id: viaje.ruta.id,
-        habilitado: true
-      }
-    });
-    if (chofer && vehiculo && ruta) {
-      model.Ruta.create({
-        nombre: viaje.nombre,
-        fecha_salida: viaje.fecha_salida,
-        detalle: viaje.detalle,
-        hora: viaje.hora
-      }).then(
-        (nuevoViaje) => {
-          try {
-            nuevoViaje.setChofer(chofer.id);
-            nuevoViaje.setVehiculo(vehiculo.id);
-            nuevoViaje.setRuta(ruta.id);
-            res.status(201).json({ data: nuevoViaje });
-          } catch (err) {
-            console.log(err);
-            res.status(400).json({ message: "No se pudo crear viaje" });
-          }
-        });
-    }
-} catch (err) {
-  console.log(err);
-  res.status(500).json({ message: "Internal Server Error" });
-}
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
 
 module.exports = {

@@ -18,24 +18,24 @@ export class TravelService {
     private http: HttpClient
   ) { }
 
-  addTravel(province: Viaje): Observable<Viaje> {
-    return this.http.post<Viaje>(this.usersUrl + 'alta', province, httpOptions);
+  addTravel(travel: Viaje): Observable<Viaje> {
+    return this.http.post<Viaje>(this.usersUrl + 'alta', travel, httpOptions);
   }
 
   getTravels(): Observable<Viaje[]> {
     return this.http.get<Viaje[]>(this.usersUrl + 'listar');
   }
 
-  modifyTravel(province: Viaje): Observable<Viaje> {
-    return this.http.put<Viaje>(this.usersUrl + 'modificar', province, httpOptions);
+  modifyTravel(travel: Viaje): Observable<Viaje> {
+    return this.http.put<Viaje>(this.usersUrl + 'modificar', travel, httpOptions);
   }
 
-  deleteTravel(province: Viaje): Observable<any> {
-    return this.http.delete<Viaje>(this.usersUrl + 'borrar/' + province.id, httpOptions);
+  deleteTravel(travel: Viaje): Observable<any> {
+    return this.http.delete<Viaje>(this.usersUrl + 'borrar/' + travel.id, httpOptions);
   }
 
-  findTravels(province: Viaje): Observable<Viaje[]> {
-    return this.http.get<Viaje[]>(this.usersUrl + 'buscar/'+province.ruta.origen.id+'/'+province.ruta.destino.id+'/'+province.fecha_salida.toDateString(), httpOptions);
+  findTravels(travel: Viaje): Observable<Viaje[]> {
+    return this.http.get<Viaje[]>(this.usersUrl + 'buscar/'+travel.ruta.origen.id+'/'+travel.ruta.destino.id+'/'+travel.fecha_salida.toDateString(), httpOptions);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

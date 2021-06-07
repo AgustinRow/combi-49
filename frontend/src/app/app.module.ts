@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -45,6 +45,7 @@ import { ProvinciaEditarComponent } from './lista-provincia/provincia-editar/pro
 import { ListaValoracionComponent } from './lista-valoracion/lista-valoracion.component';
 import { ValoracionComponent } from './lista-valoracion/valoracion/valoracion.component';
 import { ValoracionNuevoComponent } from './lista-valoracion/valoracion-nuevo/valoracion-nuevo.component';
+import { SpinnerComponent } from "./spinner/spinner.component";
 
 import { StorageService } from './service/storage.service';
 import { AuthenticationService } from "./service/authentication.service";
@@ -55,6 +56,7 @@ import { ListaChoferComponent } from './lista-chofer/lista-chofer.component';
 import { ChoferComponent } from './lista-chofer/chofer/chofer.component';
 import { ChoferEditarComponent } from './lista-chofer/chofer-editar/chofer-editar.component';
 import { ChoferNuevoComponent } from './lista-chofer/chofer-nuevo/chofer-nuevo.component';
+import { SpinnerInterceptor } from './interceptor/spinner.interceptor';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -115,7 +117,8 @@ export function tokenGetter() {
     ListaChoferComponent,
     ChoferComponent,
     ChoferEditarComponent,
-    ChoferNuevoComponent
+    ChoferNuevoComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -140,7 +143,8 @@ export function tokenGetter() {
     StorageService,
     AuthenticationService,
     UserService,
-    VehicleService
+    VehicleService,
+    { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

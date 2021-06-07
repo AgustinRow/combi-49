@@ -48,9 +48,9 @@ export class ViajeNuevoComponent implements OnInit {
   newTravel() {
     if(this.form.valid) 
     {
-      this.viajeNuevo.ruta = this.listRutas[this.form.value.ruta];
-      this.viajeNuevo.vehiculo = this.listVehiculos[this.form.value.vehiculo];
-      this.viajeNuevo.chofer = this.listChoferes[this.form.value.chofer];
+      this.viajeNuevo.rutaId = this.listRutas[this.form.value.ruta].id;
+      this.viajeNuevo.vehiculoId = this.listVehiculos[this.form.value.vehiculo].id;
+      this.viajeNuevo.choferId = this.listChoferes[this.form.value.chofer].id;
       this.travelService.addTravel(this.viajeNuevo).subscribe(
         (data: any) => {
           if (data != null) {
