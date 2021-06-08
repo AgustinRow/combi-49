@@ -57,10 +57,8 @@ const parseRoute = async (routes) => {
     const destino = await routes[i].getDestino();
     let ruta = {
       ruta: routes[i],
-      duracion: routes[i].duracion,
-      distancia: routes[i].distancia,
-      origen: origen,
-      destino: destino,
+      origen,
+      destino,
     };
     result.unshift(ruta);
   }
