@@ -3,29 +3,19 @@ const Op = require("sequelize").Op;
 
 // listar ciudades
 const list = async (req, res) => {
-  model.Ciudad.findAll({
-    where: {
-      habilitado: true
-    },
-    include: [{
-      model: model.Provincia,
-      atributes: ['id', 'nombre']
-    }]
-  }).then(
-    (response) => {
-      try {
-        res.status(200).json({ data: parseCitiesData(response) });
-      } catch (err) {
-        res.status(500).json({ message: "Internal server error" });
-      }
-    });
+  model.Ciudad.findAll({ where: { habilitado: true } }).then((response) => {
+    try {
+      res.status(200).json({ data: parseCitiesData(response) });
+    } catch (err) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
 
   function parseCitiesData(cities) {
     var result = [];
-    cities.forEach(
-      (element) => {
-        result.unshift(parse(element));
-      });
+    cities.forEach((element) => {
+      result.unshift(parse(element));
+    });
     return result;
   }
 };
@@ -46,10 +36,6 @@ function parse(city) {
     id: city.id,
     nombre: city.nombre,
     cp: city.cp,
-    provincia: {
-      id: city.Provincium.id,
-      nombre: city.Provincium.nombre
-    }
   };
 }
 
@@ -61,25 +47,25 @@ const create = async (req, res) => {
   if (oldCity) {
     res.status(401).json({ message: "La ciudad ya existe" });
   } else {
-    /*const provincia = await model.Provincia.findOne({
+    const provincia = await model.Provincia.findOne({
       where: { id: city.provincia },
     }).then((response) => response);
-    if (provincia) {*/
-    model.Ciudad.create({
-      nombre: city.nombre,
-      cp: city.cp,
-      provinciaId: city.provincia.id,
-      habilitado: true,
-    }).then(() => {
-      try {
-        res.status(201).json({ data: city });
-      } catch (err) {
-        res.status(500).json({ message: "Internal server error" });
-      }
-    });
-    /*} else {
+    if (provincia) {
+      model.Ciudad.create({
+        nombre: city.nombre,
+        cp: city.cp,
+        provinciaId: provincia.id,
+        habilitado: true,
+      }).then(() => {
+        try {
+          res.status(201).json({ data: city });
+        } catch (err) {
+          res.status(500).json({ message: "Internal server error" });
+        }
+      });
+    } else {
       res.status(400).json({ message: "Error, id de provincia invalido" });
-    }*/
+    }
   }
 };
 
@@ -105,8 +91,8 @@ const find = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 //TODO: actualizar la modificacion para la provincia y la parada
+
 const update = async (req, res) => {
   const city = req.body;
   const exist = await findDuplicates(city);
