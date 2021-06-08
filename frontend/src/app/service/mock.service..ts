@@ -1,7 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Ciudad } from '../module/ciudad.module';
-import { Parada } from '../module/parada.module';
 import { Provincia } from '../module/provincia.module';
 import { Ruta } from '../module/ruta.module';
 import { Viaje } from '../module/viaje.module';
@@ -10,7 +9,6 @@ import { Viaje } from '../module/viaje.module';
 export class MockService {
   public lViajes: Viaje[] = [];
   public lRutas: Ruta[] = [];
-  public lParadas: Parada[] = [];
   public lCiudades: Ciudad[] = [];
   public lProvincia: Provincia[] = [];
   private mockStorageService;
@@ -44,15 +42,6 @@ export class MockService {
   getCiudad(): Ciudad[]{
     var sessionStr = this.mockStorageService.getItem('ciudad');
     return (sessionStr) ? <Ciudad[]> JSON.parse(sessionStr) : [];
-  }
-
-  setParada(obj: Parada[]): void {
-    this.mockStorageService.setItem('parada', JSON.stringify(obj));
-  }
-
-  getParada(): Parada[]{
-    var sessionStr = this.mockStorageService.getItem('parada');
-    return (sessionStr) ? <Parada[]> JSON.parse(sessionStr) : [];
   }
 
   setRuta(obj: Ruta[]): void {

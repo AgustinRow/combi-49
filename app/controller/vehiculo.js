@@ -92,10 +92,10 @@ const findOneVehicle = async (req, res, next) => {
       if (response) {
         res.status(200).json({ data: parse(response) });
       } else {
-        res.status(402).json({ error: "Bad request." });
+        res.status(402).json({ message: "Bad request." });
       }
     } catch {
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ message: "Internal server error" });
     }
   });
 };

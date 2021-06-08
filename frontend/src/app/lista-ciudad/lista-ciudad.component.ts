@@ -1,13 +1,15 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Ciudad } from '../module/ciudad.module';
-import { MockService } from '../service/mock.service.';
-import { CiudadComponent } from './ciudad/ciudad.component';
+import { CityService } from '../service/city.service';
 
 @Component({
   selector: 'app-lista-ciudad',
   templateUrl: './lista-ciudad.component.html',
-  styleUrls: ['./lista-ciudad.component.css']
+  styleUrls: ['./lista-ciudad.component.css'],
+  providers: [
+    CityService
+  ]
 })
 export class ListaCiudadComponent implements OnInit {
   listCiudades: Ciudad[] = [];
@@ -15,59 +17,58 @@ export class ListaCiudadComponent implements OnInit {
   @Output() aux: Ciudad;
 
   constructor(
-    private modalService: NgbModal,
-    private mockService: MockService
+    private cityService: CityService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
-    //this.mockService.setCiudad([]);
-    this.refresh();
+    this.refreshList();
   }
 
   openModal(contentEdit, select: Ciudad) {
-    this.ciudadSeleccionada = this.listCiudades.indexOf(select);
-    this.aux = new Ciudad();
-    this.aux.nombre = select.nombre ;
-    this.aux.provincia = select.provincia ;
-    this.aux.id = select.id ;
-    this.aux.codigoPostal = select.codigoPostal ;
+    if (select !== null) {
+      this.ciudadSeleccionada = this.listCiudades.indexOf(select);
+      this.aux = new Ciudad();
+      this.aux.nombre = select.nombre;
+      this.aux.provincia = select.provincia;
+      this.aux.id = select.id;
+      this.aux.cp = select.cp;
+    }
     this.modalService.open(contentEdit);
   }
 
   deleteCiudad(select: Ciudad) {
-    var i = this.listCiudades.indexOf(select);
-    i !== -1 && this.listCiudades.splice(i, 1);
-    this.mockService.setCiudad(this.listCiudades);
-    this.refresh();
-    alert("Se ha eliminado la ciudad correctamente");
+    this.cityService.deleteCity(select).subscribe(
+      (data: any) => {
+        if (data != null) {
+          alert("Se ha eliminado la ciudad correctamente");
+        }
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
+      }
+    );
+    this.refreshList();
   }
 
-  addCity(newCity: Ciudad) {
-    if (this.listCiudades.findIndex(x => x.codigoPostal === newCity.codigoPostal) === -1) {
-      this.listCiudades.push(newCity);
-      this.mockService.setCiudad(this.listCiudades);
-      this.refresh();
-      alert("Se ha creado la ciudad correctamente");
-    }
-    else {
-      alert("La ciudad con este codigo postal ya se encuentra registrada");
-    }
-  }
-
-  cityEdit(modifyCity: Ciudad) {
-    var index = this.listCiudades.findIndex(x => x.codigoPostal === modifyCity.codigoPostal)
-    if ( index === -1) {
-      this.listCiudades[this.ciudadSeleccionada] = modifyCity;
-      console.log( this.listCiudades);
-      this.mockService.setCiudad(this.listCiudades);
-      alert("Se ha modificado la ciudad correctamente");
-    }
-    else {
-      alert("La ciudad con este codigo postal ya se encuentra registrada");
-    }
-  }
-
-  refresh() {
-    this.listCiudades = this.mockService.getCiudad();
+  refreshList() {
+    this.cityService.getCitys().subscribe(
+      (list: any) => {
+        this.listCiudades = list.data as Ciudad[];
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
+      }
+    )
   }
 }

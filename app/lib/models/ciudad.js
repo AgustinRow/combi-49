@@ -1,6 +1,7 @@
 "use strict";
 const Ruta = require("./ruta");
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Ciudad extends Model {
     /**
@@ -14,7 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       Ciudad.hasMany(models.Ruta, { as: "Destino", foreignKey: "destinoId" });
       Ciudad.belongsTo(models.Provincia, { foreignKey: "provinciaId" });
     }
+
   }
+  
   Ciudad.init(
     {
       nombre: DataTypes.STRING,
@@ -27,5 +30,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Ciudad",
     }
   );
+
   return Ciudad;
 };

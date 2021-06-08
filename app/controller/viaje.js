@@ -55,10 +55,10 @@ const update = async (req, res) => {
     } else {
       res.status(400).json({ message: "No se puede modificar viaje" });
     }
-  } catch {}
+  } catch { }
 };
 
-const remove = async (req, res) => {};
+const remove = async (req, res) => { };
 
 const find = async (req, res) => {
   const ruta = req.body;
@@ -110,6 +110,7 @@ const parseViajes = async (res, viajes) => {
   res.status(200).json({ data: result });
 };
 
+//Listar viajes
 const list = async (req, res) => {
   const viaje = req.body;
   try {
@@ -154,42 +155,83 @@ const initialize = async (viaje, res) => {
   }
 };
 
+//Alta
 const create = async (req, res, next) => {
   try {
     const viaje = req.body;
     const chofer = await model.Usuario.findOne({
-      where: { id: viaje.chofer, tipo: 2, habilitado: true },
-    });
-    chofer.getVehiculo({ where: { habilitado: true } }).then((response) => {
-      if (response == null) {
-        model.Vehiculo.findOne({
-          where: { id: viaje.vehiculo, habilitado: true },
-        }).then((vehiculo) => {
-          vehiculo
-            .getChofer({ where: { habilitado: true } })
-            .then((response) => {
-              //TODO: un vehiculo puede asignarse a un viaje que sea otro dia.
-              if (response == null) {
-                chofer.setVehiculo(vehiculo).then((response) => response);
-                initialize(viaje, res);
-              } else {
-                res.status(400).json({
-                  message:
-                    "El vehiculo seleccionado ya tiene un viaje asignado",
-                });
-              }
-            });
-        });
-      } else {
+      where: {
+        id: viaje.chofer.id,
+        tipo: 2,
+        habilitado: true
+      },
+      NOT_IN: [{
+        model: model.Viaje,
+        atributes: ['fecha_salida'],
+        where: {
+          fecha_salida: viaje.fecha_salida
+        }
+      }]
+    }).then(
+      (choferLibre) => {
+        if (choferLibre == null) {
+          res.status(400).json({
+            message: "El chofer seleccionado ya tiene un viaje asignado",
+          });
+        }
+        return choferLibre
+      });
+    const vehiculo = await model.Vehiculo.findOne({
+      where: {
+        id: viaje.vehiculo.id,
+        habilitado: true
+      },
+      NOT_IN: [{
+        model: model.Viaje,
+        atributes: ['fecha_salida'],
+        where: {
+          fecha_salida: viaje.fecha_salida
+        }
+      }]
+    }).then((vehiculoLibre) => {
+      //TODO: un vehiculo puede asignarse a un viaje que sea otro dia.
+      if (vehiculoLibre == null) {
         res.status(400).json({
-          message: "El chofer seleccionado ya tiene un viaje asignado",
+          message:
+            "El vehiculo seleccionado ya tiene un viaje asignado",
         });
       }
+      return vehiculoLibre;
     });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
+    const ruta = await model.Ruta.findOne({
+      where: {
+        id: viaje.ruta.id,
+        habilitado: true
+      }
+    });
+    if (chofer && vehiculo && ruta) {
+      model.Ruta.create({
+        nombre: viaje.nombre,
+        fecha_salida: viaje.fecha_salida,
+        detalle: viaje.detalle,
+        hora: viaje.hora
+      }).then(
+        (nuevoViaje) => {
+          try {
+            nuevoViaje.setChofer(chofer.id);
+            nuevoViaje.setVehiculo(vehiculo.id);
+            nuevoViaje.setRuta(ruta.id);
+            res.status(201).json({ data: response, origen, destino });
+          } catch (err) {
+            console.log(err);
+            res.status(400).json({ message: "Error en origen o destino" });
+          }
+        });
+    }
+} catch (err) {
+  console.log(err);
+  res.status(500).json({ message: "Internal Server Error" });
+}
 };
 
 module.exports = {

@@ -46,7 +46,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-vehiculo-editar [(vehiculoModificado)]="vehiculoSeleccionado" (vehiculoEditEvent)="c('Close click')">
+        <app-vehiculo-editar [(vehiculoModificado)]="vehiculoSeleccionado" (vehiculoEditEvent)="refreshList(); c('Close click')">
             Cargando</app-vehiculo-editar>
     </div>
     <div class="modal-footer">

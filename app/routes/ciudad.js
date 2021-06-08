@@ -8,6 +8,6 @@ router.put("/modificar", Ciudad.update);
 router.get("/buscar/(:id)", Ciudad.find);
 router.post("/alta", Ciudad.create);
 router.delete("/borrar/(:id)", Ciudad.remove);
-router.get("/listar_rutas/(:id)", Ciudad.listRoutesForCity);
+router.get("/listar/(:id)", Ciudad.listRoutesForCity);
 
 module.exports = router;

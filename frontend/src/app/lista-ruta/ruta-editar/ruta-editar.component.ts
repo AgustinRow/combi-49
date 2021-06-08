@@ -1,29 +1,48 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Parada } from 'src/app/module/parada.module';
+import { Ciudad } from 'src/app/module/ciudad.module';
 import { Ruta } from 'src/app/module/ruta.module';
-import { MockService } from 'src/app/service/mock.service.';
+import { CityService } from 'src/app/service/city.service';
+import { RouteService } from 'src/app/service/route.service';
 
 @Component({
   selector: 'app-ruta-editar',
   templateUrl: './ruta-editar.component.html',
-  styleUrls: ['./ruta-editar.component.css']
+  styleUrls: ['./ruta-editar.component.css'],
+  providers: [
+    CityService,
+    RouteService
+  ]
 })
 export class RutaEditarComponent implements OnInit {
-  @Input() listParadas: Parada[];
+  listCiudades: Ciudad[];
   @Input() rutaModificada = new Ruta();
   @Output() routeEditEvent = new EventEmitter();
-  submitted = false;
   form: FormGroup;
   oIndex: number;
   dIndex: number;
 
   constructor(
-    private mockService: MockService
+    private cityService: CityService,
+    private routeService: RouteService
   ) { }
 
   ngOnInit(): void {
-    this.listParadas = this.mockService.getParada();
+    this.cityService.getCitys().subscribe(
+      (list: any) => {
+        this.listCiudades = list.data as Ciudad[];
+        this.oIndex = this.listCiudades.findIndex(x => x.nombre === this.rutaModificada.origen.nombre);
+        this.dIndex = this.listCiudades.findIndex(x => x.nombre === this.rutaModificada.destino.nombre);
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert("El servidor reporta estado: " + error.error.message);
+        }
+      }
+    )
         
     this.form = new FormGroup({
       'nombre': new FormControl({}),
@@ -31,18 +50,29 @@ export class RutaEditarComponent implements OnInit {
       'origen': new FormControl({}),
       'destino': new FormControl({})
     });
-    
-    this.oIndex = this.listParadas.findIndex(x => x.nombre === this.rutaModificada.origen.nombre);
-    this.dIndex = this.listParadas.findIndex(x => x.nombre === this.rutaModificada.destino.nombre);
   }
 
   modifyRoute() {
     if (this.form.valid) 
     {
-      this.rutaModificada.origen = this.listParadas[this.form.value.origen];
-      this.rutaModificada.destino = this.listParadas[this.form.value.destino];
-      this.routeEditEvent.emit();
-      this.submitted = true;
+      this.rutaModificada.origen = this.listCiudades[this.form.value.origen];
+      this.rutaModificada.destino = this.listCiudades[this.form.value.destino];
+      this.routeService.modifyRoute(this.rutaModificada).subscribe(
+        (data: any) => {
+          if (data != null) {
+            alert("Se ha modificado la ruta correctamente");
+            this.routeEditEvent.emit();
+          }
+        },
+        (error) => {
+          if (error.status >= 500) {
+            alert("Problemas para conectarse con el servidor");
+          }
+          else {
+            alert("El servidor reporta estado: " + error.error.message);
+          }
+        }
+      );
     }
   }
 }

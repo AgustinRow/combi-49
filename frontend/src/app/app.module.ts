@@ -34,10 +34,6 @@ import { ListaRutaComponent } from './lista-ruta/lista-ruta.component';
 import { RutaComponent } from './lista-ruta/ruta/ruta.component';
 import { RutaNuevoComponent } from './lista-ruta/ruta-nuevo/ruta-nuevo.component';
 import { RutaEditarComponent } from './lista-ruta/ruta-editar/ruta-editar.component';
-import { ListaParadaComponent } from './lista-parada/lista-parada.component';
-import { ParadaComponent } from './lista-parada/parada/parada.component';
-import { ParadaNuevoComponent } from './lista-parada/parada-nuevo/parada-nuevo.component';
-import { ParadaEditarComponent } from './lista-parada/parada-editar/parada-editar.component';
 import { ListaCiudadComponent } from './lista-ciudad/lista-ciudad.component';
 import { CiudadComponent } from './lista-ciudad/ciudad/ciudad.component';
 import { CiudadNuevoComponent } from './lista-ciudad/ciudad-nuevo/ciudad-nuevo.component';
@@ -106,10 +102,6 @@ export function tokenGetter() {
     RutaComponent,
     RutaNuevoComponent,
     RutaEditarComponent,
-    ListaParadaComponent,
-    ParadaComponent,
-    ParadaNuevoComponent,
-    ParadaEditarComponent,
     ListaCiudadComponent,
     CiudadComponent,
     CiudadNuevoComponent,
