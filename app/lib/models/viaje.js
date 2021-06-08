@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       fecha_salida: DataTypes.DATEONLY,
       detalle: DataTypes.STRING,
       hora: DataTypes.TIME,
-      //asientos_disponibles: DataTypes.INTEGER,
+      asientos_disponibles: DataTypes.INTEGER,
       habilitado: DataTypes.BOOLEAN,
       precio: DataTypes.INTEGER,
     },

@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Usuario.belongsTo(models.Vehiculo, { foreignKey: "vehiculoId" });
       Usuario.hasMany(models.Pasaje, { foreignKey: "UsuarioId" });
-
     }
   }
   Usuario.init(
@@ -30,6 +29,5 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Usuario",
     }
   );
-
   return Usuario;
 };

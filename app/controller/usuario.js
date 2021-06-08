@@ -3,10 +3,6 @@ const Op = require("sequelize").Op;
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const USUARIO_ADMINISTRADOR = 1;
-const USUARIO_CHOFER = 2;
-const USUARIO_PASAJERO = 3;
-
 function jwtToken(user) {
   return jwt.sign(
     {
@@ -26,10 +22,10 @@ const findUser = async (req, res) => {
       if (response) {
         res.status(200).json({ data: parse(response) });
       } else {
-        res.status(402).json({ message: "Bad request." });
+        res.status(402).json({ error: "Bad request." });
       }
     } catch (err) {
-      res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ error: "Internal server error" });
     }
   });
 };
@@ -50,14 +46,14 @@ const login = async (req, res) => {
         } else {
           res
             .status(400)
-            .json({ message: "Contraseña invalida" });
+            .json({ error: "Bad request. Incorrect email or passowrd" });
         }
       } else {
-        res.status(401).json({ message: "El usuario no se encuentra habilitado" });
+        res.status(401).json({ error: "Not Found" });
       }
     } catch (err) {
       console.log(err);
-      res.status(400).json({ message: "Email no regisrado" });
+      res.status(500).json({ error: "Internal server error" });
     }
   });
 };
@@ -83,7 +79,6 @@ function parseUsersData(users) {
 
   return result;
 }
-
 
 const parse = (user) => {
   return {
@@ -147,9 +142,7 @@ const register = async (req, res) => {
   }
 };
 //modificar chofer
-
 const update = async (req, res) => {
-
   const updatedUser = req.body;
   const oldUser = await findDuplicates(updatedUser).then((response) => {
     try {
