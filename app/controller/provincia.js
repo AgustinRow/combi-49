@@ -66,35 +66,6 @@ const update = async (req, res) => {
   }
 };
 
-
-module.exports = { list, create, listCities, update };
-=======
-//modificar provincia
-const updateProvince = async (req, res) => {
-  const updateProvince = req.body;
-  try {
-    model.Provincia.findOne({ where: { id: updateProvince.id } }).then(
-      (response) => {
-        if (response) {
-          model.Provincia.update(updateProvince, {
-            where:
-            {
-              id: updateProvince.id
-            }
-          }).then(
-            (response) => {
-              res.status(200).json({ data: response });
-            });
-        } else {
-          res.status(400).json({ message: "No se encontro la provincia a modificar" });
-        }
-      }
-    );
-  } catch {
-    res.status(500).json({ message: "Internal serve error" });
-  }
-};
-
 //Eliminar provincia
 const remove = async (req, res) => {
   const id = req.params.id;
@@ -120,11 +91,4 @@ const remove = async (req, res) => {
   });
 };
 
-module.exports = {
-  list,
-  create,
-  listCities,
-  updateProvince,
-  remove
-};
-
+module.exports = { list, create, listCities, update, remove };
