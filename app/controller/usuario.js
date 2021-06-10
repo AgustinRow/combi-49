@@ -133,7 +133,6 @@ const register = async (req, res) => {
         [Op.or]: [{ email: user.email }, { dni: user.dni }],
       },
     }).then((response) => {
-      console.log(response);
       if (response.length) {
         res.status(400).json({
           message: "El usuario ya existe, ingrese otro email o dni",

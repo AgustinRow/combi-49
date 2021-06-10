@@ -35,7 +35,7 @@ export class TravelService {
   }
 
   findTravels(travel: Viaje): Observable<Viaje[]> {
-    return this.http.get<Viaje[]>(this.usersUrl + 'buscar/'+travel.ruta.origen.id+'/'+travel.ruta.destino.id+'/'+travel.fecha_salida.toDateString(), httpOptions);
+    return this.http.get<Viaje[]>(this.usersUrl + 'buscar/'+travel.ruta.origen.id+'&'+travel.ruta.destino.id+'&'+travel.fecha_salida.toDateString(), httpOptions);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

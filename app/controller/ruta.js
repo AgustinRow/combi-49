@@ -130,7 +130,6 @@ const list = async (req, res) => {
 const listOrigin = async (req, res) => {
   const cityId = req.params.id;
   model.Ruta.findAll({ where: { origenId: cityId } }).then((response) => {
-    console.log(response);
     response.getOrigen().then((resp) => {
       console.log(resp);
     });

@@ -57,6 +57,7 @@ import { ChoferComponent } from './lista-chofer/chofer/chofer.component';
 import { ChoferEditarComponent } from './lista-chofer/chofer-editar/chofer-editar.component';
 import { ChoferNuevoComponent } from './lista-chofer/chofer-nuevo/chofer-nuevo.component';
 import { SpinnerInterceptor } from './interceptor/spinner.interceptor';
+import { UserNameFilterPipe } from './pipe/user-name-filter.pipe';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -118,7 +119,8 @@ export function tokenGetter() {
     ChoferComponent,
     ChoferEditarComponent,
     ChoferNuevoComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    UserNameFilterPipe
   ],
   imports: [
     BrowserModule,

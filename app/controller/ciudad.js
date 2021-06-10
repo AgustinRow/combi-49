@@ -128,7 +128,6 @@ const update = async (req, res) => {
 
 const listRoutesForCity = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   const ciudad = await model.Ciudad.findOne({ where: { id: id } }).then(
     (response) => {
       return response;

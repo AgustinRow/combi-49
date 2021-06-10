@@ -67,6 +67,7 @@ export class ListaViajeComponent implements OnInit {
     this.travelService.getTravels().subscribe(
       (list: any) => {
         this.lViajes = list.data as Viaje[];
+        console.log(this.lViajes);
       },
       (error) => {
         if (error.status >= 500) {
