@@ -65,7 +65,7 @@ const parseRoute = async (routes) => {
   return await result;
 };
 
-const list = async (req, res) => {
+const listOld = async (req, res) => {
   try {
     const rutas = await model.Ruta.findAll({
       where: { habilitado: true },
@@ -80,15 +80,29 @@ const list = async (req, res) => {
 };
 
 //solo de prueba
-const listOrigin = async (req, res) => {
-  const cityId = req.params.id;
-  model.Ruta.findAll({ where: { origenId: cityId } }).then((response) => {
-    console.log(response);
-    response.getOrigen().then((resp) => {
-      console.log(resp);
+const list = async (req, res) => {
+  try {
+    model.Ruta.findAll({
+      where: { habilitado: true },
+      attributes: ["id", "nombre", "distancia", "duracion"],
+      include: [
+        {
+          model: model.Ciudad,
+          as: "Origen",
+          attributes: ["id", "nombre", "cp"],
+        },
+        {
+          model: model.Ciudad,
+          as: "Destino",
+          attributes: ["id", "nombre", "cp"],
+        },
+      ],
+    }).then((rutas) => {
+      res.status(200).json({ data: rutas });
     });
-    res.status(200).json({ data: response });
-  });
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 const getRoute = async (req, res) => {
@@ -158,7 +172,6 @@ const update = async (req, res) => {
 module.exports = {
   list,
   create,
-  listOrigin,
   getRoute,
   remove,
   update,
