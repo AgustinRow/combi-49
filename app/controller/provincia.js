@@ -7,7 +7,9 @@ const create = async (req, res) => {
     model.Provincia.findOne({ where: { nombre: provincia.nombre } }).then(
       (response) => {
         if (response) {
-          res.status(400).json({ message: "Province already exist" });
+          res
+            .status(400)
+            .json({ message: "La provincia que intenta agregar ya existe" });
         } else {
           model.Provincia.create({
             nombre: provincia.nombre,
@@ -24,7 +26,17 @@ const create = async (req, res) => {
 };
 
 const list = async (req, res) => {
-  model.Provincia.findAll({ where: { habilitado: true } }).then((response) => {
+  model.Provincia.findAll({
+    where: { habilitado: true },
+    attributes: ["id", "nombre"],
+    include: [
+      {
+        as: "Ciudad",
+        model: model.Ciudad,
+        attributes: ["id", "nombre", "cp"],
+      },
+    ],
+  }).then((response) => {
     try {
       res.status(200).json({ data: response });
     } catch {
@@ -33,17 +45,29 @@ const list = async (req, res) => {
   });
 };
 
-const listCities = async (req, res) => {
+const find = async (req, res) => {
   const { id } = req.params;
-  const provincia = await model.Provincia.findOne({
-    where: { id: id, habilitado: true },
-  }).then((response) => response);
-  if (provincia != null) {
-    provincia.getCiudads().then((ciudades) => {
-      res.status(200).json({ provincia: provincia.nombre, ciudades });
+  try {
+    const provincia = await model.Provincia.findOne({
+      where: { id: id, habilitado: true },
+      attributes: ["id", "nombre"],
+      include: [
+        {
+          as: "Ciudad",
+          model: model.Ciudad,
+          attributes: ["id", "nombre", "cp"],
+        },
+      ],
     });
-  } else {
-    res.status(400).json({ message: "Province without cities associated" });
+    if (provincia != null) {
+      res.status(200).json({ data: provincia });
+    } else {
+      res
+        .status(400)
+        .json({ message: "La provincia que intenta bsucar con existe" });
+    }
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 const update = async (req, res) => {
@@ -66,4 +90,4 @@ const update = async (req, res) => {
   }
 };
 
-module.exports = { list, create, listCities, update };
+module.exports = { list, create, find, update };

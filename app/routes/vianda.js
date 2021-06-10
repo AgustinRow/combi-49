@@ -5,5 +5,6 @@ const Vianda = require("../controller/vianda");
 //const verify = require("../controller/verifyPayment");
 router.post("/alta", Vianda.create);
 router.put("/modificar", Vianda.update);
+router.delete("/baja/(:id)", Vianda.remove);
 
 module.exports = router;

@@ -39,36 +39,179 @@ const create = async (req, res) => {
   }
 };
 
-const parsePasajes = async (pasajes) => {
-  let result = [];
-  for (i = 0; i < pasajes.length; i++) {
-    let pasaje = {
-      id: pasajes[i].id,
-      estado: await pasajes[i].getEstado(),
-      viaje: await pasajes[i].getViaje(),
-      precio: pasajes[i].precio,
-    };
-    result.unshift(pasaje);
-  }
-  return result;
-};
-
-const list = async (req, res) => {
-  const { id } = req.params;
+const findTravelsForUser = async (req, res) => {
+  const { id } = req.query;
   try {
-    const usuario = await model.Usuario.findOne({ where: { id: id, tipo: 3 } });
-    const pasaje = await usuario.getPasajes();
-    //const estado = await pasaje.getEstado();
-    //const viaje = await pasaje.getViajes();
-    const pasajes = await parsePasajes(pasaje);
-    res.status(200).json({ usuario: usuario, pasajes });
+    model.Usuario.findOne({
+      where: { id: id, tipo: 3, habilitado: true },
+      attributes: ["id", "email", "nombre", "apellido", "dni"],
+      include: [
+        {
+          model: model.Pasaje,
+          as: "Pasaje",
+          attributes: ["id", "precio"],
+          include: [
+            {
+              model: model.Estado,
+              as: "Estado",
+              attributes: ["id", "estado"],
+            },
+            {
+              model: model.Viaje,
+              as: "Viaje",
+              order: ["fecha_salida"],
+              attributes: [
+                "id",
+                "nombre",
+                "fecha_salida",
+                "hora",
+                "detalle",
+                "asientos_disponibles",
+                "precio",
+              ],
+              include: [
+                {
+                  model: model.Estado,
+                  as: "Estado",
+                  attributes: ["id", "estado"],
+                },
+                {
+                  model: model.Ruta,
+                  as: "Ruta",
+                  attributes: ["id", "distancia", "duracion"],
+                  include: [
+                    {
+                      model: model.Ciudad,
+                      as: "Origen",
+                      attributes: ["id", "nombre", "cp"],
+                      include: [
+                        {
+                          model: model.Provincia,
+                          as: "Provincia",
+                          attributes: ["id", "nombre"],
+                        },
+                      ],
+                    },
+                    {
+                      model: model.Ciudad,
+                      as: "Destino",
+                      attributes: ["id", "nombre", "cp"],
+                      include: [
+                        {
+                          model: model.Provincia,
+                          as: "Provincia",
+                          attributes: ["id", "nombre"],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    }).then((pasajero) => {
+      res.status(200).json({ pasajero: pasajero });
+    });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server error" });
+  }
+};
+//TODO
+const remove = async (req, res) => {};
+const list = async (req, res) => {
+  try {
+    model.Pasaje.findAll({
+      where: { habilitado: true },
+      attributes: ["id", "precio"],
+      include: [
+        { model: model.Estado, as: "Estado", attributes: ["id", "estado"] },
+        {
+          model: model.Viaje,
+          as: "Viaje",
+          order: ["fecha_salida"],
+          where: { habilitado: true },
+          attributes: [
+            "id",
+            "nombre",
+            "fecha_salida",
+            "detalle",
+            "hora",
+            "asientos_disponibles",
+            "precio",
+          ],
+          include: [
+            {
+              model: model.Estado,
+              as: "Estado",
+              attributes: ["id", "estado"],
+            },
+            {
+              model: model.Vehiculo,
+              as: "Vehiculo",
+              attributes: [
+                "id",
+                "patente",
+                "asientos",
+                "modelo",
+                "marca",
+                "confort",
+              ],
+              include: [
+                {
+                  model: model.Usuario,
+                  as: "Chofer",
+                  attributes: ["id", "nombre", "apellido", "email", "dni"],
+                },
+              ],
+            },
+            {
+              model: model.Ruta,
+              as: "Ruta",
+              attributes: ["id", "distancia", "duracion"],
+              include: [
+                {
+                  model: model.Ciudad,
+                  as: "Origen",
+                  attributes: ["id", "nombre", "cp"],
+                  include: [
+                    {
+                      model: model.Provincia,
+                      as: "Provincia",
+                      attributes: ["id", "nombre"],
+                    },
+                  ],
+                },
+                {
+                  model: model.Ciudad,
+                  as: "Destino",
+                  attributes: ["id", "nombre", "cp"],
+                  include: [
+                    {
+                      model: model.Provincia,
+                      as: "Provincia",
+                      attributes: ["id", "nombre"],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    }).then((pasajes) => {
+      res.status(200).json({ pasajes: pasajes });
+    });
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
 module.exports = {
   create,
+  findTravelsForUser,
+  remove,
   list,
 };

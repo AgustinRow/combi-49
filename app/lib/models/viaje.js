@@ -10,9 +10,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       //TODO: asignarle los id correspondientes
-      Viaje.belongsTo(models.Ruta, { foreignKey: "RutaId" });
-      Viaje.hasOne(models.Vehiculo, { foreignKey: "ViajeId" });
-      Viaje.hasMany(models.Pasaje, { foreignKey: "ViajeId" });
+      Viaje.belongsTo(models.Ruta, { as: "Ruta", foreignKey: "RutaId" });
+      Viaje.hasOne(models.Vehiculo, { as: "Vehiculo", foreignKey: "ViajeId" });
+      Viaje.hasMany(models.Pasaje, { as: "Pasaje", foreignKey: "ViajeId" });
+      Viaje.belongsTo(models.Estado, {
+        as: "Estado",
+        foreignKey: "EstadoId",
+      });
     }
   }
   Viaje.init(

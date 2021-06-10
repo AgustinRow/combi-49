@@ -3,21 +3,24 @@ const Op = require("sequelize").Op;
 
 // listar ciudades
 const list = async (req, res) => {
-  model.Ciudad.findAll({ where: { habilitado: true } }).then((response) => {
+  model.Ciudad.findAll({
+    where: { habilitado: true },
+    attributes: ["id", "nombre", "cp"],
+    include: [
+      {
+        model: model.Provincia,
+        attributes: ["id", "nombre"],
+        as: "Provincia",
+      },
+    ],
+  }).then((response) => {
     try {
-      res.status(200).json({ data: parseCitiesData(response) });
+      res.status(200).json({ data: response });
     } catch (err) {
+      console.log(err);
       res.status(500).json({ message: "Internal server error" });
     }
   });
-
-  function parseCitiesData(cities) {
-    var result = [];
-    cities.forEach((element) => {
-      result.unshift(parse(element));
-    });
-    return result;
-  }
 };
 
 const findDuplicates = async (city) => {
@@ -30,14 +33,6 @@ const findDuplicateById = async (city) => {
   });
   return result;
 };
-
-function parse(city) {
-  return {
-    id: city.id,
-    nombre: city.nombre,
-    cp: city.cp,
-  };
-}
 
 //alta ciudad
 // chequear que la ciudad este disponible (habilitado: true)
@@ -74,16 +69,25 @@ const find = async (req, res) => {
   const city = req.params.id;
   if (city != undefined) {
     try {
-      model.Ciudad.findOne({ where: { id: city, habilitado: true } }).then(
-        (response) => {
-          try {
-            res.status(200).json({ data: parse(response) });
-          } catch (err) {
-            res.status(400).json({ message: "Id not found" });
-          }
+      model.Ciudad.findOne({
+        where: { habilitado: true },
+        attributes: ["id", "nombre", "cp"],
+        include: [
+          {
+            model: model.Provincia,
+            attributes: ["id", "nombre"],
+            as: "Provincia",
+          },
+        ],
+      }).then((response) => {
+        try {
+          res.status(200).json({ data: response });
+        } catch (err) {
+          res.status(400).json({ message: "Id not found" });
         }
-      );
+      });
     } catch (err) {
+      console.log(err);
       res.status(400).json({ message: "Bad Request" });
     }
   } else {
@@ -91,7 +95,7 @@ const find = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-//TODO: actualizar la modificacion para la provincia y la parada
+//TODO: actualizar la modificacion para la provincia
 
 const update = async (req, res) => {
   const city = req.body;
@@ -108,7 +112,7 @@ const update = async (req, res) => {
       }
     });
   } else {
-    res.status(400).json({ message: "This city already exist or id is wrong" });
+    res.status(400).json({ message: "La ciudad ya existe" });
   }
 };
 

@@ -3,7 +3,7 @@ const Op = require("sequelize").Op;
 
 const findViandaWithName = async (vianda) => {
   const exist = await model.Vianda.findOne({
-    where: { nombre: vianda.nombre },
+    where: { nombre: vianda.nombre, habilitado: true },
   });
   return await exist;
 };
@@ -20,7 +20,7 @@ const create = async (req, res) => {
         nombre: vianda.nombre,
         descripcion: vianda.descripcion,
         precio: vianda.precio,
-        habiltiado: true,
+        habiltado: true,
       }).then((response) => {
         res.status(200).json({ data: response });
       });
@@ -59,8 +59,22 @@ const update = async (req, res) => {
   }
 };
 
+const remove = async (req, res) => {
+  const { id } = req.params;
+  try {
+    model.Vianda.update({ habilitado: false }, { where: { id: id } }).then(
+      (response) => {
+        console.log(response);
+        res.status(201).json({ message: "Vianda Eliminada" });
+      }
+    );
+  } catch {
+    res.status(500).json({ message: "Internal Server error" });
+  }
+};
 
 module.exports = {
   create,
   update,
+  remove,
 };

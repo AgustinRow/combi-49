@@ -61,15 +61,55 @@ const update = async (req, res) => {
 const remove = async (req, res) => {};
 
 const find = async (req, res) => {
-  const ruta = req.body;
+  const viaje = req.query;
   try {
-    const rutax = await model.Ruta.findAll({
+    const ruta = await model.Ruta.findAll({
       where: {
-        [Op.and]: [{ origenId: ruta.origen }, { destinoId: ruta.destino }],
+        [Op.and]: [{ origenId: viaje.origen }, { destinoId: viaje.destino }],
       },
+      attributes: ["id", "nombre", "distancia", "duracion"],
+      include: [
+        {
+          model: model.Viaje,
+          where: { fecha_salida: viaje.fecha },
+          attributes: [
+            "id",
+            "nombre",
+            "precio",
+            "detalle",
+            "asientos_disponibles",
+            "fecha_salida",
+            "hora",
+          ],
+        },
+        {
+          model: model.Ciudad,
+          as: "Origen",
+          include: [
+            {
+              model: model.Provincia,
+              as: "Provincia",
+              attributes: ["id", "nombre"],
+            },
+          ],
+          attributes: ["id", "nombre", "cp"],
+        },
+        {
+          model: model.Ciudad,
+          as: "Destino",
+          include: [
+            {
+              model: model.Provincia,
+              as: "Provincia",
+              attributes: ["id", "nombre"],
+            },
+          ],
+          attributes: ["id", "nombre", "cp"],
+        },
+      ],
     });
-    const result = await listTravel(rutax, ruta.fecha_salida);
-    res.status(200).json({ data: result });
+    //const result = await listTravel(ruta, ruta.fecha_salida);
+    res.status(200).json({ data: ruta });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "internal server error" });
@@ -110,7 +150,7 @@ const parseViajes = async (res, viajes) => {
   res.status(200).json({ data: result });
 };
 
-const list = async (req, res) => {
+const listOLD = async (req, res) => {
   const viaje = req.body;
   try {
     model.Viaje.findAll({
@@ -185,6 +225,85 @@ const create = async (req, res, next) => {
           message: "El chofer seleccionado ya tiene un viaje asignado",
         });
       }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const list = async (req, res) => {
+  try {
+    model.Viaje.findAll({
+      order: ["fecha_salida"],
+      attributes: [
+        "id",
+        "nombre",
+        "fecha_salida",
+        "detalle",
+        "hora",
+        "asientos_disponibles",
+        "precio",
+      ],
+      include: [
+        {
+          model: model.Estado,
+          as: "Estado",
+          attributes: ["id", "estado"],
+        },
+        {
+          model: model.Vehiculo,
+          as: "Vehiculo",
+          attributes: [
+            "id",
+            "patente",
+            "asientos",
+            "modelo",
+            "marca",
+            "confort",
+          ],
+          include: [
+            {
+              model: model.Usuario,
+              as: "Chofer",
+              attributes: ["id", "nombre", "apellido", "email", "dni"],
+            },
+          ],
+        },
+        {
+          model: model.Ruta,
+          as: "Ruta",
+          attributes: ["id", "distancia", "duracion"],
+          include: [
+            {
+              model: model.Ciudad,
+              as: "Origen",
+              attributes: ["id", "nombre", "cp"],
+              include: [
+                {
+                  model: model.Provincia,
+                  as: "Provincia",
+                  attributes: ["id","nombre"],
+                },
+              ],
+            },
+            {
+              model: model.Ciudad,
+              as: "Destino",
+              attributes: ["id", "nombre", "cp"],
+              include: [
+                {
+                  model: model.Provincia,
+                  as: "Provincia",
+                  attributes: ["id","nombre"],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    }).then((viajes) => {
+      res.status(200).json({ viajes: viajes });
     });
   } catch (err) {
     console.log(err);
