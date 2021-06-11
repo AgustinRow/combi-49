@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       //TODO: asignarle los id correspondientes
       Viaje.belongsTo(models.Ruta, { foreignKey: "RutaId" });
       Viaje.hasOne(models.Vehiculo, { foreignKey: "ViajeId" });
+      Viaje.hasMany(models.Pasaje, { foreignKey: "ViajeId" });
     }
   }
   Viaje.init(
@@ -22,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       hora: DataTypes.TIME,
       asientos_disponibles: DataTypes.INTEGER,
       habilitado: DataTypes.BOOLEAN,
+      precio: DataTypes.INTEGER,
     },
     {
       sequelize,

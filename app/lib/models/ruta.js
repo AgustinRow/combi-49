@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       habilitado: DataTypes.BOOLEAN,
       origenId: DataTypes.INTEGER,
       destinoId: DataTypes.INTEGER,
+      duracion: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -46,62 +46,24 @@ const listCities = async (req, res) => {
     res.status(400).json({ message: "Province without cities associated" });
   }
 };
-
-//modificar provincia
-const updateProvince = async (req, res) => {
-  const updateProvince = req.body;
+const update = async (req, res) => {
+  const provincia = req.body;
   try {
-    model.Provincia.findOne({ where: { id: updateProvince.id } }).then(
-      (response) => {
-        if (response) {
-          model.Provincia.update(updateProvince, {
-            where:
-            {
-              id: updateProvince.id
-            }
-          }).then(
-            (response) => {
-              res.status(200).json({ data: response });
-            });
-        } else {
-          res.status(400).json({ message: "No se encontro la provincia a modificar" });
-        }
+    model.Provincia.update(
+      { nombre: provincia.nombre },
+      {
+        where: { id: provincia.id, habilitado: true },
       }
-    );
+    ).then((response) => {
+      if (response > 0) {
+        res.status(200).json({ data: provincia });
+      } else {
+        res.status(400).json({ message: "No se pudo actualizar provincia" });
+      }
+    });
   } catch {
-    res.status(500).json({ message: "Internal serve error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
-//Eliminar provincia
-const remove = async (req, res) => {
-  const id = req.params.id;
-  model.Provincia.findOne({ where: { id: id } }).then((response) => {
-    try {
-      if (response.dataValues.habilitado) {
-        model.Provincia.update(
-          {
-            habilitado: false,
-          },
-          {
-            where: { id: id },
-          }
-        ).then((response) => {
-          res.status(200).json({ message: "removed" });
-        });
-      } else {
-        res.status(400).json({ message: "La provincia no existe" });
-      }
-    } catch (err) {
-      res.status(400).json({ message: "Bad Request" });
-    }
-  });
-};
-
-module.exports = {
-  list,
-  create,
-  listCities,
-  updateProvince,
-  remove
-};
+module.exports = { list, create, listCities, update };

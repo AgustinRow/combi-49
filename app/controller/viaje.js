@@ -42,6 +42,7 @@ const update = async (req, res) => {
         ruta: form.ruta,
         fecha_salida: form.fecha_salida,
         hora: form.hora,
+        precio: form.hora,
         RutaId: form.ruta,
       };
       viaje.setVehiculo(vehiculo);
@@ -67,7 +68,7 @@ const find = async (req, res) => {
         [Op.and]: [{ origenId: ruta.origen }, { destinoId: ruta.destino }],
       },
     });
-    const result = await listTravel(rutax);
+    const result = await listTravel(rutax, ruta.fecha_salida);
     res.status(200).json({ data: result });
   } catch (err) {
     console.log(err);
@@ -75,10 +76,10 @@ const find = async (req, res) => {
   }
 };
 
-const listTravel = async (ruta) => {
+const listTravel = async (ruta, fecha) => {
   let result = [];
   for (i = 0; i < ruta.length; i++) {
-    const test = await ruta[i].getViajes();
+    const test = await ruta[i].getViajes({ where: { fecha_salida: fecha } });
     result.unshift(test);
   }
   return result;
@@ -102,6 +103,7 @@ const parseViajes = async (res, viajes) => {
       vechiculo: vehiculo,
       chofer: chofer,
       ruta: rutax,
+      precio: viajes[i].precio,
     };
     result.unshift(res);
   }
@@ -114,8 +116,11 @@ const list = async (req, res) => {
     model.Viaje.findAll({
       order: ["fecha_salida"],
     }).then((response) => {
-      let result;
-      parseViajes(res, response);
+      if (response != null) {
+        parseViajes(res, response);
+      } else {
+        res.status(200).json({ data: {} });
+      }
     });
   } catch {
     res.status(500).json({ message: "Internal Server Error" });
@@ -134,6 +139,7 @@ const initialize = async (viaje, res) => {
       asientos_disponibles: vehiculo.asientos,
       fecha_salida: viaje.fecha_salida,
       RutaId: viaje.ruta,
+      precio: viaje.precio,
       habilitado: true,
     }).then((viajeCreado) => {
       model.Vehiculo.findOne({
