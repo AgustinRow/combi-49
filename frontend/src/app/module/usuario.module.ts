@@ -10,4 +10,5 @@ export class Usuario{
     password: string;    //password
     habilitado: boolean;  //activo
     pasajes: Pasaje[];
+    vehiculoId: number;
 }

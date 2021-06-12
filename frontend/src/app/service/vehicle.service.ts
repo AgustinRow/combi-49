@@ -37,6 +37,10 @@ export class VehicleService {
     return this.http.delete<Vehiculo>(this.vehicleUrl + 'borrar/' + id, httpOptions);
   }
 
+  getavailablevehicles(): Observable<Vehiculo[]> {
+    return this.http.get<Vehiculo[]>(this.vehicleUrl + 'listar_disponibles');
+  }
+
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
