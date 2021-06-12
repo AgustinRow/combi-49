@@ -25,7 +25,7 @@ export class UserService {
   }
 
   getUsers(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(this.usersUrl + 'lista_usuarios');
+    return this.http.get<Usuario[]>(this.usersUrl + 'lista_pasajeros');
   }
 
   getChoffers(): Observable<Usuario[]> {
@@ -55,4 +55,3 @@ export class UserService {
     console.log('UserService: ' + message);
   }
 }
-

@@ -30,7 +30,7 @@ export class ListaCiudadComponent implements OnInit {
       this.ciudadSeleccionada = this.listCiudades.indexOf(select);
       this.aux = new Ciudad();
       this.aux.nombre = select.nombre;
-      this.aux.provincia = select.provincia;
+      this.aux.Provincia = select.Provincia;
       this.aux.id = select.id;
       this.aux.cp = select.cp;
     }

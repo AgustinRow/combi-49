@@ -1,3 +1,5 @@
+<ngb-rating [max]="5" [(rate)]="currentRate" [readonly]="false"></ngb-rating>
+<p>Rate: {{currentRate}}</p>
 <div class="row m-3 d-flex justify-content-center">
     <div class="col-m">
         <div class="card text-center" style="width:600px">
@@ -17,7 +19,7 @@
                             <label for="destino">Destino:</label>
                             <select type="text" class="form-control" formControlName="destino" name="destino" required>
                                 <ng-container *ngFor="let destino of listCiudades; index as i">
-                                    <option [value]="i" *ngIf="form.value.origen != i">{{ destino.nombre }}</option>
+                                    <option [value]="i" *ngIf="form.value.Origen != i">{{ destino.nombre }}</option>
                                 </ng-container>
                             </select>
                         </div>

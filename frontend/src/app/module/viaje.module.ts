@@ -12,6 +12,7 @@ export class Viaje{
     borradoLogico: number;  //activo
     chofer: Usuario;
     vehiculo: Vehiculo;
+    precio: number;
     ruta: Ruta;
 
     choferId: Number;

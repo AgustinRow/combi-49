@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   listViajes: Viaje[];
   form: FormGroup;
   hoy = new Date(Date.now());
+  currentRate = 0;
 
   constructor(
     private cityService: CityService

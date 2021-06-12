@@ -4,6 +4,6 @@ export class Ciudad{
     id: number;
     nombre: string;
     cp: number;
-    provincia: Provincia;
+    Provincia: Provincia;
     borradoLogico: boolean;  //activo
 }

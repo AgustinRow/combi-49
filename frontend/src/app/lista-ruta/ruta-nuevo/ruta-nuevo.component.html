@@ -22,7 +22,7 @@
         <label for="destino">Destino:</label>
         <select type="text" class="form-control" formControlName="destino" name="destino" required>
             <ng-container *ngFor="let destino of listCiudades; index as i">
-                <option [value]="i" *ngIf="form.value.origen != i">{{ destino.nombre }}
+                <option [value]="i" *ngIf="form.value.Origen != i">{{ destino.nombre }}
                 </option>
             </ng-container>
         </select>

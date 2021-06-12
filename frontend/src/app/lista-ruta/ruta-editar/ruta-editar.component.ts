@@ -31,8 +31,8 @@ export class RutaEditarComponent implements OnInit {
     this.cityService.getCitys().subscribe(
       (list: any) => {
         this.listCiudades = list.data as Ciudad[];
-        this.oIndex = this.listCiudades.findIndex(x => x.nombre === this.rutaModificada.origen.nombre);
-        this.dIndex = this.listCiudades.findIndex(x => x.nombre === this.rutaModificada.destino.nombre);
+        this.oIndex = this.listCiudades.findIndex(x => x.nombre === this.rutaModificada.Origen.nombre);
+        this.dIndex = this.listCiudades.findIndex(x => x.nombre === this.rutaModificada.Destino.nombre);
       },
       (error) => {
         if (error.status >= 500) {
@@ -55,8 +55,8 @@ export class RutaEditarComponent implements OnInit {
   modifyRoute() {
     if (this.form.valid) 
     {
-      this.rutaModificada.origen = this.listCiudades[this.form.value.origen];
-      this.rutaModificada.destino = this.listCiudades[this.form.value.destino];
+      this.rutaModificada.Origen = this.listCiudades[this.form.value.Origen];
+      this.rutaModificada.Destino = this.listCiudades[this.form.value.Destino];
       this.routeService.modifyRoute(this.rutaModificada).subscribe(
         (data: any) => {
           if (data != null) {

@@ -43,6 +43,7 @@ export class ViajeEditarComponent implements OnInit {
       'hora': new FormControl({}),
       'chofer': new FormControl({}),
       'vehiculo': new FormControl({}),
+      'precio': new FormControl({}),
       'detalle': new FormControl({})
     });
     

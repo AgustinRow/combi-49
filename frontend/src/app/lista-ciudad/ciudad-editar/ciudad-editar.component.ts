@@ -31,7 +31,7 @@ export class CiudadEditarComponent implements OnInit {
     this.provinceService.getProvinces().subscribe(
       (list: any) => {
         this.listProvincias = list.data as Provincia[];
-        this.provIndex = this.listProvincias.findIndex(x => x.nombre === this.ciudadModificada.provincia.nombre)
+        this.provIndex = this.listProvincias.findIndex(x => x.nombre === this.ciudadModificada.Provincia.nombre)
       },
       (error) => {
         if (error.status >= 500) {
@@ -46,7 +46,7 @@ export class CiudadEditarComponent implements OnInit {
     this.form = new FormGroup({
       'nombre': new FormControl({ value: this.ciudadModificada.nombre }),
       'codigoPostal': new FormControl({ value: this.ciudadModificada.cp }),
-      'provincia': new FormControl({ value: this.ciudadModificada.provincia.nombre })
+      'provincia': new FormControl({ value: this.ciudadModificada.Provincia.nombre })
     });
 
   }

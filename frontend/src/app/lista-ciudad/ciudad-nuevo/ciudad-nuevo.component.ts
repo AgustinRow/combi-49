@@ -49,7 +49,7 @@ export class CiudadNuevoComponent implements OnInit {
 
   newCity() {
     if (this.form.valid) {
-      this.ciudadNueva.provincia = this.listProvincias[this.form.value.provincia];;
+      this.ciudadNueva.Provincia = this.listProvincias[this.form.value.provincia];;
       this.cityService.addCity(this.ciudadNueva).subscribe(
         (data: any) => {
           if (data != null) {

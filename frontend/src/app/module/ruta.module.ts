@@ -5,7 +5,7 @@ export class Ruta{
     nombre: string;
     distancia: string;
     duracion: number;
-    origen: Ciudad;
-    destino: Ciudad;
+    Origen: Ciudad;
+    Destino: Ciudad;
     borradoLogico: number;  //activo
 }

@@ -19,6 +19,7 @@ export class TravelService {
   ) { }
 
   addTravel(travel: Viaje): Observable<Viaje> {
+    console.log(travel);
     return this.http.post<Viaje>(this.usersUrl + 'alta', travel, httpOptions);
   }
 
@@ -35,7 +36,7 @@ export class TravelService {
   }
 
   findTravels(travel: Viaje): Observable<Viaje[]> {
-    return this.http.get<Viaje[]>(this.usersUrl + 'buscar/'+travel.ruta.origen.id+'&'+travel.ruta.destino.id+'&'+travel.fecha_salida.toDateString(), httpOptions);
+    return this.http.get<Viaje[]>(this.usersUrl + 'buscar/'+travel.ruta.Origen.id+'&'+travel.ruta.Destino.id+'&'+travel.fecha_salida.toDateString(), httpOptions);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

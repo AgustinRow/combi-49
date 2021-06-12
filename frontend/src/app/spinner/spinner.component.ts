@@ -14,7 +14,6 @@ export class SpinnerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.isLoaging);
   }
 
 }
