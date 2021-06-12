@@ -18,20 +18,20 @@ export class RouteService {
     private http: HttpClient
   ) { }
 
-  addRoute(province: Ruta): Observable<Ruta> {
-    return this.http.post<Ruta>(this.usersUrl + 'alta', province, httpOptions);
+  addRoute(route: Ruta): Observable<Ruta> {
+    return this.http.post<Ruta>(this.usersUrl + 'alta', route, httpOptions);
   }
 
   getRoutes(): Observable<Ruta[]> {
     return this.http.get<Ruta[]>(this.usersUrl + 'listar');
   }
 
-  modifyRoute(province: Ruta): Observable<Ruta> {
-    return this.http.put<Ruta>(this.usersUrl + 'modificar', province, httpOptions);
+  modifyRoute(route: Ruta): Observable<Ruta> {
+    return this.http.put<Ruta>(this.usersUrl + 'modificar', route, httpOptions);
   }
 
-  deleteRoute(province: Ruta): Observable<any> {
-    return this.http.delete<Ruta>(this.usersUrl + 'borrar/' + province.id, httpOptions);
+  deleteRoute(route: Ruta): Observable<any> {
+    return this.http.delete<Ruta>(this.usersUrl + 'borrar/' + route.id, httpOptions);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

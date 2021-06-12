@@ -2,8 +2,9 @@ import { Usuario } from "./usuario.module";
 import { Viaje } from "./viaje.module";
 
 export class Valoracion{
-    idValoracion: number;
+    id: number;
     puntuacion: number;
+    detalle: String;
     viaje: Viaje;
     usuario: Usuario
     borradoLogico: number;  //activo

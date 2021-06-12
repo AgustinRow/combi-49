@@ -1,8 +1,5 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { Viaje } from "../module/viaje.module";
-import { Ruta } from "../module/ruta.module";
-import { Ciudad } from "../module/ciudad.module";
-import { Provincia } from "../module/provincia.module";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../service/user.service';
 import { Usuario } from '../module/usuario.module';
