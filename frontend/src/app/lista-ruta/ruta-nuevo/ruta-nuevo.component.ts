@@ -53,7 +53,7 @@ export class RutaNuevoComponent implements OnInit {
     if(this.form.valid) 
     {
       this.rutaNueva.Origen = this.listCiudades[this.form.value.origen];
-      this.rutaNueva.Destino = this.listCiudades[this.form.value.oestino];
+      this.rutaNueva.Destino = this.listCiudades[this.form.value.destino];
       this.routeService.addRoute(this.rutaNueva).subscribe(
         (data: any) => {
           if (data != null) {
