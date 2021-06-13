@@ -32,9 +32,11 @@ const findUser = async (req, res) => {
 
 const login = async (req, res) => {
   const user = req.body;
-  model.Usuario.findOne({ where: { email: user.email } }).then((response) => {
+  model.Usuario.findOne({
+    where: { email: user.email, habilitado: true },
+  }).then((response) => {
     try {
-      if (response.habilitado) {
+      if (response != null) {
         if (user.password === response.password) {
           const token = jwtToken(response);
 
@@ -44,9 +46,7 @@ const login = async (req, res) => {
           //res.json({ data: parse(response) });
           //res.status(200);
         } else {
-          res
-            .status(400)
-            .json({ error: "Bad request. Incorrect email or passowrd" });
+          res.status(400).json({ error: "Email o contraseña incorrecto" });
         }
       } else {
         res.status(401).json({ error: "Not Found" });
@@ -212,7 +212,7 @@ const listPassengers = async (req, res) => {
   try {
     model.Usuario.findAll({ where: { habilitado: true, tipo: 3 } }).then(
       (response) => {
-        res.json({ data: parseUsersData(response) });
+        res.json({ data: response });
         res.status(200);
       }
     );
@@ -235,6 +235,19 @@ const profile = async (req, res) => {
   }
 };
 
+const listAvailableDriver = async (req, res) => {
+  try {
+    model.Usuario.findAll({
+      where: { tipo: 2, habilitado: true, vehiculoId: null },
+      attributes: ["id", "nombre", "email", "apellido"],
+    }).then((response) => {
+      res.status(200).json({ data: response });
+    });
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 //TODO: implementar el recuperar contraseñ
 const recoverPassword = async (req, res) => {};
 
@@ -248,4 +261,5 @@ module.exports = {
   listPassengers,
   profile,
   recoverPassword,
+  listAvailableDriver,
 };

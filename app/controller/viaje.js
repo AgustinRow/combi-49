@@ -170,25 +170,21 @@ const listOLD = async (req, res) => {
 const initialize = async (viaje, res) => {
   try {
     const vehiculo = await model.Vehiculo.findOne({
-      where: { id: viaje.vehiculo },
+      where: { id: viaje.vehiculo.id },
     }).then((response) => response);
-    model.Viaje.create({
+    const viajeNuevo = await model.Viaje.create({
       nombre: viaje.nombre,
       detalle: viaje.detalle,
       hora: viaje.hora,
       asientos_disponibles: vehiculo.asientos,
       fecha_salida: viaje.fecha_salida,
-      RutaId: viaje.ruta,
+      RutaId: viaje.ruta.id,
       precio: viaje.precio,
+      EstadoId: 1, //1-Pendiente 
       habilitado: true,
-    }).then((viajeCreado) => {
-      model.Vehiculo.findOne({
-        where: { id: viaje.vehiculo, habilitado: true },
-      }).then((response) => {
-        response.setViaje(viajeCreado);
-      });
-      res.status(200).json({ data: viajeCreado });
     });
+    await vehiculo.setViaje(viajeNuevo);
+    res.status(200).json({ data: viajeNuevo });
   } catch {
     res.status(500);
   }
@@ -198,12 +194,12 @@ const create = async (req, res, next) => {
   try {
     const viaje = req.body;
     const chofer = await model.Usuario.findOne({
-      where: { id: viaje.chofer, tipo: 2, habilitado: true },
+      where: { id: viaje.chofer.id, tipo: 2, habilitado: true },
     });
     chofer.getVehiculo({ where: { habilitado: true } }).then((response) => {
       if (response == null) {
         model.Vehiculo.findOne({
-          where: { id: viaje.vehiculo, habilitado: true },
+          where: { id: viaje.vehiculo.id, habilitado: true },
         }).then((vehiculo) => {
           vehiculo
             .getChofer({ where: { habilitado: true } })
@@ -273,7 +269,7 @@ const list = async (req, res) => {
         {
           model: model.Ruta,
           as: "Ruta",
-          attributes: ["id", "distancia", "duracion"],
+          attributes: ["id", "nombre", "distancia", "duracion"],
           include: [
             {
               model: model.Ciudad,
@@ -283,7 +279,7 @@ const list = async (req, res) => {
                 {
                   model: model.Provincia,
                   as: "Provincia",
-                  attributes: ["id","nombre"],
+                  attributes: ["id", "nombre"],
                 },
               ],
             },
@@ -295,7 +291,7 @@ const list = async (req, res) => {
                 {
                   model: model.Provincia,
                   as: "Provincia",
-                  attributes: ["id","nombre"],
+                  attributes: ["id", "nombre"],
                 },
               ],
             },
@@ -303,7 +299,7 @@ const list = async (req, res) => {
         },
       ],
     }).then((viajes) => {
-      res.status(200).json({ viajes: viajes });
+      res.status(200).json({ data: viajes });
     });
   } catch (err) {
     console.log(err);

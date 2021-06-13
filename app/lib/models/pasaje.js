@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "UsuarioId",
       });
       Pasaje.belongsTo(models.Viaje, { as: "Viaje", foreignKey: "ViajeId" });
+      Pasaje.belongsTo(models.Vianda, { foreignKey: "ViandaId" });
     }
   }
   Pasaje.init(

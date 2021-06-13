@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Vianda.hasMany(models.Pasaje, { foreignKey: "ViandaId" });
     }
   }
   Vianda.init(
@@ -17,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       precio: DataTypes.INTEGER,
       descripcion: DataTypes.STRING,
       habilitado: DataTypes.BOOLEAN,
+      stock: DataTypes.INTEGER,
     },
     {
       sequelize,

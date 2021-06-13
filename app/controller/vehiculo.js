@@ -29,7 +29,7 @@ const countVehicle = async () => {
   }
 };
 //alta vehiculo
-const addVehicle = async (req, res) => {
+const add = async (req, res) => {
   const vehiculo = req.body;
   const oldVehicleExist = await findDuplicates(vehiculo);
   if (oldVehicleExist[0]) {
@@ -48,7 +48,7 @@ const addVehicle = async (req, res) => {
   }
 };
 //listar vehiculos
-const listVehicle = async (req, res, next) => {
+const list = async (req, res, next) => {
   try {
     model.Vehiculo.findAll({ where: { habilitado: true } }).then((response) => {
       res.status(200).json({ data: response });
@@ -56,6 +56,18 @@ const listVehicle = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Internal Server error" });
+  }
+};
+const listAvailableVehicle = async (req, res) => {
+  try {
+    model.Vehiculo.findAll({
+      where: { habilitado: true, ViajeId: null },
+      attributes: ["id", "patente", "asientos", "marca", "confort"],
+    }).then((response) => {
+      res.status(200).json({ data: response });
+    });
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 //modificar vehiculo
@@ -121,9 +133,10 @@ const remove = async (req, res) => {
   });
 };
 module.exports = {
-  addVehicle,
-  listVehicle,
+  add,
+  list,
   findOneVehicle,
   updateVehicle,
   remove,
+  listAvailableVehicle,
 };

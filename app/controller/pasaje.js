@@ -10,29 +10,27 @@ const create = async (req, res) => {
     const pasajero = await model.Usuario.findOne({
       where: { id: pasaje.pasajero, tipo: 3 },
     });
-    if (pasaje.insumo) {
-      const insumo = await model.Insumo.findOne({
-        where: { id: pasaje.insumo },
-      });
-    }
     // chequear que pueda realizar la compra, si es que puede hago todo
     const estado = await model.Estado.findOne({
       where: { estado: "Pendiente" },
     });
-    //let precio = viaje.precio;
-    //if (pasaje.insumo) {
-    //  precio += pasaje.insumo;
-    //}
-
-    const pasajex = await model.Pasaje.create({
-      habilitado: true,
-      precio: pasaje.precio,
-    }).then((response) => {
-      response.setPasajero(pasajero);
-      response.setEstado(estado);
-      response.setViaje(viaje);
-      res.status(200).json({ data: response });
-    });
+    if (viaje.asientos_disponibles > 0) {
+      const pasajex = await model.Pasaje.create({
+        habilitado: true,
+        precio: viaje.precio,
+      }).then((response) => {
+        viaje.update({ asientos_disponibles: asientos_disponibles - 1 });
+        response.setPasajero(pasajero);
+        response.setEstado(estado);
+        response.setViaje(viaje);
+        res.status(200).json({ data: response });
+      });
+    } else {
+      res.status(400).json({
+        message:
+          "No hay disponibilidad de asientos para este viaje, por favor elija otr",
+      });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Internal server error" });

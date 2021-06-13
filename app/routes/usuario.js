@@ -19,6 +19,7 @@ router.get("/lista_choferes", Usuario.getAllDrivers);
 router.post("/alta_chofer", Usuario.register);
 router.delete("/borrar/(:id)", Usuario.remove);
 router.get("/buscar/(:id)", Usuario.findUser);
+router.get("/lista_choferes_disponibles", Usuario.listAvailableDriver);
 
 //TODO:
 

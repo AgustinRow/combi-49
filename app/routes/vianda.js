@@ -6,5 +6,8 @@ const Vianda = require("../controller/vianda");
 router.post("/alta", Vianda.create);
 router.put("/modificar", Vianda.update);
 router.delete("/baja/(:id)", Vianda.remove);
+router.post("/comprar", Vianda.buy);
+router.get("/listar", Vianda.list);
+router.get("/detalle/(:id)", Vianda.detail)
 
 module.exports = router;

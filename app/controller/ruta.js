@@ -12,13 +12,14 @@ const checkDuplicates = async (origen, destino) => {
 // sin duplicados, origen y destino obligatorio, origen != destino
 const create = async (req, res) => {
   const ruta = req.body;
+  console.log(ruta);
   try {
     if (ruta.origen != ruta.destino) {
       const origen = await model.Ciudad.findOne({
-        where: { id: ruta.origen, habilitado: true },
+        where: { id: ruta.origen.id, habilitado: true },
       }).then((response) => response);
       const destino = await model.Ciudad.findOne({
-        where: { id: ruta.destino, habilitado: true },
+        where: { id: ruta.destino.id, habilitado: true },
       }).then((response) => response);
       if (origen && destino) {
         const result = await checkDuplicates(origen, destino);
@@ -32,8 +33,8 @@ const create = async (req, res) => {
             habilitado: true,
           }).then((response) => {
             try {
-              response.setOrigen(ruta.origen);
-              response.setDestino(ruta.destino);
+              response.setOrigen(origen);
+              response.setDestino(destino);
               res.status(201).json({ data: response, origen, destino });
             } catch (err) {
               res.status(400).json({ message: "Error en origen o destino" });

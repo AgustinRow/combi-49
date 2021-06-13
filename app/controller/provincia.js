@@ -73,18 +73,30 @@ const find = async (req, res) => {
 const update = async (req, res) => {
   const provincia = req.body;
   try {
-    model.Provincia.update(
-      { nombre: provincia.nombre },
-      {
-        where: { id: provincia.id, habilitado: true },
-      }
-    ).then((response) => {
-      if (response > 0) {
-        res.status(200).json({ data: provincia });
-      } else {
-        res.status(400).json({ message: "No se pudo actualizar provincia" });
-      }
+    const provinciaOld = await model.Provincia.findOne({
+      where: { nombre: provincia.nombre },
     });
+    if (provinciaOld == null) {
+      model.Provincia.update(
+        { nombre: provincia.nombre },
+        {
+          where: { id: provincia.id, habilitado: true },
+        }
+      ).then((response) => {
+        if (response > 0) {
+          res.status(200).json({ data: provincia });
+        } else {
+          res.status(400).json({ message: "No se pudo actualizar provincia" });
+        }
+      });
+    } else {
+      res
+        .status(400)
+        .json({
+          message:
+            "El nombre de la provincia ya existe, ingrese otro por favor",
+        });
+    }
   } catch {
     res.status(500).json({ message: "Internal server error" });
   }

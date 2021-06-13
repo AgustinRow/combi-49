@@ -43,9 +43,9 @@ const create = async (req, res) => {
     res.status(401).json({ message: "La ciudad ya existe" });
   } else {
     const provincia = await model.Provincia.findOne({
-      where: { id: city.provincia },
-    }).then((response) => response);
-    if (provincia) {
+      where: { id: city.provincia.id },
+    });
+    if (provincia != null) {
       model.Ciudad.create({
         nombre: city.nombre,
         cp: city.cp,
