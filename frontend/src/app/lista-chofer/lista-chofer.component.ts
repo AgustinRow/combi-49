@@ -45,7 +45,7 @@ export class ListaChoferComponent implements OnInit {
           alert("Problemas para conectarse con el servidor");
         }
         else {
-          alert("El servidor reporta estado: " + error.error.message);
+          alert(error.error.message);
         }
       }
     );
@@ -65,7 +65,7 @@ export class ListaChoferComponent implements OnInit {
           alert("Problemas para conectarse con el servidor");
         }
         else {
-          alert("El servidor reporta estado: " + error.error.message);
+          alert(error.error.message);
         }
       }
     )
