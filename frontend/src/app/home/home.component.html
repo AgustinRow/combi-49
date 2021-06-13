@@ -24,7 +24,7 @@
 
                         <div class="form-group">
                             <label for="fecha_salida">Fecha de salida:</label>
-                            <input type="date" class="form-control" formControlName="fecha_salida" name="fecha_salida" required>
+                            <input type="date" class="form-control" formControlName="fecha_salida" name="fecha_salida" min="{{hoy | date:'yyyy-MM-dd'}}" required>
                         </div>
                     </div>
                 </form>
