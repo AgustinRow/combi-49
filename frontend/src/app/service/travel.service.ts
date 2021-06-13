@@ -35,8 +35,13 @@ export class TravelService {
     return this.http.delete<Viaje>(this.usersUrl + 'borrar/' + travel.id, httpOptions);
   }
 
+<<<<<<< HEAD
   findTravels(travel: Viaje): Observable<Viaje[]> {
     return this.http.get<Viaje[]>(this.usersUrl + 'buscar/'+travel.ruta.Origen.id+'&'+travel.ruta.Destino.id+'&'+travel.fecha_salida.toDateString(), httpOptions);
+=======
+  findTravels(province: Viaje): Observable<Viaje[]> {
+    return this.http.get<Viaje[]>(this.usersUrl + 'buscar?origen='+province.ruta.origen.id+'&destino='+province.ruta.destino.id+'&fecha='+province.fecha_salida.toDateString(), httpOptions);
+>>>>>>> 5d6de40a042f005bd6df2709b371baf92c395bc3
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
