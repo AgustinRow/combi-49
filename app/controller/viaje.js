@@ -233,6 +233,7 @@ const list = async (req, res) => {
   try {
     model.Viaje.findAll({
       order: ["fecha_salida"],
+      where: {habilitado:true},
       attributes: [
         "id",
         "nombre",
