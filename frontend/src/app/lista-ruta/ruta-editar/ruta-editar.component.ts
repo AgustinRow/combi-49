@@ -47,6 +47,7 @@ export class RutaEditarComponent implements OnInit {
     this.form = new FormGroup({
       'nombre': new FormControl({}),
       'distancia': new FormControl({}),
+      'duracion': new FormControl({}),
       'origen': new FormControl({}),
       'destino': new FormControl({})
     });
@@ -55,8 +56,8 @@ export class RutaEditarComponent implements OnInit {
   modifyRoute() {
     if (this.form.valid) 
     {
-      this.rutaModificada.Origen = this.listCiudades[this.form.value.Origen];
-      this.rutaModificada.Destino = this.listCiudades[this.form.value.Destino];
+      this.rutaModificada.Origen = this.listCiudades[this.form.value.origen];
+      this.rutaModificada.Destino = this.listCiudades[this.form.value.destino];
       this.routeService.modifyRoute(this.rutaModificada).subscribe(
         (data: any) => {
           if (data != null) {

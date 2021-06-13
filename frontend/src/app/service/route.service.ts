@@ -19,6 +19,7 @@ export class RouteService {
   ) { }
 
   addRoute(route: Ruta): Observable<Ruta> {
+    console.log(route);
     return this.http.post<Ruta>(this.usersUrl + 'alta', route, httpOptions);
   }
 

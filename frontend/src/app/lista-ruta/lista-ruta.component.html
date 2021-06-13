@@ -11,12 +11,14 @@
             <tr scope="row">
                 <th>Nombre</th>
                 <th>Distancia</th>
+                <th>Duracion</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let ruta of listRutas">
                 <td data-title="Nombre">{{ruta.nombre}}</td>
                 <td data-title="Distancia">{{ruta.distancia}}</td>
+                <td data-title="Duracion">{{ruta.duracion}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info" 

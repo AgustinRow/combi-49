@@ -10,12 +10,31 @@ export class Viaje{
     hora: Time;
     detalle: string;
     borradoLogico: number;  //activo
-    //Chofer: Usuario;
-    Vehiculo: Vehiculo;
     precio: number;
-    Ruta: Ruta;
+    //Chofer: Usuario;
+    choferId: number;
+    rutaId: number;
+    vehiculoId: number;
 
-    choferId: Number;
-    rutaId: Number;
-    vehiculoId: Number;
+    private _Vehiculo: Vehiculo;
+ 
+    public get Vehiculo() {
+        return this._Vehiculo;
+    }
+
+    public set Vehiculo(v: Vehiculo) {
+        this._Vehiculo = v;
+        this.vehiculoId = v.id;
+    }
+
+    private _Ruta: Ruta;
+ 
+    public get Ruta() {
+        return this._Ruta;
+    }
+
+    public set Ruta(r: Ruta) {
+        this._Ruta = r;
+        this.rutaId = r.id;
+    }
 }
