@@ -95,7 +95,12 @@ const parse = (user) => {
 const findDuplicates = async (user) => {
   return model.Usuario.findAll({
     where: {
-      [Op.or]: [{ email: user.email }, { dni: user.dni }],
+      [Op.and]: [
+        {
+          id: { [Op.ne]: user.id },
+          [Op.or]: [{ email: user.email }, { dni: user.dni }],
+        },
+      ],
     },
   });
 };
@@ -144,6 +149,30 @@ const register = async (req, res) => {
 //modificar chofer
 const update = async (req, res) => {
   const updatedUser = req.body;
+  try {
+    const user = await findDuplicates(updatedUser);
+    if (user.length > 0) {
+      res.status(400).json({
+        message:
+          "El DNI o email que intenta modificar ya se encuentra registrado",
+      });
+    } else {
+      model.Usuario.update(updatedUser, {
+        where: {
+          id: updatedUser.id,
+        },
+      }).then((response) => {
+        res.status(200).json({ message: "Usuario modificado correctamente" });
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const updateX = async (req, res) => {
+  const updatedUser = req.body;
   const oldUser = await findDuplicates(updatedUser).then((response) => {
     try {
       return response[0].dataValues;
@@ -154,6 +183,12 @@ const update = async (req, res) => {
     }
   });
   if (oldUser.id == updatedUser.id) {
+    if (oldUser.email === updatedUser.email) {
+      res.status(401).json({ message: "El e-mail ya se encuentra registrado" });
+    }
+    if (oldUser.dni === updatedUser.dni) {
+      res.status(401).json({ message: "El DNI ya se encuentra registrado" });
+    }
     model.Usuario.update(updatedUser, {
       where: {
         id: updatedUser.id,
@@ -166,13 +201,6 @@ const update = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
       }
     });
-  } else {
-    if (oldUser.email === updatedUser.email) {
-      res.status(401).json({ message: "El e-mail ya se encuentra registrado" });
-    }
-    if (oldUser.dni === updatedUser.dni) {
-      res.status(401).json({ message: "El DNI ya se encuentra registrado" });
-    }
   }
 };
 

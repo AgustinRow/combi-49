@@ -58,7 +58,9 @@ const update = async (req, res) => {
   } catch {}
 };
 
-const remove = async (req, res) => {};
+const remove = async (req, res) => {
+  
+};
 
 const find = async (req, res) => {
   const viaje = req.query;
@@ -180,7 +182,7 @@ const initialize = async (viaje, res) => {
       fecha_salida: viaje.fecha_salida,
       RutaId: viaje.ruta.id,
       precio: viaje.precio,
-      EstadoId: 1, //1-Pendiente 
+      EstadoId: 1, //1-Pendiente
       habilitado: true,
     });
     await vehiculo.setViaje(viajeNuevo);

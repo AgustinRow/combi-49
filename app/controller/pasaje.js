@@ -207,6 +207,7 @@ const list = async (req, res) => {
   }
 };
 
+
 module.exports = {
   create,
   findTravelsForUser,

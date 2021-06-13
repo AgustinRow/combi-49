@@ -73,27 +73,34 @@ const listAvailableVehicle = async (req, res) => {
 //modificar vehiculo
 const updateVehicle = async (req, res, next) => {
   const vehiculo = parse(req.body);
-  const oldVehicle = await findDuplicates(vehiculo).then((response) => {
-    try {
-      return response[0].dataValues;
-    } catch {
-      res
-        .status(401)
-        .json({ message: "El vehiculo no se encuentra registrado" });
-    }
-  });
-  if (oldVehicle.patente == vehiculo.patente && oldVehicle.id == vehiculo.id) {
-    model.Vehiculo.update(vehiculo, {
-      where: { patente: vehiculo.patente },
-    }).then((response) => {
+  try {
+    const oldVehicle = await findDuplicates(vehiculo).then((response) => {
       try {
-        res.status(201).json({ modified: vehiculo });
+        return response[0].dataValues;
       } catch {
-        res.status(500).json({ message: "Internal server error" });
+        res
+          .status(401)
+          .json({ message: "El vehiculo no se encuentra registrado" });
       }
     });
-  } else {
-    res.status(400).json({ message: "Bad request" });
+    if (
+      oldVehicle.patente == vehiculo.patente &&
+      oldVehicle.id == vehiculo.id
+    ) {
+      model.Vehiculo.update(vehiculo, {
+        where: { patente: vehiculo.patente },
+      }).then((response) => {
+        try {
+          res.status(201).json({ modified: vehiculo });
+        } catch {
+          res.status(500).json({ message: "Internal server error" });
+        }
+      });
+    } else {
+      res.status(400).json({ message: "Bad request" });
+    }
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 //busca vehiculo por unidad y lo devuelve
@@ -113,24 +120,29 @@ const findOneVehicle = async (req, res, next) => {
 };
 const remove = async (req, res) => {
   const { id } = req.params;
-  model.Vehiculo.findByPk(id).then((response) => {
-    try {
-      if (response.dataValues.habilitado) {
-        model.Vehiculo.update(
-          { habilitado: false },
-          { where: { id: id } }
-        ).then(() => {
-          res.status(200).json({ message: "removed" });
+  try {
+    const vehiculo = await model.Vehiculo.findOne({
+      where: { id: id, habilitado: true },
+    });
+    if (vehiculo != null) {
+      const hasTravel = await vehiculo.getViaje();
+      console.log(vehiculo);
+      if (hasTravel != null) {
+        res.status(400).json({
+          message:
+            "No se puede eliminar vehiculo con viaje pendiente o en curso",
         });
-      } else {
-        res
-          .status(400)
-          .json({ message: "This vehicle has been removed already" });
+        return;
       }
-    } catch (err) {
-      res.status(400).json({ message: "Bad Request" });
+      vehiculo.update({ habilitado: false }).then((response) => {
+        res.status(200).json({ message: "Vehiculo eliminado exitosamente" });
+      });
+    } else {
+      res.status(400).json({ message: "Este vehiculo no existe" });
     }
-  });
+  } catch {
+    res.status(500).json({ message: "Internal Server error" });
+  }
 };
 module.exports = {
   add,

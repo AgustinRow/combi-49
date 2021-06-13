@@ -64,12 +64,21 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   const { id } = req.params;
   try {
-    model.Vianda.update({ habilitado: false }, { where: { id: id } }).then(
-      (response) => {
-        console.log(response);
-        res.status(201).json({ message: "Vianda Eliminada" });
-      }
-    );
+    const vianda = await model.Vianda.findOne({
+      where: { id: id, habilitado: true },
+    });
+    const pasaje = await vianda.getPasaje();
+    if (pasaje != null) {
+      model.Vianda.update({ habilitado: false }, { where: { id: id } }).then(
+        (response) => {
+          res.status(201).json({ message: "Vianda Eliminada" });
+        }
+      );
+    } else {
+      res
+        .status(400)
+        .json({ message: "No se puede eliminar vianda con pasaje asociado" });
+    }
   } catch {
     res.status(500).json({ message: "Internal Server error" });
   }

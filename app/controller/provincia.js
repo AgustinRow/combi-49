@@ -24,7 +24,6 @@ const create = async (req, res) => {
     res.status(500).json({ message: "Internal serve error" });
   }
 };
-
 const list = async (req, res) => {
   model.Provincia.findAll({
     where: { habilitado: true },
@@ -44,7 +43,6 @@ const list = async (req, res) => {
     }
   });
 };
-
 const find = async (req, res) => {
   const { id } = req.params;
   try {
@@ -102,4 +100,5 @@ const update = async (req, res) => {
   }
 };
 
-module.exports = { list, create, find, update };
+module.exports = { list, create, find, update,
+ };

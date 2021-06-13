@@ -162,12 +162,12 @@ const remove = async (req, res, next) => {
       const canBeRemoved = await hasOrigenOrDestiny(ciudad);
       if (canBeRemoved) {
         ciudad.update({ habilitado: false }).then((response) => {
-          res.status(200).json({ message: "Succesfully removed" });
+          res.status(200).json({ message: "Eliminado exitosamente" });
         });
       } else {
         res.status(400).json({
           message:
-            "Cannot remove city due to it has an origen or a destiny associatied",
+            "La ciudad no se puede eliminar ya que esta asociada a una ruta",
         });
       }
     } catch (err) {
