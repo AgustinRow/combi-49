@@ -52,9 +52,9 @@ export class ViajeEditarComponent implements OnInit {
   modifyTravel() {
     if (this.form.valid) 
     {
-      this.viajeModificado.ruta = this.listRutas[this.form.value.ruta];
-      this.viajeModificado.vehiculo = this.listVehiculos[this.form.value.vehiculo];
-      this.viajeModificado.chofer = this.listChoferes[this.form.value.chofer];
+      this.viajeModificado.Ruta = this.listRutas[this.form.value.Ruta];
+      this.viajeModificado.Vehiculo = this.listVehiculos[this.form.value.Vehiculo];
+      this.viajeModificado.Vehiculo.Chofer = this.listChoferes[this.form.value.Chofer];
       this.travelService.modifyTravel(this.viajeModificado).subscribe(
         (data: any) => {
           if (data != null) {
@@ -78,7 +78,7 @@ export class ViajeEditarComponent implements OnInit {
     this.userService.getChoffers().subscribe(
       (list: any) => {
         this.listChoferes = list.data as Usuario[];
-        this.cIndex = this.listChoferes.findIndex(x => x.email === this.viajeModificado.chofer.email);
+        this.cIndex = this.listChoferes.findIndex(x => x.email === this.viajeModificado.Vehiculo.Chofer.email);
       },
       (error) => {
         if (error.status >= 500) {
@@ -95,7 +95,7 @@ export class ViajeEditarComponent implements OnInit {
     this.vehicleService.getvehicles().subscribe(
       (list: any) => {
         this.listVehiculos = list.data as Vehiculo[];
-        this.vIndex = this.listVehiculos.findIndex(x => x.patente === this.viajeModificado.vehiculo.patente);
+        this.vIndex = this.listVehiculos.findIndex(x => x.patente === this.viajeModificado.Vehiculo.patente);
       },
       (error) => {
         if (error.status >= 500) {
@@ -112,7 +112,7 @@ export class ViajeEditarComponent implements OnInit {
     this.routeService.getRoutes().subscribe(
       (list: any) => {
         this.listRutas = list.data as Ruta[];
-        this.rIndex = this.listRutas.findIndex(x => x.id === this.viajeModificado.ruta.id);
+        this.rIndex = this.listRutas.findIndex(x => x.id === this.viajeModificado.Ruta.id);
       },
       (error) => {
         if (error.status >= 500) {
