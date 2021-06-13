@@ -43,6 +43,7 @@ export class RutaNuevoComponent implements OnInit {
     this.form = new FormGroup({
       'nombre': new FormControl({}),
       'distancia': new FormControl({}),
+      'duracion': new FormControl({}),
       'origen': new FormControl({}),
       'destino': new FormControl({})
     });
@@ -51,8 +52,8 @@ export class RutaNuevoComponent implements OnInit {
   newRoute() {
     if(this.form.valid) 
     {
-      this.rutaNueva.Origen = this.listCiudades[this.form.value.Origen];
-      this.rutaNueva.Destino = this.listCiudades[this.form.value.Destino];
+      this.rutaNueva.Origen = this.listCiudades[this.form.value.origen];
+      this.rutaNueva.Destino = this.listCiudades[this.form.value.oestino];
       this.routeService.addRoute(this.rutaNueva).subscribe(
         (data: any) => {
           if (data != null) {

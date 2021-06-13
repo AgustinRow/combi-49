@@ -6,7 +6,13 @@
 
     <div class="form-group">
         <label for="distancia">Distancia:</label>
-        <input type="number" class="form-control" formControlName="distancia" [(ngModel)]="rutaModificada.distancia" name="direccion"
+        <input type="number" min="0" class="form-control" formControlName="distancia" [(ngModel)]="rutaModificada.distancia" name="direccion"
+            required>
+    </div>
+
+    <div class="form-group">
+        <label for="duracion">Duracion [minutos]:</label>
+        <input type="number" min="0" class="form-control" formControlName="duracion" [(ngModel)]="rutaModificada.duracion" name="direccion"
             required>
     </div>
 
@@ -21,7 +27,7 @@
         <label for="destino">Destino:</label>
         <select type="text" class="form-control" formControlName="destino" name="destino" required [(ngModel)]="dIndex">
             <ng-container *ngFor="let destino of listCiudades; index as i">
-                <option [value]="i" *ngIf="form.value.Origen != i">{{ destino.nombre }}</option>
+                <option [value]="i" *ngIf="form.value.origen != i">{{ destino.nombre }}</option>
             </ng-container>
         </select>
     </div>
