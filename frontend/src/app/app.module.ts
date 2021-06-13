@@ -58,6 +58,10 @@ import { ChoferEditarComponent } from './lista-chofer/chofer-editar/chofer-edita
 import { ChoferNuevoComponent } from './lista-chofer/chofer-nuevo/chofer-nuevo.component';
 import { SpinnerInterceptor } from './interceptor/spinner.interceptor';
 import { UserNameFilterPipe } from './pipe/user-name-filter.pipe';
+import { ListaViandaComponent } from './lista-vianda/lista-vianda.component';
+import { ViandaComponent } from './lista-vianda/vianda/vianda.component';
+import { ViandaNuevoComponent } from './lista-vianda/vianda-nuevo/vianda-nuevo.component';
+import { ViandaEditarComponent } from './lista-vianda/vianda-editar/vianda-editar.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -68,7 +72,8 @@ const appRoutes: Routes = [
   { path: 'Usuarios', component: ListaUsuarioComponent },
   { path: 'Viajes', component: ListaViajeComponent },
   { path: 'Vehiculos', component: ListaVehiculoComponent },
-  { path: 'Choferes', component: ListaChoferComponent }
+  { path: 'Choferes', component: ListaChoferComponent },
+  { path: 'Viandas', component: ListaViandaComponent }
 ]
 
 export function tokenGetter() {
@@ -120,7 +125,11 @@ export function tokenGetter() {
     ChoferEditarComponent,
     ChoferNuevoComponent,
     SpinnerComponent,
-    UserNameFilterPipe
+    UserNameFilterPipe,
+    ListaViandaComponent,
+    ViandaComponent,
+    ViandaNuevoComponent,
+    ViandaEditarComponent
   ],
   imports: [
     BrowserModule,

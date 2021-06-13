@@ -14,7 +14,6 @@ import { VehicleService } from 'src/app/service/vehicle.service';
 export class VehiculoEditarComponent implements OnInit {
   @Input() vehiculoModificado = new Vehiculo();
   @Output() vehiculoEditEvent = new EventEmitter();
-  submitted = false;
 
   constructor(
     private vehicleService: VehicleService
@@ -41,7 +40,6 @@ export class VehiculoEditarComponent implements OnInit {
           }
         }
       );
-      this.submitted = true;
     }
   }
 

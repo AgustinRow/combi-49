@@ -14,7 +14,6 @@ import { VehicleService } from 'src/app/service/vehicle.service';
 export class VehiculoNuevoComponent implements OnInit {
   @Input() vehiculoNuevo:Vehiculo = new Vehiculo();
   @Output() vehiculoNewEvent = new EventEmitter();
-  submitted = false;
 
   constructor(
     private vehicleService: VehicleService
@@ -41,7 +40,6 @@ export class VehiculoNuevoComponent implements OnInit {
           }
         }
       );
-      this.submitted = true;
     }
   }
 }
