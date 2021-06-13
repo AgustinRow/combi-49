@@ -29,5 +29,5 @@
         </select>
     </div>
 
-    <button type="submit" class="btn btn-success" [disabled]="!vehiculoForm.form.valid">Guardar</button>
+    <button type="submit" class="btn btn-success" [disabled]="!(vehiculoForm.form.valid&&vehiculoForm.form.dirty)">Guardar</button>
 </form>

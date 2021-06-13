@@ -13,11 +13,11 @@
     </div>  
     <div class="form-group">
         <label for="dni">DNI:</label>
-        <input type="number" class="form-control" id="dni" [(ngModel)]="choferModificado.dni" name="dni" required>
+        <input type="number" class="form-control" id="dni" [(ngModel)]="choferModificado.dni" name="dni" disabled>
     </div>
     <div class="form-group">
         <label for="email">E-mail:</label>
         <input type="mail" class="form-control" id="email" [(ngModel)]="choferModificado.email" name="email" required>
     </div>
-    <button type="submit" class="btn btn-success" [disabled]="!choferForm.form.valid">Guardar</button>
+    <button type="submit" class="btn btn-success" [disabled]="!(choferForm.form.valid&&choferForm.form.dirty)">Guardar</button>
 </form>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Pasaje } from '../module/pasaje.module';
 
 @Component({
   selector: 'app-lista-pasaje',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lista-pasaje.component.css']
 })
 export class ListaPasajeComponent implements OnInit {
+  listT: Pasaje[] = [];
 
   constructor() { }
 

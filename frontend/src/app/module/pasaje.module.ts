@@ -1,12 +1,14 @@
 import { Usuario } from "./usuario.module";
 import { Test } from "./test.module";
 import { Vianda } from "./vianda.module";
+import { Viaje } from "./viaje.module";
 
 export class Pasaje{
-    idPasaje: number;
-    precio: number;
-    borradoLogico: number;  //activo
+    id: number;
+    total: number;
     viandas: Vianda[];
+    viaje: Viaje;
     usuario: Usuario;
     test: Test;
+    borradoLogico: number;  //activo
 }

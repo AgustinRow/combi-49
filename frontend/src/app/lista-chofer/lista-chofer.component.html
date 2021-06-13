@@ -38,7 +38,7 @@
       </button>
     </div>
     <div class="modal-body">
-        <app-chofer-editar [(choferModificado)]="choferSeleccionado" (choferModifyEvent)="c('Close click')">Cargando</app-chofer-editar>
+        <app-chofer-editar [(choferModificado)]="choferSeleccionado" (choferModifyEvent)="refreshList(); c('Close click')">Cargando</app-chofer-editar>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
@@ -47,7 +47,7 @@
 
   <ng-template #contentShow let-c="close" let-d="dismiss">
       <div class="modal-header">
-        <h4 class="modal-title"><i class="bi bi-info-circle"></i> del usuario</h4>
+        <h4 class="modal-title">Informacion del chofer</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
           <span aria-hidden="true">&times;</span>
         </button>
