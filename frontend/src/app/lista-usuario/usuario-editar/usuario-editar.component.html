@@ -20,5 +20,5 @@
         <label for="email">E-mail:</label>
         <input type="text" class="form-control" id="email" [(ngModel)]="usuarioModificado.email" name="email">
     </div>
-    <button type="submit" class="btn btn-success" [disabled]="!userForm.form.valid">Guardar</button>
+    <button type="submit" class="btn btn-success" [disabled]="!(userForm.form.valid&&userForm.form.dirty)">Guardar</button>
 </form>

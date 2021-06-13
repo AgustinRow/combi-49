@@ -37,6 +37,7 @@ export class UserService {
   }
 
   modifyUser(user: Usuario): Observable<Usuario> {
+    console.log(user);
     return this.http.put<Usuario>(this.usersUrl + 'modificar_usuario', user, httpOptions);
   }
 
