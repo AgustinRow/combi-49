@@ -41,11 +41,11 @@
         </thead>
         <tbody>
             <tr *ngFor="let viaje of lViajes">
-                <td data-title="Ruta">{{viaje.ruta.nombre}}</td>
+                <td data-title="Ruta">{{viaje.Ruta.nombre}}</td>
                 <td data-title="Fecha de Salida">{{viaje.fecha_salida}}</td>
-                <td data-title="Hora de salida">{{viaje.hora | hh:mm}}</td>
-                <td data-title="Vehiculo">{{viaje.vehiculo.patente}}</td>
-                <td data-title="Chofer" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">{{viaje.chofer.nombre}}</td>
+                <td data-title="Hora de salida">{{viaje.hora }}</td>
+                <td data-title="Vehiculo">{{viaje.Vehiculo.patente}}</td>
+                <td data-title="Chofer" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">{{viaje.Vehiculo.Chofer.nombre}}</td>
                 <td data-title="Acciones" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR; else buyBlock">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info" 

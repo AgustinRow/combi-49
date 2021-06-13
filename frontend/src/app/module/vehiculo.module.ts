@@ -1,3 +1,5 @@
+import { Usuario } from "./usuario.module";
+
 export class Vehiculo {
     id: number;
     marca: string;
@@ -8,4 +10,5 @@ export class Vehiculo {
     habilitado: boolean;  //activo
     createdAt: Date;
     updatedAt: Date;
+    Chofer: Usuario;
 }

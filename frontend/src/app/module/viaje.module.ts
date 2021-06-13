@@ -10,10 +10,10 @@ export class Viaje{
     hora: Time;
     detalle: string;
     borradoLogico: number;  //activo
-    chofer: Usuario;
-    vehiculo: Vehiculo;
+    //Chofer: Usuario;
+    Vehiculo: Vehiculo;
     precio: number;
-    ruta: Ruta;
+    Ruta: Ruta;
 
     choferId: Number;
     rutaId: Number;
