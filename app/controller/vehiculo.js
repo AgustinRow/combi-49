@@ -71,6 +71,7 @@ const listAvailableVehicle = async (req, res) => {
   }
 };
 //modificar vehiculo
+//modificar vehiculo
 const updateVehicle = async (req, res, next) => {
   const vehiculo = parse(req.body);
   try {
@@ -87,9 +88,17 @@ const updateVehicle = async (req, res, next) => {
       oldVehicle.patente == vehiculo.patente &&
       oldVehicle.id == vehiculo.id
     ) {
-      model.Vehiculo.update(vehiculo, {
-        where: { patente: vehiculo.patente },
-      }).then((response) => {
+      model.Vehiculo.update(
+        {
+          asientos: vehiculo.asientos,
+          modelo: vehiculo.modelo,
+          marca: vehiculo.marca,
+          confort: vehiculo.confort,
+        },
+        {
+          where: { patente: vehiculo.patente },
+        }
+      ).then((response) => {
         try {
           res.status(201).json({ modified: vehiculo });
         } catch {
