@@ -58,9 +58,7 @@ const update = async (req, res) => {
   } catch {}
 };
 
-const remove = async (req, res) => {
-  
-};
+const remove = async (req, res) => {};
 
 const find = async (req, res) => {
   const viaje = req.query;
@@ -172,7 +170,7 @@ const listOLD = async (req, res) => {
 const initialize = async (viaje, res) => {
   try {
     const vehiculo = await model.Vehiculo.findOne({
-      where: { id: viaje.vehiculo.id },
+      where: { id: viaje.vehiculoId },
     }).then((response) => response);
     const viajeNuevo = await model.Viaje.create({
       nombre: viaje.nombre,
@@ -180,7 +178,7 @@ const initialize = async (viaje, res) => {
       hora: viaje.hora,
       asientos_disponibles: vehiculo.asientos,
       fecha_salida: viaje.fecha_salida,
-      RutaId: viaje.ruta.id,
+      RutaId: viaje.rutaId,
       precio: viaje.precio,
       EstadoId: 1, //1-Pendiente
       habilitado: true,
@@ -195,13 +193,14 @@ const initialize = async (viaje, res) => {
 const create = async (req, res, next) => {
   try {
     const viaje = req.body;
+    console.log(viaje);
     const chofer = await model.Usuario.findOne({
-      where: { id: viaje.chofer.id, tipo: 2, habilitado: true },
+      where: { id: viaje.choferId, tipo: 2, habilitado: true },
     });
     chofer.getVehiculo({ where: { habilitado: true } }).then((response) => {
       if (response == null) {
         model.Vehiculo.findOne({
-          where: { id: viaje.vehiculo.id, habilitado: true },
+          where: { id: viaje.vehiculoId, habilitado: true },
         }).then((vehiculo) => {
           vehiculo
             .getChofer({ where: { habilitado: true } })
