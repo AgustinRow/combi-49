@@ -15,7 +15,7 @@ export class ListaUsuarioComponent implements OnInit {
   listaU : Usuario[] = [];
   tipo: String[] = ["Pasajero", "Chofer", "Administrador"];
   usuarioSeleccionado: Usuario;
-  findName = '';
+  findName:string[] = [ "", "" ];
 
   constructor(
     private userService: UserService,

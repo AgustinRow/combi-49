@@ -6,14 +6,22 @@ import { Usuario } from '../module/usuario.module';
 })
 export class UserNameFilterPipe implements PipeTransform {
 
-  transform(value: Usuario[], args: string): Usuario[] {
-    const returnList:Usuario[] = [];
+  transform(
+    users: Usuario[],
+    nameSearch?: string,
+    lastNameSearch?: string
+  ): Usuario[] {
 
-    for(const user of value ){
-      if ((user.nombre.toUpperCase().indexOf(args.toUpperCase()) > -1) || (user.apellido.toUpperCase().indexOf(args.toUpperCase()) > -1))
-        returnList.push(user);
-    }
-    return returnList;
+    if (!users) return [];
+    if (!nameSearch) return users;
+    nameSearch = nameSearch.toLocaleLowerCase();
+    users = [...users.filter(user => user.nombre.toLocaleLowerCase().includes(nameSearch))];
+
+    if (!lastNameSearch) return users;
+    lastNameSearch = lastNameSearch.toLocaleLowerCase();
+    users = [...users.filter(user => user.apellido.toLocaleLowerCase().includes(lastNameSearch))];
+
+    return users;
   }
 
 }

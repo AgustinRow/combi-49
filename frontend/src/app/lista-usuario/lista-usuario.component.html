@@ -8,7 +8,8 @@
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
       </div>
-      <input type="text" class="form-control" name="findName" [(ngModel)]="findName" placeholder="Nombre u apellido" aria-label="Nombre u apellido" aria-describedby="basic-addon1">
+      <input type="text" class="form-control" name="findFirtName" [(ngModel)]="findName[0]" placeholder="Nombre" aria-label="Nombre" aria-describedby="basic-addon1">
+      <input type="text" class="form-control" name="findLastName" [(ngModel)]="findName[1]" placeholder="Apellido" aria-label="Apellido" aria-describedby="basic-addon1">
     </div>
     <table class="table  table-hover">
         <thead>
@@ -20,7 +21,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let user of listaU | userNameFilter: findName">
+            <tr *ngFor="let user of listaU | userNameFilter: findName[0]: findName[1]">
                 <td data-title="Nombre">{{user.nombre}}</td>
                 <td data-title="Apellido">{{user.apellido}}</td>
                 <td data-title="Usuario">{{user.email}}</td>
