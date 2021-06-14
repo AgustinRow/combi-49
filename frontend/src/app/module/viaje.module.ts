@@ -1,17 +1,16 @@
 import { Vehiculo } from "./vehiculo.module";
 import { Ruta } from "./ruta.module";
 import { Usuario } from "./usuario.module";
-import { Time } from "@angular/common";
 
 export class Viaje{
     id: number;
     fecha_salida: Date;
     //fecha_llegada: Date;
-    hora: Time;
+    hora: Date;
     detalle: string;
     borradoLogico: number;  //activo
     precio: number;
-    //Chofer: Usuario;
+    Chofer: Usuario;
     choferId: number;
     rutaId: number;
     vehiculoId: number;

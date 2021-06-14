@@ -28,6 +28,10 @@ export class TravelService {
     return this.http.get<Viaje[]>(this.usersUrl + 'listar');
   }
 
+  getTravelById( id: Number ): Observable<Viaje[]> {
+    return this.http.get<Viaje[]>(this.usersUrl + 'buscar/' + id);
+  }
+
   modifyTravel(travel: Viaje): Observable<Viaje> {
     return this.http.put<Viaje>(this.usersUrl + 'modificar', travel, httpOptions);
   }

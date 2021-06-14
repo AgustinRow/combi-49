@@ -41,7 +41,7 @@ export class ListaRutaComponent implements OnInit {
           alert("Problemas para conectarse con el servidor");
         }
         else {
-          alert(error.error.message);
+          alert("El servidor reporta estado: " + error.error.message);
         }
       }
     );
@@ -58,7 +58,7 @@ export class ListaRutaComponent implements OnInit {
           alert("Problemas para conectarse con el servidor");
         }
         else {
-          alert(error.error.message);
+          alert("El servidor reporta estado: " + error.error.message);
         }
       }
     )

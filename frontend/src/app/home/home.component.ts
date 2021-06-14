@@ -42,8 +42,6 @@ export class HomeComponent implements OnInit {
   }
 
   searchTrip( form: NgForm) {
-    console.log("buscando...");
-    console.log(form.value);
     this.travelService.findTravels( this.listCiudades[form.value.origen], this.listCiudades[form.value.destino], new Date(form.value.salida)).subscribe(
       (list: any) => {
         this.listViajes = list.data as Viaje[];

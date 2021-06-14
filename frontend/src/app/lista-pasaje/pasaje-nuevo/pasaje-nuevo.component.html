@@ -1,1 +1,6 @@
-<p>pasaje-nuevo works!</p>
+<H6>Pasaje para el {{ viajeSeleccionado.fecha_salida | date:'yyyy-MM-dd' }}</H6>
+<button type="button" class="btn btn-danger" (click)="openModal(contentShow)">Pagar</button>
+
+<ng-template #contentShow let-c="close" let-d="dismiss">
+    <app-pago [(total)]="viajeSeleccionado.total" (closeEvent)="c('Close click')">Cargando...</app-pago>
+</ng-template>

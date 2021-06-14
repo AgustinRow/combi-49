@@ -62,6 +62,7 @@ import { ListaViandaComponent } from './lista-vianda/lista-vianda.component';
 import { ViandaComponent } from './lista-vianda/vianda/vianda.component';
 import { ViandaNuevoComponent } from './lista-vianda/vianda-nuevo/vianda-nuevo.component';
 import { ViandaEditarComponent } from './lista-vianda/vianda-editar/vianda-editar.component';
+import { PagoComponent } from './pago/pago.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -73,7 +74,8 @@ const appRoutes: Routes = [
   { path: 'Viajes', component: ListaViajeComponent },
   { path: 'Vehiculos', component: ListaVehiculoComponent },
   { path: 'Choferes', component: ListaChoferComponent },
-  { path: 'Viandas', component: ListaViandaComponent }
+  { path: 'Viandas', component: ListaViandaComponent },
+  { path: 'CompraPasaje/:viajeId', component: PasajeNuevoComponent }
 ]
 
 export function tokenGetter() {
@@ -129,7 +131,8 @@ export function tokenGetter() {
     ListaViandaComponent,
     ViandaComponent,
     ViandaNuevoComponent,
-    ViandaEditarComponent
+    ViandaEditarComponent,
+    PagoComponent
   ],
   imports: [
     BrowserModule,
