@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { Ciudad } from '../module/ciudad.module';
 import { Viaje } from '../module/viaje.module';
 import { CityService } from '../service/city.service';
+import { TravelService } from '../service/travel.service';
 
 @Component({
   selector: 'app-home',
@@ -12,24 +13,18 @@ import { CityService } from '../service/city.service';
 export class HomeComponent implements OnInit {
   @Input() listCiudades: Ciudad[];
   listViajes: Viaje[];
-  form: FormGroup;
   hoy = new Date(Date.now());
+  travelToFind = new Viaje();
 
   constructor(
-    private cityService: CityService
+    private cityService: CityService,
+    private travelService: TravelService
   ) { }
 
   ngOnInit(): void {
     this.refreshListCity();
-        
-    this.form = new FormGroup({
-      'origen': new FormControl({}),
-      'destino': new FormControl({}),
-      'fecha_salida': new FormControl({})
-    });
   }
 
-  
   refreshListCity() {
     this.cityService.getCitys().subscribe(
       (list: any) => {
@@ -44,5 +39,23 @@ export class HomeComponent implements OnInit {
         }
       }
     )
+  }
+
+  searchTrip( form: NgForm) {
+    console.log("buscando...");
+    console.log(form.value);
+    this.travelService.findTravels( this.listCiudades[form.value.origen], this.listCiudades[form.value.destino], new Date(form.value.salida)).subscribe(
+      (list: any) => {
+        this.listViajes = list.data as Viaje[];
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert(error.error.message);
+        }
+      }
+    );
   }
 }

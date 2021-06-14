@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 import { Viaje } from '../module/viaje.module';
+import { Ciudad } from '../module/ciudad.module';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -35,8 +36,8 @@ export class TravelService {
     return this.http.delete<Viaje>(this.usersUrl + 'borrar/' + travel.id, httpOptions);
   }
 
-  findTravels(travel: Viaje): Observable<Viaje[]> {
-    return this.http.get<Viaje[]>(this.usersUrl + 'buscar?origen='+travel.Ruta.Origen.id+'&destino='+travel.Ruta.Destino.id+'&fecha='+travel.fecha_salida.toDateString(), httpOptions);
+  findTravels(origen: Ciudad, destino: Ciudad, salida: Date): Observable<Viaje[]> {
+    return this.http.get<Viaje[]>(this.usersUrl + 'buscar?origen='+origen.id+'&destino='+destino.id+'&fecha='+salida.toDateString(), httpOptions);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
