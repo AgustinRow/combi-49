@@ -233,7 +233,87 @@ const list = async (req, res) => {
   try {
     model.Viaje.findAll({
       order: ["fecha_salida"],
-      where: {habilitado:true},
+      where: { habilitado: true },
+      attributes: [
+        "id",
+        "nombre",
+        "fecha_salida",
+        "detalle",
+        "hora",
+        "asientos_disponibles",
+        "precio",
+      ],
+      include: [
+        {
+          model: model.Estado,
+          as: "Estado",
+          attributes: ["id", "estado"],
+        },
+        {
+          model: model.Vehiculo,
+          as: "Vehiculo",
+          attributes: [
+            "id",
+            "patente",
+            "asientos",
+            "modelo",
+            "marca",
+            "confort",
+          ],
+          include: [
+            {
+              model: model.Usuario,
+              as: "Chofer",
+              attributes: ["id", "nombre", "apellido", "email", "dni"],
+            },
+          ],
+        },
+        {
+          model: model.Ruta,
+          as: "Ruta",
+          attributes: ["id", "nombre", "distancia", "duracion"],
+          include: [
+            {
+              model: model.Ciudad,
+              as: "Origen",
+              attributes: ["id", "nombre", "cp"],
+              include: [
+                {
+                  model: model.Provincia,
+                  as: "Provincia",
+                  attributes: ["id", "nombre"],
+                },
+              ],
+            },
+            {
+              model: model.Ciudad,
+              as: "Destino",
+              attributes: ["id", "nombre", "cp"],
+              include: [
+                {
+                  model: model.Provincia,
+                  as: "Provincia",
+                  attributes: ["id", "nombre"],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    }).then((viajes) => {
+      res.status(200).json({ data: viajes });
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+const findOne = async (req, res) => {
+  const { id } = reb.params;
+  try {
+    model.Viaje.findOne({
+      order: ["fecha_salida"],
+      where: { habilitado: true, id: id },
       attributes: [
         "id",
         "nombre",
@@ -316,4 +396,5 @@ module.exports = {
   create,
   find,
   driverAndTravel,
+  findOne,
 };
