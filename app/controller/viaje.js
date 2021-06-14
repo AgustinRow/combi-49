@@ -63,7 +63,7 @@ const remove = async (req, res) => {};
 const find = async (req, res) => {
   const viaje = req.query;
   try {
-    const ruta = await model.Ruta.findAll({
+    model.Ruta.findAll({
       where: {
         [Op.and]: [{ origenId: viaje.origen }, { destinoId: viaje.destino }],
       },
@@ -107,9 +107,10 @@ const find = async (req, res) => {
           attributes: ["id", "nombre", "cp"],
         },
       ],
+    }).then((ruta) => {
+      console.log(ruta);
+      res.status(200).json({ data: ruta });
     });
-    //const result = await listTravel(ruta, ruta.fecha_salida);
-    res.status(200).json({ data: ruta });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "internal server error" });
@@ -190,7 +191,7 @@ const initialize = async (viaje, res) => {
   }
 };
 
-const create = async (req, res, next) => {
+const createX = async (req, res, next) => {
   try {
     const viaje = req.body;
     console.log(viaje);
@@ -260,14 +261,14 @@ const list = async (req, res) => {
             "marca",
             "confort",
           ],
-          include: [
-            {
-              model: model.Usuario,
-              as: "Chofer",
-              attributes: ["id", "nombre", "apellido", "email", "dni"],
-            },
-          ],
         },
+
+        {
+          model: model.Usuario,
+          as: "Chofer",
+          attributes: ["id", "nombre", "apellido", "email", "dni"],
+        },
+
         {
           model: model.Ruta,
           as: "Ruta",
@@ -308,9 +309,11 @@ const list = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 const findOne = async (req, res) => {
-  const { id } = reb.params;
+  const { id } = req.params;
   try {
+    console.log(id);
     model.Viaje.findOne({
       order: ["fecha_salida"],
       where: { habilitado: true, id: id },
@@ -380,12 +383,61 @@ const findOne = async (req, res) => {
           ],
         },
       ],
-    }).then((viajes) => {
-      res.status(200).json({ data: viajes });
+    }).then((viaje) => {
+      res.status(200).json({ data: viaje });
     });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const create = async (req, res) => {
+  const viaje = req.body;
+  console.log(viaje);
+  try {
+    const chofer = await model.Usuario.findOne({
+      where: { id: viaje.choferId, tipo: 2, habilitado: true },
+    });
+    const vehiculo = await model.Vehiculo.findOne({
+      where: { id: viaje.vehiculoId, habilitado: true },
+    });
+    const choferTieneViaje = await chofer.getViaje({
+      where: { habilitado: true, fecha_salida: viaje.fecha_salida },
+    });
+    const vehiculoTieneViaje = await vehiculo.getViaje({
+      where: { habilitado: true, fecha_salida: viaje.fecha_salida },
+    });
+    console.log(vehiculoTieneViaje.length);
+    if (choferTieneViaje.length == 0) {
+      if (vehiculoTieneViaje.length == 0) {
+        const viajeNuevo = await model.Viaje.create({
+          nombre: viaje.nombre,
+          detalle: viaje.detalle,
+          hora: viaje.hora,
+          asientos_disponibles: vehiculo.asientos,
+          fecha_salida: viaje.fecha_salida,
+          RutaId: viaje.rutaId,
+          precio: viaje.precio,
+          EstadoId: 1, //1-Pendiente
+          habilitado: true,
+        });
+        await viajeNuevo.setChofer(chofer);
+        await viajeNuevo.setVehiculo(vehiculo);
+        res.status(200).json(viajeNuevo);
+      } else {
+        res
+          .status(400)
+          .json({ message: "Vehiculo tiene viaje asignado para esa fecha" });
+      }
+    } else {
+      res
+        .status(400)
+        .json({ message: "Chofer tiene viaje asignado para esa fecha" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 

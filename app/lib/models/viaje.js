@@ -11,7 +11,16 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       //TODO: asignarle los id correspondientes
       Viaje.belongsTo(models.Ruta, { as: "Ruta", foreignKey: "RutaId" });
-      Viaje.hasOne(models.Vehiculo, { as: "Vehiculo", foreignKey: "ViajeId" });
+      Viaje.belongsToMany(models.Vehiculo, {
+        as: "Vehiculo",
+        foreignKey: "VehiculoId",
+        through: "Viaje_Vehiculo",
+      });
+      Viaje.belongsToMany(models.Usuario, {
+        as: "Chofer",
+        foreignKey: "ChoferId",
+        through: "Viaje_Chofer",
+      });
       Viaje.hasMany(models.Pasaje, { as: "Pasaje", foreignKey: "ViajeId" });
       Viaje.belongsTo(models.Estado, {
         as: "Estado",
