@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
   }
 
   searchTrip( form: NgForm) {
-    this.travelService.findTravels( this.listCiudades[form.value.origen], this.listCiudades[form.value.destino], new Date(form.value.salida)).subscribe(
+    this.travelService.findTravels( this.listCiudades[form.value.origen], this.listCiudades[form.value.destino], new Date(form.value.fecha_salida)).subscribe(
       (list: any) => {
         this.listViajes = list.data as Viaje[];
       },
