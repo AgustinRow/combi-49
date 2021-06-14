@@ -40,9 +40,9 @@ export class TravelService {
     return this.http.delete<Viaje>(this.usersUrl + 'borrar/' + travel.id, httpOptions);
   }
 
-  findTravels(origen: Ciudad, destino: Ciudad, salida: Date): Observable<Viaje[]> {
-    console.log(salida)
-    return this.http.get<Viaje[]>(this.usersUrl + 'buscar?origen='+origen.id+'&destino='+destino.id+'&fecha='+salida.toDateString(), httpOptions);
+  findTravels(origen: Ciudad, destino: Ciudad, salida: String): Observable<Viaje[]> {
+    console.log(origen, destino, salida)
+    return this.http.get<Viaje[]>(this.usersUrl + 'buscar?origen='+origen.id+'&destino='+destino.id+'&fecha='+salida, httpOptions);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
