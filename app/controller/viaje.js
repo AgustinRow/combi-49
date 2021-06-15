@@ -35,6 +35,9 @@ const update = async (req, res) => {
       const vehiculo = await model.Vehiculo.findOne({
         where: { id: viaje.vehiculoId, habilitado: true },
       });
+      const vehiculoOld = await viajeAux.getVehiculo();
+      const choferOld = await viajeAux.getChofer();
+
       const choferTieneViaje = await chofer.getViaje({
         where: { habilitado: true, fecha_salida: viaje.fecha_salida },
       });
@@ -48,9 +51,9 @@ const update = async (req, res) => {
             nombre: viaje.nombre,
             detalle: viaje.detalle,
             hora: viaje.hora,
-            //en caso que haya vendido pasajes
             asientos_disponibles:
-              vehiculo.asientos - viajeAux.asientos_disponibles,
+              vehiculo.asientos -
+              (vehiculoOld.asientos - viajeAux.asientos_disponibles),
             fecha_salida: viaje.fecha_salida,
             RutaId: viaje.rutaId,
             precio: viaje.precio,
@@ -131,6 +134,29 @@ const find = async (req, res) => {
       ],
       include: [
         {
+          model: model.Estado,
+          as: "Estado",
+          attributes: ["id", "estado"],
+        },
+        {
+          model: model.Vehiculo,
+          as: "Vehiculo",
+          attributes: [
+            "id",
+            "patente",
+            "asientos",
+            "modelo",
+            "marca",
+            "confort",
+          ],
+        },
+
+        {
+          model: model.Usuario,
+          as: "Chofer",
+          attributes: ["id", "nombre", "apellido", "email", "dni"],
+        },
+        {
           as: "Ruta",
           model: model.Ruta,
           where: {
@@ -140,7 +166,7 @@ const find = async (req, res) => {
             ],
           },
           attributes: ["id", "nombre", "distancia", "duracion"],
-          include:[
+          include: [
             {
               model: model.Ciudad,
               as: "Origen",
@@ -165,7 +191,7 @@ const find = async (req, res) => {
               ],
               attributes: ["id", "nombre", "cp"],
             },
-          ]
+          ],
         },
       ],
     }).then((viajes) => {
