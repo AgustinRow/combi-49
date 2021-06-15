@@ -1,0 +1,47 @@
+<h6>Cantidad de articulos: {{ viandasCompradas.length }}</h6>
+<h6>Subtotal de viandas: {{ totalViandas }}</h6>
+<h6>Valor de pasaje: {{ pasajeModificado.precio }}</h6>
+<h6>Total: {{ total }}</h6>
+
+<button type="button" class="btn btn-danger">
+    Pagar ${{ total }}
+</button>
+
+<br>
+<form (ngSubmit)="addFoodBox(foodForm)" #foodForm="ngForm">
+    <div class="form-group">
+        <label for="vianda">Vianda:</label>
+        <select class="form-control" name="vianda" ngModel required [value]="0">
+            <option *ngFor="let vianda of viandasParaVenta; index as i" [value]="i">{{ vianda.nombre }} ${{
+                vianda.precio }}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Agregar</button>
+    </div>
+</form>
+
+<br>
+<ng-template [ngIf]="viandasCompradas">
+    <table class="table table-hover">
+        <thead>
+            <tr scope="row">
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let vianda of viandasCompradas">
+                <td data-title="Nombre">{{vianda.nombre}}</td>
+                <td data-title="Precio">{{vianda.precio}}</td>
+                <td data-title="Acciones">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-danger" (click)="deleteFood(vianda)"><i
+                                class="bi bi-trash"></i></button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</ng-template>

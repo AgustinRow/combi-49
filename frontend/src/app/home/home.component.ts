@@ -45,7 +45,6 @@ export class HomeComponent implements OnInit {
     this.travelService.findTravels( this.listCiudades[form.value.origen], this.listCiudades[form.value.destino], form.value.fecha_salida).subscribe(
       (list: any) => {
         this.listViajes = list.viajes as Viaje[];
-        console.log(list.viajes);
       },
       (error) => {
         if (error.status >= 500) {

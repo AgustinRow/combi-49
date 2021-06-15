@@ -41,7 +41,6 @@ export class PasajeNuevoComponent implements OnInit {
     this.travelService.getTravelById(viajeId).subscribe(
       (list: any) => {
         this.viajeSeleccionado = list.data as Viaje;
-        console.log(list);
       },
       (error) => {
         if (error.status >= 500) {
@@ -57,7 +56,7 @@ export class PasajeNuevoComponent implements OnInit {
   payment(estaPago: boolean) {
     if (estaPago) {
       this.pasajeNuevo.Viaje = this.viajeSeleccionado;
-      this.pasajeNuevo.Usuario = this.storageService.getCurrentUser();
+      this.pasajeNuevo.Pasajero = this.storageService.getCurrentUser();
       this.passageService.addPassage(this.pasajeNuevo).subscribe(
         (data: any) => {
           if (data != null) {

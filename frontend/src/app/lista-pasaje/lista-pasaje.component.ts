@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pasaje } from '../module/pasaje.module';
 import { PassageService } from '../service/passage.service';
 
@@ -12,19 +13,26 @@ import { PassageService } from '../service/passage.service';
 })
 export class ListaPasajeComponent implements OnInit {
   listT: Pasaje[] = [];
+  pasajeSeleccionado: Pasaje;
 
   constructor(
+    private modalService: NgbModal,
     private passageService: PassageService
   ) { }
 
   ngOnInit(): void {
     this.refreshList();
   }
+  
+  openModal(contentEdit, passageSelected: Pasaje) {
+    this.pasajeSeleccionado = passageSelected;
+    this.modalService.open(contentEdit);
+  }
 
   refreshList() {
     this.passageService.getPassages().subscribe(
       (list: any) => {
-        this.listT = list.data as Pasaje[];
+        this.listT = list.pasajes as Pasaje[];
       },
       (error) => {
         if (error.status >= 500) {
@@ -36,4 +44,5 @@ export class ListaPasajeComponent implements OnInit {
       }
     )
   }
+
 }

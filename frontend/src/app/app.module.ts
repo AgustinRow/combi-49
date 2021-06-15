@@ -63,6 +63,7 @@ import { ViandaComponent } from './lista-vianda/vianda/vianda.component';
 import { ViandaNuevoComponent } from './lista-vianda/vianda-nuevo/vianda-nuevo.component';
 import { ViandaEditarComponent } from './lista-vianda/vianda-editar/vianda-editar.component';
 import { PagoComponent } from './pago/pago.component';
+import { ViandaComprarComponent } from './lista-vianda/vianda-comprar/vianda-comprar.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -133,7 +134,8 @@ export function tokenGetter() {
     ViandaComponent,
     ViandaNuevoComponent,
     ViandaEditarComponent,
-    PagoComponent
+    PagoComponent,
+    ViandaComprarComponent
   ],
   imports: [
     BrowserModule,

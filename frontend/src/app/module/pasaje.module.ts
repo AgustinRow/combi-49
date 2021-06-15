@@ -2,22 +2,23 @@ import { Usuario } from "./usuario.module";
 import { Test } from "./test.module";
 import { Vianda } from "./vianda.module";
 import { Viaje } from "./viaje.module";
+import { Estado } from "./estado.module";
 
 export class Pasaje{
     id: number;
-    total: number;
-    viandas: Vianda[];
-    viaje: number;
-    //usuario: Usuario;
+    Estado: Estado;
+    precio: number;
+    Vianda: Vianda[];
+    viajeId: number;
     test: Test;
     habilitado: number;  //activo
     pasajero: number
     
     private _Usuario: Usuario;
-    public get Usuario(): Usuario {
+    public get Pasajero(): Usuario {
         return this._Usuario;
     }
-    public set Usuario(u: Usuario) {
+    public set Pasajero(u: Usuario) {
         this._Usuario = u;
         this.pasajero = u.id;
     }
@@ -28,6 +29,6 @@ export class Pasaje{
     }
     public set Viaje(v: Viaje) {
         this._Viaje = v;
-        this.viaje = v.id;
+        this.viajeId = v.id;
     }
 }
