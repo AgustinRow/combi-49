@@ -93,6 +93,9 @@ const buy = async (req, res) => {
     const pasaje = await model.Pasaje.findOne({
       where: { id: body.pasaje.id, habilitado: true },
     });
+    
+
+
     if (pasaje.ViandaId == null) {
       if (vianda.stock > 0) {
         pasaje.update({ precio: pasaje.precio + vianda.precio });

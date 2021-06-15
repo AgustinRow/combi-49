@@ -14,12 +14,12 @@ const create = async (req, res) => {
     const estado = await model.Estado.findOne({
       where: { estado: "Pendiente" },
     });
-    if (viaje.asientos_disponibles > 0) {
+    if (viaje.asientos_disponibles >= 1) {
       const pasajex = await model.Pasaje.create({
         habilitado: true,
         precio: viaje.precio,
       }).then((response) => {
-        viaje.update({ asientos_disponibles: asientos_disponibles - 1 });
+        viaje.update({ asientos_disponibles: viaje.asientos_disponibles - 1 });
         response.setPasajero(pasajero);
         response.setEstado(estado);
         response.setViaje(viaje);
@@ -28,7 +28,7 @@ const create = async (req, res) => {
     } else {
       res.status(400).json({
         message:
-          "No hay disponibilidad de asientos para este viaje, por favor elija otr",
+          "No hay disponibilidad de asientos para este viaje, por favor elija otro",
       });
     }
   } catch (err) {
@@ -206,7 +206,6 @@ const list = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 module.exports = {
   create,
