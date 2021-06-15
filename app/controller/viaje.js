@@ -38,26 +38,21 @@ const update = async (req, res) => {
       });
       const vehiculoOld = await viajeAux.getVehiculo();
       const choferOld = await viajeAux.getChofer();
-      //await resetDriverAndTravel(viajeAux);
-      //console.log(vehiculoOld);
-      let choferTieneViaje, vehiculoTieneViaje;
-      if (vehiculoOld[0].dataValues.id == vehiculo.id) {
-        await viajeAux.removeVehiculo(vehiculoOld);
-        vehiculoTieneViaje = [];
-      } else {
-        vehiculoTieneViaje = await vehiculo.getViaje({
-          where: { habilitado: true, fecha_salida: viaje.fecha_salida },
-        });
-      }
-      if (choferOld[0].dataValues.id == chofer.id) {
-        await viajeAux.removeChofer(choferOld);
-        choferTieneViaje = [];
-      } else {
-        choferTieneViaje = await chofer.getViaje({
-          where: { habilitado: true, fecha_salida: viaje.fecha_salida },
-        });
-      }
 
+      const choferTieneViaje = await chofer.getViaje({
+        where: {
+          habilitado: true,
+          fecha_salida: viaje.fecha_salida,
+          id: { [Op.ne]: viajeAux.id },
+        },
+      });
+      const vehiculoTieneViaje = await vehiculo.getViaje({
+        where: {
+          habilitado: true,
+          fecha_salida: viaje.fecha_salida,
+          id: { [Op.ne]: viajeAux.id },
+        },
+      });
       if (choferTieneViaje.length == 0) {
         if (vehiculoTieneViaje.length == 0) {
           if (

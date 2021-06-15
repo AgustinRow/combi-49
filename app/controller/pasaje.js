@@ -6,7 +6,7 @@ const create = async (req, res) => {
   console.log(pasaje);
   try {
     const viaje = await model.Viaje.findOne({
-      where: { id: pasaje.viaje, habilitado: true },
+      where: { id: pasaje.viajeId, habilitado: true },
     });
     const pasajero = await model.Usuario.findOne({
       where: { id: pasaje.pasajero, tipo: 3 },
@@ -182,7 +182,7 @@ const list = async (req, res) => {
             {
               model: model.Ruta,
               as: "Ruta",
-              attributes: ["id", "distancia", "duracion"],
+              attributes: ["id", "distancia", "duracion", "nombre"],
               include: [
                 {
                   model: model.Ciudad,
