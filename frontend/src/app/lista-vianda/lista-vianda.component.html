@@ -2,7 +2,7 @@
     <h2>Viandas</h2>
     <p>Lista de viandas:</p>
 
-    <button class="btn btn-primary m-2" (click)="openModal(contentNewVehiculo,null)">
+    <button class="btn btn-primary m-2" (click)="openModal(contentNewFoodbox,null)">
         Agregar Vianda
     </button>
 
@@ -26,7 +26,7 @@
                         <button type="button" class="btn btn-warning"
                             (click)="openModal(contentEdit, vianda)"><i class="bi bi-pencil-square"></i></button>
                         <button type="button" class="btn btn-danger"
-                            (click)="deleteVehiculo(vianda)"><i class="bi bi-trash"></i></button>
+                            (click)="deleteVianda(vianda)"><i class="bi bi-trash"></i></button>
                     </div>
                 </td>
             </tr>
@@ -65,7 +65,7 @@
     </div>
 </ng-template>
 
-<ng-template #contentNewVehiculo let-c="close" let-d="dismiss">
+<ng-template #contentNewFoodbox let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">Nueva vianda</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">

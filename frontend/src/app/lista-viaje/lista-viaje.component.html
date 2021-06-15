@@ -1,4 +1,4 @@
-<ng-template *ngIf="usuarioIdentificado">
+<ng-template [ngIf]="usuarioIdentificado && buscar">
     <nav class="navbar navbar-expand-sm justify-content-center bg-info navbar-dark"
         *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
         <ul class="navbar-nav">
@@ -42,7 +42,7 @@
                 <th>Fecha de salida</th>
                 <th>Hora de Salida</th>
                 <th>Vehiculo</th>
-                <ng-template *ngIf="usuarioIdentificado">
+                <ng-template [ngIf]="usuarioIdentificado">
                     <th *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">Chofer</th>
                     <th>Acciones</th>
                 </ng-template>
@@ -54,7 +54,7 @@
                 <td data-title="Fecha de Salida">{{viaje.fecha_salida}}</td>
                 <td data-title="Hora de salida">{{viaje.hora }}</td>
                 <td data-title="Vehiculo">{{viaje.Vehiculo[0].patente}}</td>
-                <ng-template *ngIf="usuarioIdentificado">
+                <ng-template [ngIf]="usuarioIdentificado">
                     <td data-title="Chofer" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
                         {{viaje.Chofer[0].nombre}}</td>
                     <td data-title="Acciones" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR; else buyBlock">
