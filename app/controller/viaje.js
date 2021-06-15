@@ -18,8 +18,8 @@ const driverAndTravel = async (req, res) => {
 const resetDriverAndTravel = async (viaje) => {
   let vehiculo = await viaje.getVehiculo();
   let chofer = await viaje.getChofer();
-  vehiculo.removeViaje({ ViajeId: null });
-  chofer.removeViaje({ vehiculoId: null });
+  viaje.removeVehiculo();
+  viaje.removeChofer();
 };
 //los choferes y vehiculos que llegan estan disponibles
 const update = async (req, res) => {
@@ -36,7 +36,7 @@ const update = async (req, res) => {
         where: { id: viaje.vehiculoId, habilitado: true },
       });
       const vehiculoOld = await viajeAux.getVehiculo();
-      const choferOld = await viajeAux.getChofer();
+      //const choferOld = await viajeAux.getChofer();
 
       const choferTieneViaje = await chofer.getViaje({
         where: { habilitado: true, fecha_salida: viaje.fecha_salida },
@@ -44,7 +44,8 @@ const update = async (req, res) => {
       const vehiculoTieneViaje = await vehiculo.getViaje({
         where: { habilitado: true, fecha_salida: viaje.fecha_salida },
       });
-      console.log(choferTieneViaje, vehiculoTieneViaje);
+      //console.log(choferTieneViaje, vehiculoTieneViaje);
+      await resetDriverAndTravel(viajeAux);
       if (choferTieneViaje.length == 0) {
         if (vehiculoTieneViaje.length == 0) {
           const viajeNuevo = await viajeAux.update({
@@ -486,14 +487,13 @@ const findOne = async (req, res) => {
             "marca",
             "confort",
           ],
-          include: [
-            {
-              model: model.Usuario,
-              as: "Chofer",
-              attributes: ["id", "nombre", "apellido", "email", "dni"],
-            },
-          ],
         },
+        {
+          model: model.Usuario,
+          as: "Chofer",
+          attributes: ["id", "nombre", "apellido", "email", "dni"],
+        },
+
         {
           model: model.Ruta,
           as: "Ruta",
