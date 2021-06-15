@@ -17,12 +17,67 @@ const driverAndTravel = async (req, res) => {
 
 const resetDriverAndTravel = async (viaje) => {
   let vehiculo = await viaje.getVehiculo();
-  let chofer = await vehiculo.getChofer();
-  vehiculo.update({ ViajeId: null });
-  chofer.update({ vehiculoId: null });
+  let chofer = await viaje.getChofer();
+  vehiculo.removeViaje({ ViajeId: null });
+  chofer.removeViaje({ vehiculoId: null });
 };
 //los choferes y vehiculos que llegan estan disponibles
 const update = async (req, res) => {
+  const viaje = req.body;
+  try {
+    const viajeAux = await model.Viaje.findOne({
+      where: { habilitado: true, id: viaje.id },
+    });
+    if (viajeAux != null) {
+      const chofer = await model.Usuario.findOne({
+        where: { id: viaje.choferId, tipo: 2, habilitado: true },
+      });
+      const vehiculo = await model.Vehiculo.findOne({
+        where: { id: viaje.vehiculoId, habilitado: true },
+      });
+      const choferTieneViaje = await chofer.getViaje({
+        where: { habilitado: true, fecha_salida: viaje.fecha_salida },
+      });
+      const vehiculoTieneViaje = await vehiculo.getViaje({
+        where: { habilitado: true, fecha_salida: viaje.fecha_salida },
+      });
+      console.log(choferTieneViaje, vehiculoTieneViaje);
+      if (choferTieneViaje.length == 0) {
+        if (vehiculoTieneViaje.length == 0) {
+          const viajeNuevo = await viajeAux.update({
+            nombre: viaje.nombre,
+            detalle: viaje.detalle,
+            hora: viaje.hora,
+            //en caso que haya vendido pasajes
+            asientos_disponibles:
+              vehiculo.asientos - viajeAux.asientos_disponibles,
+            fecha_salida: viaje.fecha_salida,
+            RutaId: viaje.rutaId,
+            precio: viaje.precio,
+            EstadoId: 1, //1-Pendiente
+            habilitado: true,
+          });
+          await viajeNuevo.setChofer(chofer);
+          await viajeNuevo.setVehiculo(vehiculo);
+          res.status(200).json(viajeNuevo);
+        } else {
+          res
+            .status(400)
+            .json({ message: "Vehiculo tiene viaje asignado para esa fecha" });
+        }
+      } else {
+        res
+          .status(400)
+          .json({ message: "Chofer tiene viaje asignado para esa fecha" });
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const updateX = async (req, res) => {
   const form = req.body;
   try {
     const viaje = await model.Viaje.findOne({
@@ -61,6 +116,68 @@ const update = async (req, res) => {
 const remove = async (req, res) => {};
 
 const find = async (req, res) => {
+  const viaje = req.query;
+  try {
+    model.Viaje.findAll({
+      where: { habilitado: true, fecha_salida: viaje.fecha },
+      attributes: [
+        "id",
+        "nombre",
+        "precio",
+        "detalle",
+        "asientos_disponibles",
+        "fecha_salida",
+        "hora",
+      ],
+      include: [
+        {
+          as: "Ruta",
+          model: model.Ruta,
+          where: {
+            [Op.and]: [
+              { origenId: viaje.origen },
+              { destinoId: viaje.destino },
+            ],
+          },
+          attributes: ["id", "nombre", "distancia", "duracion"],
+          include:[
+            {
+              model: model.Ciudad,
+              as: "Origen",
+              include: [
+                {
+                  model: model.Provincia,
+                  as: "Provincia",
+                  attributes: ["id", "nombre"],
+                },
+              ],
+              attributes: ["id", "nombre", "cp"],
+            },
+            {
+              model: model.Ciudad,
+              as: "Destino",
+              include: [
+                {
+                  model: model.Provincia,
+                  as: "Provincia",
+                  attributes: ["id", "nombre"],
+                },
+              ],
+              attributes: ["id", "nombre", "cp"],
+            },
+          ]
+        },
+      ],
+    }).then((viajes) => {
+      res.status(200).json({ viajes });
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server" });
+  }
+};
+
+const findXX = async (req, res) => {
   const viaje = req.query;
   try {
     model.Ruta.findAll({
@@ -394,7 +511,6 @@ const findOne = async (req, res) => {
 
 const create = async (req, res) => {
   const viaje = req.body;
-  console.log(viaje);
   try {
     const chofer = await model.Usuario.findOne({
       where: { id: viaje.choferId, tipo: 2, habilitado: true },
@@ -408,7 +524,6 @@ const create = async (req, res) => {
     const vehiculoTieneViaje = await vehiculo.getViaje({
       where: { habilitado: true, fecha_salida: viaje.fecha_salida },
     });
-    console.log(vehiculoTieneViaje.length);
     if (choferTieneViaje.length == 0) {
       if (vehiculoTieneViaje.length == 0) {
         const viajeNuevo = await model.Viaje.create({
