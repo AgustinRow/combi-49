@@ -34,6 +34,7 @@ export class ListaRutaComponent implements OnInit {
       (data: any) => {
         if (data != null) {
           alert("Se ha eliminado la Ruta correctamente");
+          this.refreshList();
         }
       },
       (error) => {
