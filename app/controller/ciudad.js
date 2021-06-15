@@ -38,12 +38,13 @@ const findDuplicateById = async (city) => {
 // chequear que la ciudad este disponible (habilitado: true)
 const create = async (req, res) => {
   const city = req.body;
+  console.log(city);
   const oldCity = await findDuplicates(city);
   if (oldCity) {
     res.status(401).json({ message: "La ciudad ya existe" });
   } else {
     const provincia = await model.Provincia.findOne({
-      where: { id: city.provincia.id },
+      where: { id: city.Provincia.id },
     });
     if (provincia != null) {
       model.Ciudad.create({
