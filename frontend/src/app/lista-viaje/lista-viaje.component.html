@@ -28,7 +28,7 @@
     <p>Para realizar la compra de un viaje puede selecionar en la tabla, los viajes son dado de alta por la empresa y se
         disponen para los usuarios :</p>
 
-    <ng-template *ngIf="usuarioIdentificado">
+    <ng-template [ngIf]="usuarioIdentificado">
         <button class="btn btn-primary m-2" (click)="openModal(contentNew, viajeSeleccionado)"
             *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
             Crear viaje

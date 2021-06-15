@@ -60,7 +60,7 @@ export class PasajeNuevoComponent implements OnInit {
       this.passageService.addPassage(this.pasajeNuevo).subscribe(
         (data: any) => {
           if (data != null) {
-            alert("Se ha creado el pasaje correctamente");
+            alert("Se ha pagado el pasaje correctamente");
             this.passageNewEvent.emit(data.data);
             this.router.navigate(['/']);
           }
