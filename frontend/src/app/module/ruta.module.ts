@@ -7,5 +7,5 @@ export class Ruta{
     duracion: number;
     Origen: Ciudad;
     Destino: Ciudad;
-    borradoLogico: number;  //activo
+    habilitado: number;  //activo
 }

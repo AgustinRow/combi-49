@@ -22,7 +22,8 @@ export class PasajeNuevoComponent implements OnInit {
     private travelService: TravelService,
     private passageService: PassageService,
     private route: ActivatedRoute,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -56,12 +57,13 @@ export class PasajeNuevoComponent implements OnInit {
   payment(estaPago: boolean) {
     if (estaPago) {
       this.pasajeNuevo.Viaje = this.viajeSeleccionado;
-      this.pasajeNuevo.usuario = this.storageService.getCurrentUser();
+      this.pasajeNuevo.Usuario = this.storageService.getCurrentUser();
       this.passageService.addPassage(this.pasajeNuevo).subscribe(
         (data: any) => {
           if (data != null) {
             alert("Se ha creado el pasaje correctamente");
             this.passageNewEvent.emit(data.data);
+            this.router.navigate(['/']);
           }
         },
         (error) => {

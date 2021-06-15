@@ -5,5 +5,5 @@ export class Ciudad{
     nombre: string;
     cp: number;
     Provincia: Provincia;
-    borradoLogico: boolean;  //activo
+    habilitado: boolean;  //activo
 }

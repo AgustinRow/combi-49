@@ -7,8 +7,27 @@ export class Pasaje{
     id: number;
     total: number;
     viandas: Vianda[];
-    Viaje: Viaje;
-    usuario: Usuario;
+    viaje: number;
+    //usuario: Usuario;
     test: Test;
-    borradoLogico: number;  //activo
+    habilitado: number;  //activo
+    pasajero: number
+    
+    private _Usuario: Usuario;
+    public get Usuario(): Usuario {
+        return this._Usuario;
+    }
+    public set Usuario(u: Usuario) {
+        this._Usuario = u;
+        this.pasajero = u.id;
+    }
+    
+    private _Viaje: Viaje;
+    public get Viaje(): Viaje {
+        return this._Viaje;
+    }
+    public set Viaje(v: Viaje) {
+        this._Viaje = v;
+        this.viaje = v.id;
+    }
 }

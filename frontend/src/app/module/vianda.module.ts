@@ -3,5 +3,6 @@ export class Vianda{
     precio: number;
     descripcion: string;
     nombre: string;
-    borradoLogico: number;  //activo
+    habilitado: number;  //activo
+    stock: number
 }

@@ -7,5 +7,5 @@ export class Valoracion{
     detalle: String;
     viaje: Viaje;
     usuario: Usuario
-    borradoLogico: number;  //activo
+    habilitado: number;  //activo
 }

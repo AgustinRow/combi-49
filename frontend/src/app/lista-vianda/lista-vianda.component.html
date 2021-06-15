@@ -11,16 +11,14 @@
             <tr scope="row">
                 <th>Nombre</th>
                 <th>Precio</th>
-                <th>Descripcion</th>
+                <th>Sctok</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let vianda of listaV">
-                <td data-title="Marca">{{vianda.marca}}</td>
-                <td data-title="Modelo">{{vianda.modelo}}</td>
-                <td data-title="Patente">{{vianda.patente}}</td>
-                <td data-title="asientos">{{vianda.asientos}}</td>
-                <td data-title="confort">{{vianda.confort}}</td>
+                <td data-title="Nombre">{{vianda.nombre}}</td>
+                <td data-title="Precio">{{vianda.precio}}</td>
+                <td data-title="Sctok">{{vianda.stock}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info"
@@ -44,7 +42,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-vianda-editar [(viandaModificado)]="viandaSeleccionada" (viandaEditEvent)="refreshList(); c('Close click')">
+        <app-vianda-editar [viandaModificada]="aux" (viandaEditEvent)="refreshList(); c('Close click')">
             Cargando</app-vianda-editar>
     </div>
     <div class="modal-footer">
@@ -54,7 +52,7 @@
 
 <ng-template #contentShow let-c="close" let-d="dismiss">
     <div class="modal-header">
-        <h4 class="modal-title">Infirmacion del vianda</h4>
+        <h4 class="modal-title">Infirmacion de la vianda</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>

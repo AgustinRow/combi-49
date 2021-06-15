@@ -8,7 +8,7 @@ export class Viaje{
     //fecha_llegada: Date;
     hora: Date;
     detalle: string;
-    borradoLogico: number;  //activo
+    habilitado: number;  //activo
     precio: number;
     rutaId: number;
     vehiculoId: number;

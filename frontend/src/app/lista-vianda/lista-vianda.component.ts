@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Vianda } from '../module/vianda.module';
 import { FoodboxService } from '../service/foodbox.service';
@@ -14,6 +14,7 @@ import { FoodboxService } from '../service/foodbox.service';
 export class ListaViandaComponent implements OnInit {
   listaV: Vianda[] = [];
   viandaSeleccionada: Vianda;
+  @Output() aux: Vianda;
 
   constructor(
     private foodboxService: FoodboxService,
@@ -26,6 +27,12 @@ export class ListaViandaComponent implements OnInit {
 
   openModal(contentEdit, viandaselect: Vianda) {
     this.viandaSeleccionada = viandaselect;
+    this.aux = new Vianda();
+    this.aux.id = viandaselect.id;
+    this.aux.precio = viandaselect.precio;
+    this.aux.descripcion = viandaselect.descripcion;
+    this.aux.nombre = viandaselect.nombre;
+    this.aux.stock = viandaselect.stock;
     this.modalService.open(contentEdit);
   }
 
@@ -34,8 +41,6 @@ export class ListaViandaComponent implements OnInit {
       (data: Vianda) => {
         if (data != null) {
           alert("Se ha eliminado la vianda correctamente");
-          var i = this.listaV.indexOf(viandaselect);
-          i !== -1 && this.listaV.splice(i, 1);
         }
       },
       (error) => {

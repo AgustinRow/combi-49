@@ -19,7 +19,6 @@ export class FoodboxService {
   ) { }
 
   addFoodbox(vianda: Vianda): Observable<Vianda> {
-    console.log(vianda);
     return this.http.post<Vianda>(this.usersUrl + 'alta', vianda, httpOptions);
   }
 
