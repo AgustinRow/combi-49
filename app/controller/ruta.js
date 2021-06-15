@@ -14,12 +14,12 @@ const create = async (req, res) => {
   const ruta = req.body;
   console.log(ruta);
   try {
-    if (ruta.Origen != ruta.Destino) {
+    if (ruta.origen != ruta.destino) {
       const origen = await model.Ciudad.findOne({
-        where: { id: ruta.Origen.id, habilitado: true },
+        where: { id: ruta.origen.id, habilitado: true },
       }).then((response) => response);
       const destino = await model.Ciudad.findOne({
-        where: { id: ruta.Destino.id, habilitado: true },
+        where: { id: ruta.destino.id, habilitado: true },
       }).then((response) => response);
       if (origen && destino) {
         const result = await checkDuplicates(origen, destino);
