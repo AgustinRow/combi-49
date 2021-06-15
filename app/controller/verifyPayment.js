@@ -1,22 +1,25 @@
-const model = require("../lib/models");
-const Op = require("sequelize").Op;
-
-const approve = async (req, res, next) => {
-  const tarjeta = req.header;
-  if (!tarjeta) {
+module.exports = async (req, res, next) => {
+  const tarjeta = req.header("tarjeta");
+  const codigo = req.header("codigo");
+  console.log(tarjeta.length);
+  if (!tarjeta && !codigo) {
     return res
       .status(401)
       .send({ message: "Debe ingresar las credenciales de pago" });
   }
   try {
     //TODO realizar comprobaciones del pago
-    console.log("PAGO REALIZADO CON EXITOS");
-    next();
+    if (tarjeta.length == 16) {
+      if (codigo.length == 3) {
+        console.log("PAGO REALIZADO CON EXITOS");
+        next();
+      } else {
+        return res.status(400).json({ message: "Codigo de tarjeta invalido" });
+      }
+    } else {
+      return res.status(400).json({ message: "Numero de tarjeta invalido" });
+    }
   } catch {
-    res.status(400).json({ message: "" });
+    return res.status(500).json({ message: "Pago Invalido" });
   }
-};
-
-module.exports = {
-  approve,
 };

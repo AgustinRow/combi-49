@@ -32,9 +32,11 @@ const findUser = async (req, res) => {
 
 const login = async (req, res) => {
   const user = req.body;
-  model.Usuario.findOne({ where: { email: user.email } }).then((response) => {
+  model.Usuario.findOne({
+    where: { email: user.email, habilitado: true },
+  }).then((response) => {
     try {
-      if (response.habilitado) {
+      if (response != null) {
         if (user.password === response.password) {
           const token = jwtToken(response);
 
@@ -44,9 +46,7 @@ const login = async (req, res) => {
           //res.json({ data: parse(response) });
           //res.status(200);
         } else {
-          res
-            .status(400)
-            .json({ error: "Bad request. Incorrect email or passowrd" });
+          res.status(400).json({ error: "Email o contraseña incorrecto" });
         }
       } else {
         res.status(401).json({ error: "Not Found" });
@@ -95,7 +95,12 @@ const parse = (user) => {
 const findDuplicates = async (user) => {
   return model.Usuario.findAll({
     where: {
-      [Op.or]: [{ email: user.email }, { dni: user.dni }],
+      [Op.and]: [
+        {
+          id: { [Op.ne]: user.id },
+          [Op.or]: [{ email: user.email }, { dni: user.dni }],
+        },
+      ],
     },
   });
 };
@@ -141,8 +146,33 @@ const register = async (req, res) => {
     });
   }
 };
+
 //modificar chofer
-const update = async (req, res) => {
+const update = async (req, res) => {[]
+  const updatedUser = req.body;
+  try {
+    const user = await findDuplicates(updatedUser);
+    if (user.length > 0) {
+      res.status(400).json({
+        message:
+          "El DNI o email que intenta modificar ya se encuentra registrado",
+      });
+    } else {
+      model.Usuario.update(updatedUser, {
+        where: {
+          id: updatedUser.id,
+        },
+      }).then((response) => {
+        res.status(200).json({ message: "Usuario modificado correctamente" });
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const updateX = async (req, res) => {
   const updatedUser = req.body;
   const oldUser = await findDuplicates(updatedUser).then((response) => {
     try {
@@ -154,6 +184,12 @@ const update = async (req, res) => {
     }
   });
   if (oldUser.id == updatedUser.id) {
+    if (oldUser.email === updatedUser.email) {
+      res.status(401).json({ message: "El e-mail ya se encuentra registrado" });
+    }
+    if (oldUser.dni === updatedUser.dni) {
+      res.status(401).json({ message: "El DNI ya se encuentra registrado" });
+    }
     model.Usuario.update(updatedUser, {
       where: {
         id: updatedUser.id,
@@ -166,13 +202,6 @@ const update = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
       }
     });
-  } else {
-    if (oldUser.email === updatedUser.email) {
-      res.status(401).json({ message: "El e-mail ya se encuentra registrado" });
-    }
-    if (oldUser.dni === updatedUser.dni) {
-      res.status(401).json({ message: "El DNI ya se encuentra registrado" });
-    }
   }
 };
 
@@ -212,7 +241,7 @@ const listPassengers = async (req, res) => {
   try {
     model.Usuario.findAll({ where: { habilitado: true, tipo: 3 } }).then(
       (response) => {
-        res.json({ data: parseUsersData(response) });
+        res.json({ data: response });
         res.status(200);
       }
     );
@@ -235,6 +264,19 @@ const profile = async (req, res) => {
   }
 };
 
+const listAvailableDriver = async (req, res) => {
+  try {
+    model.Usuario.findAll({
+      where: { tipo: 2, habilitado: true, vehiculoId: null },
+      attributes: ["id", "nombre", "email", "apellido"],
+    }).then((response) => {
+      res.status(200).json({ data: response });
+    });
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 //TODO: implementar el recuperar contraseñ
 const recoverPassword = async (req, res) => {};
 
@@ -248,4 +290,5 @@ module.exports = {
   listPassengers,
   profile,
   recoverPassword,
+  listAvailableDriver,
 };

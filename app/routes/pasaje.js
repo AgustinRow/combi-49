@@ -9,6 +9,8 @@ const verify = require("../controller/verifyPayment");
 router.get("/inicializar_estado", Estado.create);
 
 router.post("/comprar", Pasaje.create);
-router.get("/listar/(:id)", Pasaje.list);
+router.get("/buscar/(:id)", Pasaje.findTravelsForUser);
+router.delete("/borrar/(:id)", Pasaje.remove);
+router.get("/listar", Pasaje.list);
 
 module.exports = router;

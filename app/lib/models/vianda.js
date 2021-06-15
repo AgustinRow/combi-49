@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Vianda.belongsToMany(models.Pasaje, {
+        as: "Pasaje",
+        foreignKey: "ViandaId",
+        through: "Pasaje_Vianda",
+      });
     }
   }
   Vianda.init(
@@ -17,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       precio: DataTypes.INTEGER,
       descripcion: DataTypes.STRING,
       habilitado: DataTypes.BOOLEAN,
+      stock: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -12,13 +12,14 @@ const checkDuplicates = async (origen, destino) => {
 // sin duplicados, origen y destino obligatorio, origen != destino
 const create = async (req, res) => {
   const ruta = req.body;
+  console.log(ruta);
   try {
     if (ruta.origen != ruta.destino) {
       const origen = await model.Ciudad.findOne({
-        where: { id: ruta.origen, habilitado: true },
+        where: { id: ruta.origen.id, habilitado: true },
       }).then((response) => response);
       const destino = await model.Ciudad.findOne({
-        where: { id: ruta.destino, habilitado: true },
+        where: { id: ruta.destino.id, habilitado: true },
       }).then((response) => response);
       if (origen && destino) {
         const result = await checkDuplicates(origen, destino);
@@ -32,8 +33,8 @@ const create = async (req, res) => {
             habilitado: true,
           }).then((response) => {
             try {
-              response.setOrigen(ruta.origen);
-              response.setDestino(ruta.destino);
+              response.setOrigen(origen);
+              response.setDestino(destino);
               res.status(201).json({ data: response, origen, destino });
             } catch (err) {
               res.status(400).json({ message: "Error en origen o destino" });
@@ -44,7 +45,8 @@ const create = async (req, res) => {
     } else {
       res.status(400).json({ message: "Origen y destino son iguales" });
     }
-  } catch {
+  } catch (err) {
+    console.log(err);
     res.status(500).json({ message: "Internal Server error" });
   }
 };
@@ -65,7 +67,7 @@ const parseRoute = async (routes) => {
   return await result;
 };
 
-const list = async (req, res) => {
+const listOld = async (req, res) => {
   try {
     const rutas = await model.Ruta.findAll({
       where: { habilitado: true },
@@ -80,15 +82,29 @@ const list = async (req, res) => {
 };
 
 //solo de prueba
-const listOrigin = async (req, res) => {
-  const cityId = req.params.id;
-  model.Ruta.findAll({ where: { origenId: cityId } }).then((response) => {
-    console.log(response);
-    response.getOrigen().then((resp) => {
-      console.log(resp);
+const list = async (req, res) => {
+  try {
+    model.Ruta.findAll({
+      attributes: ["id", "nombre", "distancia", "duracion"],
+      where: { habilitado: true },
+      include: [
+        {
+          model: model.Ciudad,
+          as: "Origen",
+          attributes: ["id", "nombre", "cp"],
+        },
+        {
+          model: model.Ciudad,
+          as: "Destino",
+          attributes: ["id", "nombre", "cp"],
+        },
+      ],
+    }).then((rutas) => {
+      res.status(200).json({ data: rutas });
     });
-    res.status(200).json({ data: response });
-  });
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 const getRoute = async (req, res) => {
@@ -128,6 +144,36 @@ const getRoute = async (req, res) => {
 const remove = async (req, res) => {
   const { id } = req.params;
   //para eliminar una ruta no debe tener viaje en asignado
+  try {
+    const ruta = await model.Ruta.findOne({
+      where: { id: id, habilitado: true },
+      include: [
+        {
+          model: model.Viaje,
+          include: [
+            {
+              model: model.Estado,
+              as: "Estado",
+              where: {
+                [Op.or]: [{ id: 1 }, { id: 2 }],
+              },
+            },
+          ],
+        },
+      ],
+    });
+    if (ruta.Viajes.length > 0) {
+      res.status(400).json({
+        message: "No se puede eliminar ruta ya que tiene viaje asociado",
+      });
+    } else {
+      ruta.update({ habilitado: false }).then((response) => {
+        res.status(200).json({ message: "Ruta eliminada exitosamente" });
+      });
+    }
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 //TODO modificar una ruta
@@ -158,7 +204,6 @@ const update = async (req, res) => {
 module.exports = {
   list,
   create,
-  listOrigin,
   getRoute,
   remove,
   update,
