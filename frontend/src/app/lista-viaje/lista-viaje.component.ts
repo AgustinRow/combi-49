@@ -11,14 +11,15 @@ import { TravelService } from '../service/travel.service';
   templateUrl: './lista-viaje.component.html',
   styleUrls: ['./lista-viaje.component.css'],
   providers: [
-      TravelService
-    ]
+    TravelService
+  ]
 })
 export class ListaViajeComponent implements OnInit {
   viajeSeleccionado: Viaje;
   ver: String = "viajes";
-  lViajes: Viaje[] = [];
-  
+  @Input() lViajes: Viaje[] = [];
+  @Input() buscar = true;
+
   usuarioIdentificado: Usuario;
   USUARIO_ADMINISTRADOR = UserService.USUARIO_ADMINISTRADOR;
 
@@ -29,13 +30,16 @@ export class ListaViajeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.refreshList();
+    if (this.buscar) {
+      this.refreshList();
+    }
+    this.usuarioIdentificado = this.storageService.getCurrentUser();
   }
 
   onSelect(selction: String) {
     this.ver = selction;
   }
-  
+
   openModal(contentEdit, select: Viaje) {
     this.viajeSeleccionado = select;
     this.modalService.open(contentEdit);
@@ -60,7 +64,7 @@ export class ListaViajeComponent implements OnInit {
     this.refreshList();
   }
 
-  refreshList(){
+  refreshList() {
     this.travelService.getTravels().subscribe(
       (list: any) => {
         this.lViajes = list.data as Viaje[];

@@ -41,7 +41,6 @@ export class TravelService {
   }
 
   findTravels(origen: Ciudad, destino: Ciudad, salida: String): Observable<Viaje[]> {
-    console.log(origen, destino, salida)
     return this.http.get<Viaje[]>(this.usersUrl + 'buscar?origen='+origen.id+'&destino='+destino.id+'&fecha='+salida, httpOptions);
   }
 

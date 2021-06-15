@@ -53,8 +53,8 @@ export class ViajeEditarComponent implements OnInit {
     if (this.form.valid) 
     {
       this.viajeModificado.Ruta = this.listRutas[this.form.value.Ruta];
-      this.viajeModificado.Vehiculo = this.listVehiculos[this.form.value.Vehiculo];
-      this.viajeModificado.Vehiculo.Chofer = this.listChoferes[this.form.value.Chofer];
+      this.viajeModificado.Vehiculo[0] = this.listVehiculos[this.form.value.Vehiculo];
+      this.viajeModificado.Chofer[0] = this.listChoferes[this.form.value.Chofer];
       this.travelService.modifyTravel(this.viajeModificado).subscribe(
         (data: any) => {
           if (data != null) {
@@ -78,7 +78,7 @@ export class ViajeEditarComponent implements OnInit {
     this.userService.getChoffers().subscribe(
       (list: any) => {
         this.listChoferes = list.data as Usuario[];
-        this.cIndex = this.listChoferes.findIndex(x => x.email === this.viajeModificado.Vehiculo.Chofer.email);
+        this.cIndex = this.listChoferes.findIndex(x => x.email === this.viajeModificado.Chofer[0].email);
       },
       (error) => {
         if (error.status >= 500) {
@@ -95,7 +95,7 @@ export class ViajeEditarComponent implements OnInit {
     this.vehicleService.getvehicles().subscribe(
       (list: any) => {
         this.listVehiculos = list.data as Vehiculo[];
-        this.vIndex = this.listVehiculos.findIndex(x => x.patente === this.viajeModificado.Vehiculo.patente);
+        this.vIndex = this.listVehiculos.findIndex(x => x.patente === this.viajeModificado.Vehiculo[0].patente);
       },
       (error) => {
         if (error.status >= 500) {

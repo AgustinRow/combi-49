@@ -41,5 +41,5 @@
     </div>
 </form>
 <div>
-    <app-lista-viaje *ngIf="listViajes">Cargando...</app-lista-viaje>
+    <app-lista-viaje [buscar]="false" [lViajes]="listViajes" *ngIf="listViajes.length > 0">Cargando...</app-lista-viaje>
 </div>

@@ -10,10 +10,14 @@ export class SpinnerService {
   constructor() { }
 
   show(): void {
-    this.isLouding.next(true);
+    setTimeout(
+      () => this.isLouding.next(true)
+    );
   }
 
   hide(): void {
-    this.isLouding.next(false);
+    setTimeout(
+      () => this.isLouding.next(false)
+    );
   }
 }

@@ -12,7 +12,7 @@ import { TravelService } from '../service/travel.service';
 })
 export class HomeComponent implements OnInit {
   @Input() listCiudades: Ciudad[];
-  listViajes: Viaje[];
+  listViajes: Viaje[] = [];
   hoy = new Date(Date.now());
   travelToFind = new Viaje();
 
@@ -42,7 +42,6 @@ export class HomeComponent implements OnInit {
   }
 
   searchTrip( form: NgForm) {
-    console.log(form.value.fecha_salida)
     this.travelService.findTravels( this.listCiudades[form.value.origen], this.listCiudades[form.value.destino], form.value.fecha_salida).subscribe(
       (list: any) => {
         this.listViajes = list.data as Viaje[];

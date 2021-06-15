@@ -10,28 +10,32 @@ export class Viaje{
     detalle: string;
     borradoLogico: number;  //activo
     precio: number;
-    Chofer: Usuario;
-    choferId: number;
     rutaId: number;
     vehiculoId: number;
+    choferId: number;
 
-    private _Vehiculo: Vehiculo;
- 
-    public get Vehiculo() {
-        return this._Vehiculo;
+    private _Chofer: Usuario[];
+    public get Chofer(): Usuario[] {
+        return this._Chofer;
+    }
+    public set Chofer(c: Usuario[]) {
+        this._Chofer = c;
+        this.vehiculoId = c[0].id;
     }
 
-    public set Vehiculo(v: Vehiculo) {
+    private _Vehiculo: Vehiculo[];
+    public get Vehiculo(): Vehiculo[] {
+        return this._Vehiculo;
+    }
+    public set Vehiculo(v: Vehiculo[]) {
         this._Vehiculo = v;
-        this.vehiculoId = v.id;
+        this.vehiculoId = v[0].id;
     }
 
     private _Ruta: Ruta;
- 
     public get Ruta() {
         return this._Ruta;
     }
-
     public set Ruta(r: Ruta) {
         this._Ruta = r;
         this.rutaId = r.id;

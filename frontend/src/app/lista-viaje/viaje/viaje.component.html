@@ -4,7 +4,7 @@
 <p>Distancia: {{ viajeConInfo.Ruta.distancia }}</p>
 <p>Fecha de Salida: {{ viajeConInfo.fecha_salida }}</p>
 <p>hora de salida: {{ viajeConInfo.hora }}</p>
-<p>Chofer: {{ viajeConInfo.Vehiculo.Chofer.nombre }} {{ viajeConInfo.Vehiculo.Chofer.apellido }}</p>
-<p>Vehiculo: {{ viajeConInfo.Vehiculo.marca }} {{ viajeConInfo.Vehiculo.modelo }} - {{ viajeConInfo.Vehiculo.patente }}</p>
+<p>Chofer: {{ viajeConInfo.Chofer[0].nombre }} {{ viajeConInfo.Chofer[0].apellido }}</p>
+<p>Vehiculo: {{ viajeConInfo.Vehiculo[0].marca }} {{ viajeConInfo.Vehiculo[0].modelo }} - {{ viajeConInfo.Vehiculo[0].patente }}</p>
 <p>Precio: ${{ viajeConInfo.precio }}</p>
 <p>Detalle: {{ viajeConInfo.detalle }}</p>

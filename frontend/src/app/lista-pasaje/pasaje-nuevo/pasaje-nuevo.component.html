@@ -1,4 +1,5 @@
-<H6>Pasaje para el {{ viajeSeleccionado.fecha_salida | date:'yyyy-MM-dd' }}</H6>
+<H6>Pasaje para el {{ viajeSeleccionado.fecha_salida | date:'dd-MM-yyyy' }}</H6>
+
 <button type="button" class="btn btn-danger" (click)="openModal(contentShow)">Pagar</button>
 
 <ng-template #contentShow let-c="close" let-d="dismiss">
