@@ -18,8 +18,8 @@ export class FoodboxService {
     private http: HttpClient
   ) { }
 
-  addFoodbox(vianda: Vianda): Observable<Vianda> {
-    return this.http.post<Vianda>(this.usersUrl + 'alta', vianda, httpOptions);
+  addFoodbox(vianda: any): Observable<Vianda> {
+    return this.http.post<Vianda>(this.usersUrl + 'comprar', vianda, httpOptions);
   }
 
   getFoodboxs(): Observable<Vianda[]> {

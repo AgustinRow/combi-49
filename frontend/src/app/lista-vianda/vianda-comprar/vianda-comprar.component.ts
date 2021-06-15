@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Pasaje } from 'src/app/module/pasaje.module';
 import { Vianda } from 'src/app/module/vianda.module';
@@ -15,9 +15,12 @@ import { FoodboxService } from 'src/app/service/foodbox.service';
 export class ViandaComprarComponent implements OnInit {
   @Input() pasajeModificado: Pasaje;
   viandasCompradas: Vianda[];
+  viandasAgregadas: Vianda[] = [];
   viandasParaVenta: Vianda[];
   totalViandas: number = 0;
+  totalViandasAgregadas: number = 0;
   total:number = 0;
+  @Output() compraViandaEvent = new EventEmitter<Vianda[]>()
 
   constructor(
     private foodboxService: FoodboxService,
@@ -56,15 +59,25 @@ export class ViandaComprarComponent implements OnInit {
 
   addFoodBox(formulario: NgForm){
     this.viandasCompradas.push(this.viandasParaVenta[formulario.value.vianda]);
+    this.viandasAgregadas.push(this.viandasParaVenta[formulario.value.vianda]);
     this.totalViandas += this.viandasParaVenta[formulario.value.vianda].precio;
+    this.totalViandasAgregadas += this.viandasParaVenta[formulario.value.vianda].precio;
     this.total += this.viandasParaVenta[formulario.value.vianda].precio;
   }
 
   deleteFood(v: Vianda){
     var i = this.viandasCompradas.indexOf( v );
     i !== -1 && this.viandasCompradas.splice( i, 1 );
+
+    i = this.viandasAgregadas.indexOf( v );
+    i !== -1 && this.viandasAgregadas.splice( i, 1 );
     
-    this.totalViandas += v.precio;
-    this.total += v.precio;
+    this.totalViandas -= v.precio;
+    this.totalViandasAgregadas -= v.precio;
+    this.total -= v.precio;
+  }
+
+  finishBuy(){
+    this.compraViandaEvent.emit(this.viandasAgregadas);
   }
 }

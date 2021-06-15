@@ -23,8 +23,16 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-info" (click)="openModal(contentShow, pasaje)"><i
                                 class="bi bi-info-circle"></i></button>
-                        <button type="button" class="btn btn-success" (click)="openModal(contentAddFoodBox, pasaje)">Agregar vianda</button>
-                        <button type="button" class="btn btn-danger" (click)="openModal(contentCancel, pasaje)">Cancelar</button>
+                        <ng-container *ngIf="!aPagar; else BlockPagar">
+                            <button type="button" class="btn btn-success"
+                                (click)="openModal(contentAddFoodBox, pasaje)">Agregar vianda</button>
+                        </ng-container>
+                        <ng-template #BlockPagar>
+                            <button type="button" class="btn btn-warning"
+                                (click)="openModal(contentPay, pasaje)">Pagar</button>
+                        </ng-template>
+                        <button type="button" class="btn btn-danger"
+                            (click)="openModal(contentCancel, pasaje)">Cancelar</button>
                     </div>
                 </td>
             </tr>
@@ -69,9 +77,14 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-vianda-comprar [pasajeModificado]="pasajeSeleccionado">Cargando...</app-vianda-comprar>
+        <app-vianda-comprar [pasajeModificado]="pasajeSeleccionado" (compraViandaEvent)="toBuy($event); c('Close click')">
+            Cargando...</app-vianda-comprar>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
     </div>
+</ng-template>
+
+<ng-template #contentPay let-c="close" let-d="dismiss">
+    <app-pago [(total)]="totalViandas" (closeEvent)="c('Close click')" (payEvent)="payment($event); c('Close click')">Cargando...</app-pago>
 </ng-template>

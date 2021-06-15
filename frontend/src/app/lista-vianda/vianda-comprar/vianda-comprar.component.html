@@ -3,8 +3,8 @@
 <h6>Valor de pasaje: {{ pasajeModificado.precio }}</h6>
 <h6>Total: {{ total }}</h6>
 
-<button type="button" class="btn btn-danger">
-    Pagar ${{ total }}
+<button type="button" class="btn btn-info" (click)="finishBuy()">
+    A Pagar ${{ totalViandasAgregadas }}
 </button>
 
 <br>

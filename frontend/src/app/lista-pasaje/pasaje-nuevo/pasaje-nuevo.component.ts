@@ -77,7 +77,6 @@ export class PasajeNuevoComponent implements OnInit {
     }
     else {
       alert("No se pudo completar el pago");
-
     }
   }
 
