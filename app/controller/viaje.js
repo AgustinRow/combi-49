@@ -28,26 +28,36 @@ const update = async (req, res) => {
     const viajeAux = await model.Viaje.findOne({
       where: { habilitado: true, id: viaje.id },
     });
+    console.log(viaje);
     if (viajeAux != null) {
       const chofer = await model.Usuario.findOne({
-        where: { id: viaje.choferId, tipo: 2, habilitado: true },
+        where: { id: viaje.Chofer[0].id, tipo: 2, habilitado: true },
       });
       const vehiculo = await model.Vehiculo.findOne({
-        where: { id: viaje.vehiculoId, habilitado: true },
+        where: { id: viaje.Vehiculo[0].id, habilitado: true },
       });
       const vehiculoOld = await viajeAux.getVehiculo();
-      //const choferOld = await viajeAux.getChofer();
+      const choferOld = await viajeAux.getChofer();
+      //await resetDriverAndTravel(viajeAux);
+      //console.log(vehiculoOld);
+      let choferTieneViaje, vehiculoTieneViaje;
+      if (vehiculoOld[0].dataValues.id == vehiculo.id) {
+        await viajeAux.removeVehiculo(vehiculoOld);
+        vehiculoTieneViaje = [];
+      } else {
+        vehiculoTieneViaje = await vehiculo.getViaje({
+          where: { habilitado: true, fecha_salida: viaje.fecha_salida },
+        });
+      }
+      if (choferOld[0].dataValues.id == chofer.id) {
+        await viajeAux.removeChofer(choferOld);
+        choferTieneViaje = [];
+      } else {
+        choferTieneViaje = await chofer.getViaje({
+          where: { habilitado: true, fecha_salida: viaje.fecha_salida },
+        });
+      }
 
-      await resetDriverAndTravel(viajeAux);
-      const choferTieneViaje = await chofer.getViaje({
-        where: { habilitado: true, fecha_salida: viaje.fecha_salida },
-      });
-      const vehiculoTieneViaje = await vehiculo.getViaje({
-        where: { habilitado: true, fecha_salida: viaje.fecha_salida },
-      });
-      console.log(
-        vehiculoOld[0].dataValues.asientos - viajeAux.asientos_disponibles
-      );
       if (choferTieneViaje.length == 0) {
         if (vehiculoTieneViaje.length == 0) {
           if (
@@ -72,10 +82,10 @@ const update = async (req, res) => {
             });
             await viajeNuevo.setChofer(chofer);
             await viajeNuevo.setVehiculo(vehiculo);
-            res.status(200).json(viajeNuevo);
+            res.status(200).json({ message: "Se ha modificado el viaje" });
           } else {
             res.status(400).json({
-              message: "Vehiculo no tiene asientos disponibles para este viaje",
+              message: "Vehiculo sin asientos disponibles para este viaje",
             });
           }
         } else {
@@ -471,6 +481,7 @@ const list = async (req, res) => {
 const findOne = async (req, res) => {
   const { id } = req.params;
   try {
+    console.log(id);
     model.Viaje.findOne({
       order: ["fecha_salida"],
       where: { habilitado: true, id: id },

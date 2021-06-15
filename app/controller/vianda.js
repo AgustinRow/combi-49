@@ -25,6 +25,7 @@ const create = async (req, res) => {
       }).then((response) => {
         res.status(200).json({ data: response });
       });
+      console.log("---------------");
     }
   } catch (err) {
     console.log(err);

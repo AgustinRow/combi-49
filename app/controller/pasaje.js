@@ -3,9 +3,10 @@ const Op = require("sequelize").Op;
 
 const create = async (req, res) => {
   const pasaje = req.body;
+  console.log(pasaje);
   try {
     const viaje = await model.Viaje.findOne({
-      where: { id: pasaje.viajeId, habilitado: true },
+      where: { id: pasaje.viaje, habilitado: true },
     });
     const pasajero = await model.Usuario.findOne({
       where: { id: pasaje.pasajero, tipo: 3 },
