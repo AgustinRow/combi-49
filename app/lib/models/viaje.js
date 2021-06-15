@@ -13,12 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       Viaje.belongsTo(models.Ruta, { as: "Ruta", foreignKey: "RutaId" });
       Viaje.belongsToMany(models.Vehiculo, {
         as: "Vehiculo",
-        foreignKey: "VehiculoId",
+        foreignKey: "ViajeId",
         through: "Viaje_Vehiculo",
       });
       Viaje.belongsToMany(models.Usuario, {
         as: "Chofer",
-        foreignKey: "ChoferId",
+        foreignKey: "ViajeId",
         through: "Viaje_Chofer",
       });
       Viaje.hasMany(models.Pasaje, { as: "Pasaje", foreignKey: "ViajeId" });

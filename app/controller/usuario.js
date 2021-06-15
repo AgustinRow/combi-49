@@ -147,7 +147,7 @@ const register = async (req, res) => {
   }
 };
 //modificar chofer
-const update = async (req, res) => {
+const update = async (req, res) => {[]
   const updatedUser = req.body;
   try {
     const user = await findDuplicates(updatedUser);

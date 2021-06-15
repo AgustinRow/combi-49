@@ -144,6 +144,36 @@ const getRoute = async (req, res) => {
 const remove = async (req, res) => {
   const { id } = req.params;
   //para eliminar una ruta no debe tener viaje en asignado
+  try {
+    const ruta = await model.Ruta.findOne({
+      where: { id: id, habilitado: true },
+      include: [
+        {
+          model: model.Viaje,
+          include: [
+            {
+              model: model.Estado,
+              as: "Estado",
+              where: {
+                [Op.or]: [{ id: 1 }, { id: 2 }],
+              },
+            },
+          ],
+        },
+      ],
+    });
+    if (ruta.Viajes.length > 0) {
+      res.status(400).json({
+        message: "No se puede eliminar ruta ya que tiene viaje asociado",
+      });
+    } else {
+      ruta.update({ habilitado: false }).then((response) => {
+        res.status(200).json({ message: "Ruta eliminada exitosamente" });
+      });
+    }
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 //TODO modificar una ruta

@@ -88,29 +88,32 @@ const buy = async (req, res) => {
   const { body } = req;
   try {
     const vianda = await model.Vianda.findOne({
-      where: { id: body.vianda.id, habilitado: true },
+      where: { id: body.viandaId, habilitado: true },
     });
+
     const pasaje = await model.Pasaje.findOne({
-      where: { id: body.pasaje.id, habilitado: true },
+      where: { id: body.pasajeId, habilitado: true },
     });
-    
 
-
-    if (pasaje.ViandaId == null) {
-      if (vianda.stock > 0) {
-        pasaje.update({ precio: pasaje.precio + vianda.precio });
-        pasaje.setVianda(vianda).then((response) => {
+    if (vianda.stock > 0) {
+      pasaje.addVianda(vianda).then((response) => {
+        if (response) {
+          pasaje.update({ precio: pasaje.precio + vianda.precio });
+          vianda.update({ stock: vianda.stock - 1 });
           res.status(200).json({ data: response });
-        });
-      } else {
-        res
-          .status(400)
-          .json({ message: "No hay stock para la vianda seleccionada" });
-      }
+        } else {
+          res.status(400).json({
+            message: "Ya ha comprado ese insumo, por favor seleccione otro",
+          });
+        }
+      });
     } else {
-      res.status(400).json({ message: "EL pasaje ya tiene vianda comprada" });
+      res
+        .status(400)
+        .json({ message: "No hay stock para la vianda seleccionada" });
     }
-  } catch {
+  } catch (err) {
+    console.log(err);
     res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -18,8 +18,8 @@ const driverAndTravel = async (req, res) => {
 const resetDriverAndTravel = async (viaje) => {
   let vehiculo = await viaje.getVehiculo();
   let chofer = await viaje.getChofer();
-  viaje.removeVehiculo();
-  viaje.removeChofer();
+  await viaje.removeVehiculo(vehiculo);
+  await viaje.removeChofer(chofer);
 };
 //los choferes y vehiculos que llegan estan disponibles
 const update = async (req, res) => {
@@ -38,32 +38,46 @@ const update = async (req, res) => {
       const vehiculoOld = await viajeAux.getVehiculo();
       //const choferOld = await viajeAux.getChofer();
 
+      await resetDriverAndTravel(viajeAux);
       const choferTieneViaje = await chofer.getViaje({
         where: { habilitado: true, fecha_salida: viaje.fecha_salida },
       });
       const vehiculoTieneViaje = await vehiculo.getViaje({
         where: { habilitado: true, fecha_salida: viaje.fecha_salida },
       });
-      //console.log(choferTieneViaje, vehiculoTieneViaje);
-      await resetDriverAndTravel(viajeAux);
+      console.log(
+        vehiculoOld[0].dataValues.asientos - viajeAux.asientos_disponibles
+      );
       if (choferTieneViaje.length == 0) {
         if (vehiculoTieneViaje.length == 0) {
-          const viajeNuevo = await viajeAux.update({
-            nombre: viaje.nombre,
-            detalle: viaje.detalle,
-            hora: viaje.hora,
-            asientos_disponibles:
-              vehiculo.asientos -
-              (vehiculoOld.asientos - viajeAux.asientos_disponibles),
-            fecha_salida: viaje.fecha_salida,
-            RutaId: viaje.rutaId,
-            precio: viaje.precio,
-            EstadoId: 1, //1-Pendiente
-            habilitado: true,
-          });
-          await viajeNuevo.setChofer(chofer);
-          await viajeNuevo.setVehiculo(vehiculo);
-          res.status(200).json(viajeNuevo);
+          if (
+            vehiculo.asientos -
+              (vehiculoOld[0].dataValues.asientos -
+                viajeAux.asientos_disponibles) >
+            0
+          ) {
+            const viajeNuevo = await viajeAux.update({
+              nombre: viaje.nombre,
+              detalle: viaje.detalle,
+              hora: viaje.hora,
+              asientos_disponibles:
+                vehiculo.asientos -
+                (vehiculoOld[0].dataValues.asientos -
+                  viajeAux.asientos_disponibles),
+              fecha_salida: viaje.fecha_salida,
+              RutaId: viaje.rutaId,
+              precio: viaje.precio,
+              EstadoId: 1, //1-Pendiente
+              habilitado: true,
+            });
+            await viajeNuevo.setChofer(chofer);
+            await viajeNuevo.setVehiculo(vehiculo);
+            res.status(200).json(viajeNuevo);
+          } else {
+            res.status(400).json({
+              message: "Vehiculo no tiene asientos disponibles para este viaje",
+            });
+          }
         } else {
           res
             .status(400)
@@ -457,7 +471,6 @@ const list = async (req, res) => {
 const findOne = async (req, res) => {
   const { id } = req.params;
   try {
-    console.log(id);
     model.Viaje.findOne({
       order: ["fecha_salida"],
       where: { habilitado: true, id: id },

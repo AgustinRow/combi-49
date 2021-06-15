@@ -38,7 +38,7 @@ const create = async (req, res) => {
 };
 
 const findTravelsForUser = async (req, res) => {
-  const { id } = req.query;
+  const { id } = req.params;
   try {
     model.Usuario.findOne({
       where: { id: id, tipo: 3, habilitado: true },
@@ -49,6 +49,11 @@ const findTravelsForUser = async (req, res) => {
           as: "Pasaje",
           attributes: ["id", "precio"],
           include: [
+            {
+              model: model.Vianda,
+              as: "Vianda",
+              attributes: ["id", "nombre"],
+            },
             {
               model: model.Estado,
               as: "Estado",
@@ -127,10 +132,19 @@ const list = async (req, res) => {
       include: [
         { model: model.Estado, as: "Estado", attributes: ["id", "estado"] },
         {
+          model: model.Usuario,
+          as: "Pasajero",
+          attributes: ["id", "nombre", "apellido", "email", "dni"],
+        },
+        {
+          model: model.Vianda,
+          as: "Vianda",
+          attributes: ["id", "nombre"],
+        },
+        {
           model: model.Viaje,
           as: "Viaje",
           order: ["fecha_salida"],
-          where: { habilitado: true },
           attributes: [
             "id",
             "nombre",
@@ -157,13 +171,11 @@ const list = async (req, res) => {
                 "marca",
                 "confort",
               ],
-              include: [
-                {
-                  model: model.Usuario,
-                  as: "Chofer",
-                  attributes: ["id", "nombre", "apellido", "email", "dni"],
-                },
-              ],
+            },
+            {
+              model: model.Usuario,
+              as: "Chofer",
+              attributes: ["id", "nombre", "apellido", "email", "dni"],
             },
             {
               model: model.Ruta,

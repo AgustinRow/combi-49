@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Vianda.belongsToMany(models.Pasaje, {
         as: "Pasaje",
-        foreignKey: "PasajeId",
+        foreignKey: "ViandaId",
         through: "Pasaje_Vianda",
       });
     }

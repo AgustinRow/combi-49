@@ -7,5 +7,5 @@ router.get("/listar", Ruta.list);
 router.post("/alta", Ruta.create);
 router.get("/detalle", Ruta.getRoute);
 router.put("/modificar", Ruta.update);
-//router.get("/baja/(:id), Ruta.remove")
+router.delete("/borrar/(:id)", Ruta.remove);
 module.exports = router;
