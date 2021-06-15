@@ -115,7 +115,7 @@ const findTravelsForUser = async (req, res) => {
         },
       ],
     }).then((pasajero) => {
-      res.status(200).json({ pasajero: pasajero });
+      res.status(200).json({ data: pasajero });
     });
   } catch (err) {
     console.log(err);
@@ -124,6 +124,7 @@ const findTravelsForUser = async (req, res) => {
 };
 //TODO
 const remove = async (req, res) => {};
+
 const list = async (req, res) => {
   try {
     model.Pasaje.findAll({
