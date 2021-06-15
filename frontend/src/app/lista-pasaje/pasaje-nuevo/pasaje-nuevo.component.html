@@ -1,7 +1,19 @@
-<H6>Pasaje para el {{ viajeSeleccionado.fecha_salida | date:'dd-MM-yyyy' }}</H6>
+<div class="col m-3 justify-content-center">
+    <div class="row m-3 ">
+        <H6>Pasaje para el {{ viajeSeleccionado.fecha_salida | date:'dd-MM-yyyy' }} a las {{ viajeSeleccionado.hora }}</H6>
+    </div>
+    <div class="row mx-3 ">
+        <p>De {{ viajeSeleccionado.Ruta.Origen.nombre }}, {{ viajeSeleccionado.Ruta.Origen.Provincia.nombre }} hasta {{ viajeSeleccionado.Ruta.Destino.nombre }}, {{ viajeSeleccionado.Ruta.Destino.Provincia.nombre }}</p>
+    </div>
+    <div class="row mx-3 ">
+        <p>Duracion: {{viajeSeleccionado.Ruta.duracion }} min</p>
+    </div>
 
-<button type="button" class="btn btn-danger" (click)="openModal(contentShow)">Pagar</button>
-
+    <div class="row m-3 ">
+        <button type="button" class="btn btn-danger" (click)="openModal(contentShow)">
+            Pagar ${{ viajeSeleccionado.precio }}</button>
+    </div>
+</div>
 <ng-template #contentShow let-c="close" let-d="dismiss">
-    <app-pago [(total)]="viajeSeleccionado.total" (closeEvent)="c('Close click')">Cargando...</app-pago>
+    <app-pago [(total)]="viajeSeleccionado.total" (closeEvent)="c('Close click')" (payEvent)="payment($event); c('Close click')">Cargando...</app-pago>
 </ng-template>

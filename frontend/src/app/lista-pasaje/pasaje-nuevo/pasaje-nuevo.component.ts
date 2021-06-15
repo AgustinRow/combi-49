@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Time } from "@angular/common";
 import { Viaje } from 'src/app/module/viaje.module';
 import { TravelService } from 'src/app/service/travel.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PassageService } from 'src/app/service/passage.service';
+import { Pasaje } from 'src/app/module/pasaje.module';
+import { StorageService } from 'src/app/service/storage.service';
 
 @Component({
   selector: 'app-pasaje-nuevo',
@@ -11,10 +13,14 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./pasaje-nuevo.component.css']
 })
 export class PasajeNuevoComponent implements OnInit {
-  viajeSeleccionado: Viaje;
+  viajeSeleccionado = new Viaje();
+  pasajeNuevo = new Pasaje();
+  @Output() passageNewEvent = new EventEmitter<Pasaje>();
 
   constructor(
+    private storageService: StorageService,
     private travelService: TravelService,
+    private passageService: PassageService,
     private route: ActivatedRoute,
     private modalService: NgbModal
   ) { }
@@ -25,7 +31,7 @@ export class PasajeNuevoComponent implements OnInit {
     });
 
   }
-  
+
   openModal(contentEdit) {
     this.modalService.open(contentEdit);
   }
@@ -45,6 +51,33 @@ export class PasajeNuevoComponent implements OnInit {
         }
       }
     );
+  }
+
+  payment(estaPago: boolean) {
+    if (estaPago) {
+      this.pasajeNuevo.Viaje = this.viajeSeleccionado;
+      this.pasajeNuevo.usuario = this.storageService.getCurrentUser();
+      this.passageService.addPassage(this.pasajeNuevo).subscribe(
+        (data: any) => {
+          if (data != null) {
+            alert("Se ha creado el pasaje correctamente");
+            this.passageNewEvent.emit(data.data);
+          }
+        },
+        (error) => {
+          if (error.status >= 500) {
+            alert("Problemas para conectarse con el servidor");
+          }
+          else {
+            alert(error.error.message);
+          }
+        }
+      );
+    }
+    else {
+      alert("No se pudo completar el pago");
+
+    }
   }
 
 }

@@ -7,7 +7,7 @@ export class Pasaje{
     id: number;
     total: number;
     viandas: Vianda[];
-    viaje: Viaje;
+    Viaje: Viaje;
     usuario: Usuario;
     test: Test;
     borradoLogico: number;  //activo

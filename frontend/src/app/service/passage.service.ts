@@ -20,7 +20,7 @@ export class PassageService {
   ) { }
 
   addPassage(passage: Pasaje): Observable<Pasaje> {
-    return this.http.post<Pasaje>(this.usersUrl + 'alta', passage, httpOptions);
+    return this.http.post<Pasaje>(this.usersUrl + 'comprar', passage, httpOptions);
   }
 
   getPassages(): Observable<Pasaje[]> {
