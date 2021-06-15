@@ -16,6 +16,7 @@ export class ListaChoferComponent implements OnInit {
   listaC: Usuario[] = [];
   choferSeleccionado: Usuario;
   private lViajes: Viaje[] = [];
+  findName:string[] = [ "", "" ];
 
   constructor(
     private modalService: NgbModal,
