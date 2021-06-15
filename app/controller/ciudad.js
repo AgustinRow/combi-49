@@ -3,24 +3,23 @@ const Op = require("sequelize").Op;
 
 // listar ciudades
 const list = async (req, res) => {
-  model.Ciudad.findAll({
-    where: { habilitado: true },
-    attributes: ["id", "nombre", "cp"],
-    include: [
-      {
-        model: model.Provincia,
-        attributes: ["id", "nombre"],
-        as: "Provincia",
-      },
-    ],
-  }).then((response) => {
-    try {
-      res.status(200).json({ data: response });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: "Internal server error" });
-    }
-  });
+  try {
+    model.Ciudad.findAll({
+      where: { habilitado: true },
+      attributes: ["id", "nombre", "cp"],
+      include: [
+        {
+          model: model.Provincia,
+          attributes: ["id", "nombre"],
+          as: "Provincia",
+        },
+      ],
+    }).then((response) => {
+        res.status(200).json({ data: response });
+    });
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 const findDuplicates = async (city) => {

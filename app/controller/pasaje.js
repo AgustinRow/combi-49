@@ -5,10 +5,10 @@ const create = async (req, res) => {
   const pasaje = req.body;
   try {
     const viaje = await model.Viaje.findOne({
-      where: { id: pasaje.viaje, habilitado: true },
+      where: { id: pasaje.viajeId, habilitado: true },
     });
     const pasajero = await model.Usuario.findOne({
-      where: { id: pasaje.pasajero, tipo: 3 },
+      where: { id: pasaje.pasajeroId, tipo: 3 },
     });
     // chequear que pueda realizar la compra, si es que puede hago todo
     const estado = await model.Estado.findOne({
