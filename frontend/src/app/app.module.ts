@@ -75,7 +75,8 @@ const appRoutes: Routes = [
   { path: 'Vehiculos', component: ListaVehiculoComponent },
   { path: 'Choferes', component: ListaChoferComponent },
   { path: 'Viandas', component: ListaViandaComponent },
-  { path: 'CompraPasaje/:viajeId', component: PasajeNuevoComponent }
+  { path: 'CompraPasaje/:viajeId', component: PasajeNuevoComponent },
+  { path: 'Pasajes', component: ListaPasajeComponent }
 ]
 
 export function tokenGetter() {

@@ -33,6 +33,7 @@ export class TravelService {
   }
 
   modifyTravel(travel: Viaje): Observable<Viaje> {
+    console.log(travel);
     return this.http.put<Viaje>(this.usersUrl + 'modificar', travel, httpOptions);
   }
 

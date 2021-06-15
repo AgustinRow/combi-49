@@ -26,14 +26,16 @@ export class ListaViandaComponent implements OnInit {
   }
 
   openModal(contentEdit, viandaselect: Vianda) {
-    this.viandaSeleccionada = viandaselect;
-    this.aux = new Vianda();
-    this.aux.id = viandaselect.id;
-    this.aux.precio = viandaselect.precio;
-    this.aux.descripcion = viandaselect.descripcion;
-    this.aux.nombre = viandaselect.nombre;
-    this.aux.stock = viandaselect.stock;
-    this.modalService.open(contentEdit);
+    if (viandaselect !== null) {
+      this.viandaSeleccionada = viandaselect;
+      this.aux = new Vianda();
+      this.aux.id = viandaselect.id;
+      this.aux.precio = viandaselect.precio;
+      this.aux.descripcion = viandaselect.descripcion;
+      this.aux.nombre = viandaselect.nombre;
+      this.aux.stock = viandaselect.stock;
+    }
+      this.modalService.open(contentEdit);
   }
 
   deleteVianda(viandaselect: Vianda) {

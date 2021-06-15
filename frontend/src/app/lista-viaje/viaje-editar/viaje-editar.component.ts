@@ -36,7 +36,7 @@ export class ViajeEditarComponent implements OnInit {
     this.refreshListVehicle();
     this.refreshListUser();
     this.refreshListRoute();
-       
+
     this.form = new FormGroup({
       'ruta': new FormControl({}),
       'fecha_salida': new FormControl({}),
@@ -46,15 +46,23 @@ export class ViajeEditarComponent implements OnInit {
       'precio': new FormControl({}),
       'detalle': new FormControl({})
     });
-    
+
   }
 
   modifyTravel() {
-    if (this.form.valid) 
-    {
-      this.viajeModificado.Ruta = this.listRutas[this.form.value.Ruta];
-      this.viajeModificado.Vehiculo[0] = this.listVehiculos[this.form.value.Vehiculo];
-      this.viajeModificado.Chofer[0] = this.listChoferes[this.form.value.Chofer];
+    if (this.form.valid) {
+      this.viajeModificado.Ruta = this.listRutas[this.form.value.ruta];
+      if (this.viajeModificado.Vehiculo.length == 0) {
+        this.viajeModificado.Vehiculo.push(this.listVehiculos[this.form.value.vehiculo]);
+      } else {
+        this.viajeModificado.Vehiculo[0] = this.listVehiculos[this.form.value.vehiculo];
+      }
+
+      if (this.viajeModificado.Vehiculo.length == 0) {
+        this.viajeModificado.Chofer.push(this.listChoferes[this.form.value.chofer]);
+      } else {
+        this.viajeModificado.Chofer[0] = this.listChoferes[this.form.value.chofer];
+      }
       this.travelService.modifyTravel(this.viajeModificado).subscribe(
         (data: any) => {
           if (data != null) {
@@ -74,7 +82,7 @@ export class ViajeEditarComponent implements OnInit {
     }
   }
 
-  refreshListUser(){
+  refreshListUser() {
     this.userService.getChoffers().subscribe(
       (list: any) => {
         this.listChoferes = list.data as Usuario[];
@@ -91,7 +99,7 @@ export class ViajeEditarComponent implements OnInit {
     )
   }
 
-  refreshListVehicle(){
+  refreshListVehicle() {
     this.vehicleService.getvehicles().subscribe(
       (list: any) => {
         this.listVehiculos = list.data as Vehiculo[];
@@ -107,8 +115,8 @@ export class ViajeEditarComponent implements OnInit {
       }
     )
   }
-  
-  refreshListRoute(){
+
+  refreshListRoute() {
     this.routeService.getRoutes().subscribe(
       (list: any) => {
         this.listRutas = list.data as Ruta[];
