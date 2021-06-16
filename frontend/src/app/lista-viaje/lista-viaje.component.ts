@@ -21,6 +21,7 @@ export class ListaViajeComponent implements OnInit {
   viajeSeleccionado: Viaje;
   ver: String = "viajes";
   lViajes: Viaje[] = [];
+  test: {}
   
   usuarioIdentificado: Usuario;
   USUARIO_ADMINISTRADOR = UserService.USUARIO_ADMINISTRADOR;
@@ -66,7 +67,8 @@ export class ListaViajeComponent implements OnInit {
   refreshList(){
     this.travelService.getTravels().subscribe(
       (list: any) => {
-        this.lViajes = list.data as Viaje[];
+        console.log(list.data)
+        this.lViajes = list.data
       },
       (error) => {
         if (error.status >= 500) {

@@ -6,6 +6,5 @@ export class Vehiculo {
     asientos: number;
     confort: string;
     habilitado: boolean;  //activo
-    createdAt: Date;
-    updatedAt: Date;
+    ViajeId: number;
 }

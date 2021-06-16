@@ -146,6 +146,7 @@ const register = async (req, res) => {
     });
   }
 };
+
 //modificar chofer
 const update = async (req, res) => {[]
   const updatedUser = req.body;
