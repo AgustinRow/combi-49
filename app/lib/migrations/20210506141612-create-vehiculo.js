@@ -23,9 +23,6 @@ module.exports = {
       confort: {
         type: Sequelize.STRING
       },
-      unidad: {
-        type: Sequelize.INTEGER
-      },
       habilitado: {
         type: Sequelize.BOOLEAN
       },

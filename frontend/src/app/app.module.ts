@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,7 +14,6 @@ import { NavBarComponent } from './home/nav-bar/nav-bar.component';
 import { SingUpComponent } from './home/sing-up/sing-up.component';
 import { AcountComponent } from './home/acount/acount.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { StorageService } from './service/storage.service';
 import { ListaUsuarioComponent } from './lista-usuario/lista-usuario.component';
 import { UsuarioComponent } from './lista-usuario/usuario/usuario.component';
 import { UsuarioNuevoComponent } from './lista-usuario/usuario-nuevo/usuario-nuevo.component';
@@ -35,10 +34,6 @@ import { ListaRutaComponent } from './lista-ruta/lista-ruta.component';
 import { RutaComponent } from './lista-ruta/ruta/ruta.component';
 import { RutaNuevoComponent } from './lista-ruta/ruta-nuevo/ruta-nuevo.component';
 import { RutaEditarComponent } from './lista-ruta/ruta-editar/ruta-editar.component';
-import { ListaParadaComponent } from './lista-parada/lista-parada.component';
-import { ParadaComponent } from './lista-parada/parada/parada.component';
-import { ParadaNuevoComponent } from './lista-parada/parada-nuevo/parada-nuevo.component';
-import { ParadaEditarComponent } from './lista-parada/parada-editar/parada-editar.component';
 import { ListaCiudadComponent } from './lista-ciudad/lista-ciudad.component';
 import { CiudadComponent } from './lista-ciudad/ciudad/ciudad.component';
 import { CiudadNuevoComponent } from './lista-ciudad/ciudad-nuevo/ciudad-nuevo.component';
@@ -50,19 +45,45 @@ import { ProvinciaEditarComponent } from './lista-provincia/provincia-editar/pro
 import { ListaValoracionComponent } from './lista-valoracion/lista-valoracion.component';
 import { ValoracionComponent } from './lista-valoracion/valoracion/valoracion.component';
 import { ValoracionNuevoComponent } from './lista-valoracion/valoracion-nuevo/valoracion-nuevo.component';
+import { SpinnerComponent } from "./spinner/spinner.component";
+
+import { StorageService } from './service/storage.service';
 import { AuthenticationService } from "./service/authentication.service";
+import { UserService } from './service/user.service';
+import { VehicleService } from './service/vehicle.service';
+import { JwtModule } from '@auth0/angular-jwt';
+import { ListaChoferComponent } from './lista-chofer/lista-chofer.component';
+import { ChoferComponent } from './lista-chofer/chofer/chofer.component';
+import { ChoferEditarComponent } from './lista-chofer/chofer-editar/chofer-editar.component';
+import { ChoferNuevoComponent } from './lista-chofer/chofer-nuevo/chofer-nuevo.component';
+import { SpinnerInterceptor } from './interceptor/spinner.interceptor';
+import { UserNameFilterPipe } from './pipe/user-name-filter.pipe';
+import { ListaViandaComponent } from './lista-vianda/lista-vianda.component';
+import { ViandaComponent } from './lista-vianda/vianda/vianda.component';
+import { ViandaNuevoComponent } from './lista-vianda/vianda-nuevo/vianda-nuevo.component';
+import { ViandaEditarComponent } from './lista-vianda/vianda-editar/vianda-editar.component';
+import { PagoComponent } from './pago/pago.component';
+import { ViandaComprarComponent } from './lista-vianda/vianda-comprar/vianda-comprar.component';
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent},
-  { path: 'SignUp', component: SingUpComponent},
-  { path: 'Login', component: LoginComponent},
-  { path: 'Logout', component: LogoutComponent},
-  { path: 'MyAcount', component: AcountComponent},
-  { path: 'Usuarios', component: ListaUsuarioComponent},
-  { path: 'Viajes', component: ListaViajeComponent},
-  { path: 'Vehiculos', component: ListaVehiculoComponent}
-  ];
-  
+  { path: '', component: HomeComponent },
+  { path: 'SignUp', component: SingUpComponent },
+  { path: 'Login', component: LoginComponent },
+  { path: 'Logout', component: LogoutComponent },
+  { path: 'MyAcount', component: AcountComponent },
+  { path: 'Usuarios', component: ListaUsuarioComponent },
+  { path: 'Viajes', component: ListaViajeComponent },
+  { path: 'Vehiculos', component: ListaVehiculoComponent },
+  { path: 'Choferes', component: ListaChoferComponent },
+  { path: 'Viandas', component: ListaViandaComponent },
+  { path: 'CompraPasaje/:viajeId', component: PasajeNuevoComponent },
+  { path: 'Pasajes', component: ListaPasajeComponent }
+]
+
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -92,10 +113,6 @@ const appRoutes: Routes = [
     RutaComponent,
     RutaNuevoComponent,
     RutaEditarComponent,
-    ListaParadaComponent,
-    ParadaComponent,
-    ParadaNuevoComponent,
-    ParadaEditarComponent,
     ListaCiudadComponent,
     CiudadComponent,
     CiudadNuevoComponent,
@@ -106,19 +123,45 @@ const appRoutes: Routes = [
     ProvinciaEditarComponent,
     ListaValoracionComponent,
     ValoracionComponent,
-    ValoracionNuevoComponent
+    ValoracionNuevoComponent,
+    ListaChoferComponent,
+    ChoferComponent,
+    ChoferEditarComponent,
+    ChoferNuevoComponent,
+    SpinnerComponent,
+    UserNameFilterPipe,
+    ListaViandaComponent,
+    ViandaComponent,
+    ViandaNuevoComponent,
+    ViandaEditarComponent,
+    PagoComponent,
+    ViandaComprarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ['localhost:3000'],
+        disallowedRoutes: []
+      }
+    })
+  ],
+  exports: [
+    RouterModule
   ],
   providers: [
     StorageService,
-    AuthenticationService
+    AuthenticationService,
+    UserService,
+    VehicleService,
+    { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

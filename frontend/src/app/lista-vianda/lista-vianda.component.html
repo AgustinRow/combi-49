@@ -1,0 +1,81 @@
+<div class="container">
+    <h2>Viandas</h2>
+    <p>Lista de viandas:</p>
+
+    <button class="btn btn-primary m-2" (click)="openModal(contentNewFoodbox,null)">
+        Agregar Vianda
+    </button>
+
+    <table class="table  table-hover">
+        <thead>
+            <tr scope="row">
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Sctok</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let vianda of listaV">
+                <td data-title="Nombre">{{vianda.nombre}}</td>
+                <td data-title="Precio">{{vianda.precio}}</td>
+                <td data-title="Sctok">{{vianda.stock}}</td>
+                <td data-title="Acciones">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info"
+                            (click)="openModal(contentShow, vianda)"><i class="bi bi-info-circle"></i></button>
+                        <button type="button" class="btn btn-warning"
+                            (click)="openModal(contentEdit, vianda)"><i class="bi bi-pencil-square"></i></button>
+                        <button type="button" class="btn btn-danger"
+                            (click)="deleteVianda(vianda)"><i class="bi bi-trash"></i></button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-template #contentEdit let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Editar vianda</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-vianda-editar [viandaModificada]="aux" (viandaEditEvent)="refreshList(); c('Close click')">
+            Cargando</app-vianda-editar>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<ng-template #contentShow let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Infirmacion de la vianda</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-vianda [(viandaConInfo)]="viandaSeleccionada">Cargando</app-vianda>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<ng-template #contentNewFoodbox let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Nueva vianda</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-vianda-nuevo (viandaNewEvent)="refreshList(); c('Close click')">Cargando</app-vianda-nuevo>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>

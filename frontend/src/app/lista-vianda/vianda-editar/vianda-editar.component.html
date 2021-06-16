@@ -1,0 +1,31 @@
+<form (ngSubmit)="modifyFoodbox(modifyFoodboxForm)" #modifyFoodboxForm="ngForm">
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" [(ngModel)]="viandaModificada.nombre" name="nombre" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="precio">Precio:</label>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+            </div>
+            <input type="number" min="0" class="form-control" name="precio"  [(ngModel)]="viandaModificada.precio" aria-label="Monto en pesos">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="stock">Stock:</label>
+        <div class="input-group mb-3">
+            <input type="number" min="0" class="form-control" name="stock" ngModel [(ngModel)]="viandaModificada.stock">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="descripcion">Descripcion:</label>
+        <textarea type="text" class="form-control" id="descripcion" [(ngModel)]="viandaModificada.descripcion"
+            name="descripcion" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="!(modifyFoodboxForm.form.valid&&modifyFoodboxForm.form.dirty)">Guardar</button>
+</form>

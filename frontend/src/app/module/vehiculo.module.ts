@@ -1,9 +1,14 @@
-export class Vehiculo{
-    idVehiculo: number;
+import { Usuario } from "./usuario.module";
+
+export class Vehiculo {
+    id: number;
     marca: string;
     modelo: string;
     patente: string;
-    cantAsientos: number;
+    asientos: number;
     confort: string;
-    borradoLogico: number;  //activo
+    habilitado: boolean;  //activo
+    createdAt: Date;
+    updatedAt: Date;
+    Chofer: Usuario;
 }

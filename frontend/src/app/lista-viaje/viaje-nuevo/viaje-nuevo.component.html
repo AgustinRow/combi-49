@@ -1,80 +1,52 @@
-<div class="container">
-    <div class="abs-center">
-        <h1 class="h3 mb-3 font-weight-normal">Alta de Viaje</h1>
-        <p>La empresa es la encargada de realizar las alta de los viajes para que los usuarios puedan comprar pasajes:
-        </p>
-        <form>
-            <div class="form-group row">
-                <label for="example-date-input" class="col-2 col-form-label">Fecha Salida</label>
-                <div class="col-10">
-                    <input class="form-control" type="date" value="2011-08-19" id="example-date-input">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="example-date-input" class="col-2 col-form-label">Fecha Llegada</label>
-                <div class="col-10">
-                    <input class="form-control" type="date" value="2011-08-19" id="example-date-input">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1">descripcion</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="exampleSelect1">Provincia</label>
-                <select class="form-control" id="exampleSelect1">
-                    <option>Buenos Aires</option>
-                    <option>Cordoba</option>
-                    <option>Mendoza</option>
-                    <option>Rio Negro</option>
-                    <option>Entre Rios</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleSelect1">Ciudad</label>
-                <select class="form-control" id="exampleSelect1">
-                    <option>Ciudad 1</option>
-                    <option>Ciudad 2</option>
-                    <option>Ciudad 3</option>
-                    <option>Ciudad 4</option>
-                    <option>Ciudad 5</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleSelect1">Ruta</label>
-                <select class="form-control" id="exampleSelect1">
-                    <option>Ruta 1</option>
-                    <option>Ruta 2</option>
-                    <option>Ruta 3</option>
-                    <option>Ruta 4</option>
-                    <option>Ruta 5</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleSelect1">Parada</label>
-                <select class="form-control" id="exampleSelect1">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleSelect1">Vehiculo a asignar al viaje</label>
-                <select class="form-control" id="exampleSelect1">
-                    <option>Vehiculo 1</option>
-                    <option>Vehiculo 2</option>
-                    <option>Vehiculo 3</option>
-                    <option>Vehiculo 4</option>
-                    <option>Vehiculo 5</option>
-                </select>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-10">
-                    <button type="submit" class="btn btn-primary">Publicar Viaje</button>
-                </div>
-            </div>
-        </form>
+<form (ngSubmit)="newTravel()" [formGroup]="form">
+    <div class="form-group">
+        <label for="ruta">Ruta:</label>
+        <select type="text" class="form-control" formControlName="ruta" name="ruta" required>
+            <option *ngFor="let ruta of listRutas; index as i" [value]="i">{{ ruta.nombre }}</option>
+        </select>
     </div>
-</div>
+
+    <div class="form-group">
+        <label for="fecha_salida">Fecha de salida:</label>
+        <input type="date" class="form-control" formControlName="fecha_salida" [(ngModel)]="viajeNuevo.fecha_salida"
+            name="fecha_salida" min="{{hoy | date:'yyyy-MM-dd'}}" required>
+    </div>
+
+    <div class="form-group">
+        <label for="hora">Hola de Salida:</label>
+        <input type="time" class="form-control" formControlName="hora" [(ngModel)]="viajeNuevo.hora" name="hora"
+            min="{{viajeNuevo.hora" required>
+    </div>
+
+    <div class="form-group">
+        <label for="chofer">Chofer:</label>
+        <select type="text" class="form-control" formControlName="chofer" name="chofer" required>
+            <option *ngFor="let chofer of listChoferes; index as i" [value]="i">{{ chofer.nombre }}</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="vehiculo">Vehiculo:</label>
+        <select type="text" class="form-control" formControlName="vehiculo" name="vehiculo" required>
+            <option *ngFor="let vehiculo of listVehiculos; index as i" [value]="i">{{ vehiculo.patente }}</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="precio">Precio:</label>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+            </div>
+            <input type="number" min="0" class="form-control" aria-label="Monto en pesos">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="detalle">Detalle:</label>
+        <textarea type="text" class="form-control" formControlName="detalle" [(ngModel)]="viajeNuevo.detalle"
+            name="detalle" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="!form.valid">Guardar</button>
+</form>

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Valoracion } from 'src/app/module/valoracion.module';
 
 @Component({
   selector: 'app-valoracion',
@@ -6,10 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./valoracion.component.css']
 })
 export class ValoracionComponent implements OnInit {
+  @Input() valoracion = new Valoracion;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.valoracion.puntuacion = 0;
+    this.valoracion.detalle = "Ingrese un detalle";
   }
 
 }

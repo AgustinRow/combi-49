@@ -1,1 +1,8 @@
-<p>provincia-editar works!</p>
+<form (ngSubmit)="modifyProv(editProvForm)" #editProvForm="ngForm">
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" [(ngModel)]="provinciaModificada.nombre" name="nombre" required>
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="!(editProvForm.form.valid&&editProvForm.form.dirty)">Guardar</button>
+</form>

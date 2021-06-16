@@ -1,1 +1,10 @@
-<p>viaje works!</p>
+<p>Ruta: {{ viajeConInfo.Ruta.nombre }}</p>
+<p>Origen: {{ viajeConInfo.Ruta.Origen.nombre }}, {{ viajeConInfo.Ruta.Origen.Provincia.nombre }}</p>
+<p>Destino: {{ viajeConInfo.Ruta.Destino.nombre }}, {{ viajeConInfo.Ruta.Destino.Provincia.nombre }}</p>
+<p>Distancia: {{ viajeConInfo.Ruta.distancia }}</p>
+<p>Fecha de Salida: {{ viajeConInfo.fecha_salida }}</p>
+<p>hora de salida: {{ viajeConInfo.hora }}</p>
+<p>Chofer: {{ viajeConInfo.Chofer[0].nombre }} {{ viajeConInfo.Chofer[0].apellido }}</p>
+<p>Vehiculo: {{ viajeConInfo.Vehiculo[0].marca }} {{ viajeConInfo.Vehiculo[0].modelo }} - {{ viajeConInfo.Vehiculo[0].patente }}</p>
+<p>Precio: ${{ viajeConInfo.precio }}</p>
+<p>Detalle: {{ viajeConInfo.detalle }}</p>

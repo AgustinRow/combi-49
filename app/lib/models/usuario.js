@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Usuario.hasMany(models.Viaje, { foreignKey: "RutaId" });//belongsTo(models.Vehiculo, { foreignKey: "vehiculoId" });
     }
   }
   Usuario.init(
     {
-      username: DataTypes.STRING,
       password: DataTypes.STRING,
       email: DataTypes.STRING,
       nombre: DataTypes.STRING,
@@ -21,11 +21,13 @@ module.exports = (sequelize, DataTypes) => {
       dni: DataTypes.INTEGER,
       tipo: DataTypes.INTEGER,
       habilitado: DataTypes.BOOLEAN,
+      vehiculoId: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: "Usuario",
     }
   );
+
   return Usuario;
 };

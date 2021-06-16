@@ -1,10 +1,11 @@
-import { Parada } from "./parada.module";
+import { Ciudad } from "./ciudad.module";
 
 export class Ruta{
-    idRuta: number;
+    id: number;
     nombre: string;
     distancia: string;
-    origen: Parada;
-    destino: Parada;
-    borradoLogico: number;  //activo
+    duracion: number;
+    Origen: Ciudad;
+    Destino: Ciudad;
+    habilitado: number;  //activo
 }

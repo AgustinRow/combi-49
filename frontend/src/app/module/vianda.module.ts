@@ -1,7 +1,8 @@
 export class Vianda{
-    idVianda: number;
+    id: number;
     precio: number;
     descripcion: string;
     nombre: string;
-    borradoLogico: number;  //activo
+    habilitado: number;  //activo
+    stock: number
 }

@@ -1,30 +1,35 @@
 <div class="container">
-    <h2>Usuarios </h2>
+    <h2>Lista de pasajeros</h2>
     <p>Lista de usuarios del sistema, usuarios Adninistradores, Usuarios compradores de Boletos y Choferes:</p>
     <button class="btn btn-primary m-2" (click)="openModal(contentNewUser, usuarioSeleccionado)">
-        Agregar Usuario
+        Agregar pasajero
     </button>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+      </div>
+      <input type="text" class="form-control" name="findFirtName" [(ngModel)]="findName[0]" placeholder="Nombre" aria-label="Nombre" aria-describedby="basic-addon1">
+      <input type="text" class="form-control" name="findLastName" [(ngModel)]="findName[1]" placeholder="Apellido" aria-label="Apellido" aria-describedby="basic-addon1">
+    </div>
     <table class="table  table-hover">
         <thead>
             <tr scope="row">
                 <th>Nombre</th>
                 <th>Apellido</th>
-                <th>Usuario</th>
-                <th>Tipo</th>
+                <th>E-mail</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let user of listaU">
+            <tr *ngFor="let user of listaU | userNameFilter: findName[0]: findName[1]">
                 <td data-title="Nombre">{{user.nombre}}</td>
                 <td data-title="Apellido">{{user.apellido}}</td>
-                <td data-title="Usuario">{{user.usuario}}</td>
-                <td data-title="Tipo">{{tipo[user.tipo-1]}}</td>
+                <td data-title="Usuario">{{user.email}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-info" (click)="openModal(contentShow, user)">Informacion</button>
-                        <button type="button" class="btn btn-warning" (click)="openModal(contentEdit, user)">Editar</button>
-                        <button type="button" class="btn btn-danger" (click)="deleteUser(user)">Eliminar</button>
+                        <button type="button" class="btn btn-info" (click)="openModal(contentShow, user)"><i class="bi bi-info-circle"></i></button>
+                        <button type="button" class="btn btn-warning" (click)="openModal(contentEdit, user)"><i class="bi bi-pencil-square"></i></button>
+                        <button type="button" class="btn btn-danger" (click)="deleteUser(user)"><i class="bi bi-trash"></i></button>
                     </div>
                 </td>
             </tr>
@@ -49,7 +54,7 @@
 
   <ng-template #contentShow let-c="close" let-d="dismiss">
       <div class="modal-header">
-        <h4 class="modal-title">Informacion del usuario</h4>
+        <h4 class="modal-title">Infirmacion del usuario</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
           <span aria-hidden="true">&times;</span>
         </button>

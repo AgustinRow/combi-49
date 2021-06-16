@@ -1,1 +1,81 @@
-<p>lista-ruta works!</p>
+<div class="container">
+    <h2>Rutas</h2>
+    <p>Lista de rutas disponibles:</p>
+
+    <button class="btn btn-primary m-2" (click)="openModal(contentNew, rutaSeleccionada)">
+        Agregar ruta
+    </button>
+
+    <table class="table table-hover">
+        <thead>
+            <tr scope="row">
+                <th>Nombre</th>
+                <th>Distancia</th>
+                <th>Duracion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let ruta of listRutas">
+                <td data-title="Nombre">{{ruta.nombre}}</td>
+                <td data-title="Distancia">{{ruta.distancia}}</td>
+                <td data-title="Duracion">{{ruta.duracion}}</td>
+                <td data-title="Acciones">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info" 
+                            (click)="openModal(contentShow, ruta)"><i class="bi bi-info-circle"></i></button>
+                        <button type="button" class="btn btn-warning"
+                            (click)="openModal(contentEdit, ruta)"><i class="bi bi-pencil-square"></i></button>
+                        <button type="button" class="btn btn-danger"
+                            (click)="deleteRoute(ruta)"><i class="bi bi-trash"></i></button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-template #contentEdit let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Editar ruta</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-ruta-editar [(rutaModificada)]="rutaSeleccionada" (routeEditEvent)="refreshList(); c('Close click')">
+            Cargando</app-ruta-editar>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<ng-template #contentNew let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Nuevo ruta</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-ruta-nuevo (rutaNewEvent)="refreshList(); c('Close click')">Cargando</app-ruta-nuevo>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<ng-template #contentShow let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Informacion del vieje</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <app-ruta [(rutaConInfo)]="rutaSeleccionada">Cargando</app-ruta>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+  </ng-template>

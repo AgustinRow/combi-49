@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from '../module/usuario.module';
 import { Session } from '../module/session.module';
@@ -7,30 +7,32 @@ import { Session } from '../module/session.module';
 export class StorageService {
   private localStorageService;
   private currentSession : Session = null;
-  logChange = new EventEmitter<boolean>();
+  @Output() logChange = new EventEmitter<boolean>();
 
   constructor(private router: Router) {
     this.localStorageService = localStorage;
-    this.currentSession = this.loadSessionData();
+    this.localStorageService.setItem('logChange', this.logChange);
   }
 
   setCurrentSession(session: Session): void {
-    this.currentSession = session;
-    this.localStorageService.setItem('currentUser', JSON.stringify(session));
+    this.localStorageService.setItem('currentSession', JSON.stringify(session));
+  }
+  
+  setCurrentToken(token: string): void {
+    this.localStorageService.setItem('access_token', JSON.stringify(token));
   }
 
   loadSessionData(): Session{
-    var sessionStr = this.localStorageService.getItem('currentUser');
+    var sessionStr = this.localStorageService.getItem('currentSession');
     return (sessionStr) ? <Session> JSON.parse(sessionStr) : null;
   }
 
   getCurrentSession(): Session {
-    return this.currentSession;
+    return this.loadSessionData();
   }
 
   removeCurrentSession(): void {
-    this.localStorageService.removeItem('currentUser');
-    this.currentSession = null;
+    this.localStorageService.removeItem('currentSession');
   }
   
   getCurrentUser(): Usuario {
@@ -43,6 +45,13 @@ export class StorageService {
   };
   
   logout(): void{
+    this.logChange.emit(false);
     this.removeCurrentSession();
+    this.logChange.emit(false);
+  }
+
+  login(session: Session): void{
+    this.setCurrentSession(session);
+    this.logChange.emit(true);
   }
 }

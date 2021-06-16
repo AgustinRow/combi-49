@@ -1,18 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse }from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Usuario } from '../module/usuario.module';
 
-const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' })};
+const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
 
 @Injectable()
 export class AuthenticationService {
-  constructor(private http: HttpClient) {}
-  private basePath = '/Combi-19/';
+  private basePath = '/api/';
 
-  public loginUser(user: Usuario): Observable<any>{
-    return this.http.post<any>(this.basePath +'usuarios/autentificacion', user, httpOptions);
+  constructor(
+    private http: HttpClient
+  ) { }
+
+  public loginUser(user: Usuario): Observable<any> {
+    return this.http.post<{ access_token: any }>(this.basePath + 'usuario/login', user, httpOptions).pipe(
+      tap(
+        res => {
+          localStorage.setItem('access_token', res.token);
+        }
+      )
+    )
   }
 
   private handleError(error: HttpErrorResponse) {

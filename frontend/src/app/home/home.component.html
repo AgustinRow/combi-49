@@ -1,1 +1,45 @@
-<p>home works!</p>
+<form (ngSubmit)="searchTrip(searchForm)" #searchForm="ngForm">
+    <div class="row m-3 d-flex justify-content-center">
+        <div class="col-m">
+            <div class="card text-center" style="width:600px">
+                <div class="card-header">Buscar un viaje</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="origen">Origen:</label>
+                            <select type="text" class="form-control" name="origen" required ngModel>
+                                <option disabled selected>Seleccione una ciudad</option>
+                                <option *ngFor="let origen of listCiudades; index as i" [value]="i">{{ origen.nombre }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col">
+                            <label for="destino">Destino:</label>
+                            <select type="text" class="form-control" name="destino" required ngModel>
+                                <option disabled selected>Seleccione una ciudad</option>
+                                <ng-container *ngFor="let destino of listCiudades; index as i">
+                                    <option [value]="i" *ngIf="searchForm.value.origen != i">{{ destino.nombre }}
+                                    </option>
+                                </ng-container>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fecha_salida">Fecha de salida:</label>
+                            <input type="date" class="form-control" name="fecha_salida" ngModel
+                                min="{{hoy | date:'yyyy-MM-dd'}}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer p-0">
+                    <button type="submit" class="btn btn-info w-100 h-100"
+                        [disabled]="!searchForm.valid">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div>
+    <app-lista-viaje [buscar]="false" [lViajes]="listViajes" *ngIf="listViajes.length > 0">Cargando...</app-lista-viaje>
+</div>
