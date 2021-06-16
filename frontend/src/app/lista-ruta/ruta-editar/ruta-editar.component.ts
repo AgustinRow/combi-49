@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { Ciudad } from 'src/app/module/ciudad.module';
 import { Ruta } from 'src/app/module/ruta.module';
 import { CityService } from 'src/app/service/city.service';
@@ -18,7 +18,7 @@ export class RutaEditarComponent implements OnInit {
   listCiudades: Ciudad[];
   @Input() rutaModificada = new Ruta();
   @Output() routeEditEvent = new EventEmitter();
-  form: FormGroup;
+  @Output() closeEvent = new EventEmitter();
   oIndex: number;
   dIndex: number;
 
@@ -43,21 +43,13 @@ export class RutaEditarComponent implements OnInit {
         }
       }
     )
-        
-    this.form = new FormGroup({
-      'nombre': new FormControl({}),
-      'distancia': new FormControl({}),
-      'duracion': new FormControl({}),
-      'origen': new FormControl({}),
-      'destino': new FormControl({})
-    });
   }
 
-  modifyRoute() {
-    if (this.form.valid) 
+  modifyRoute( form:NgForm ) {
+    if (form.valid) 
     {
-      this.rutaModificada.Origen = this.listCiudades[this.form.value.origen];
-      this.rutaModificada.Destino = this.listCiudades[this.form.value.destino];
+      this.rutaModificada.Origen = this.listCiudades[form.value.origen];
+      this.rutaModificada.Destino = this.listCiudades[form.value.destino];
       this.routeService.modifyRoute(this.rutaModificada).subscribe(
         (data: any) => {
           if (data != null) {
@@ -76,4 +68,9 @@ export class RutaEditarComponent implements OnInit {
       );
     }
   }
+  
+  close(){
+    this.closeEvent.emit();
+  }
+
 }

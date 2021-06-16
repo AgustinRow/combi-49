@@ -64,6 +64,14 @@ import { ViandaNuevoComponent } from './lista-vianda/vianda-nuevo/vianda-nuevo.c
 import { ViandaEditarComponent } from './lista-vianda/vianda-editar/vianda-editar.component';
 import { PagoComponent } from './pago/pago.component';
 import { ViandaComprarComponent } from './lista-vianda/vianda-comprar/vianda-comprar.component';
+import { RouteService } from './service/route.service';
+import { CityService } from './service/city.service';
+import { TravelService } from './service/travel.service';
+import { FoodboxService } from './service/foodbox.service';
+import { PassageService } from './service/passage.service';
+import { ProvinceService } from './service/province.service';
+import { RatingService } from './service/rating.service';
+import { SpinnerService } from './service/spinner.service';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -157,8 +165,16 @@ export function tokenGetter() {
     RouterModule
   ],
   providers: [
-    StorageService,
     AuthenticationService,
+    CityService,
+    FoodboxService,
+    PassageService,
+    ProvinceService,
+    RatingService,
+    RouteService,
+    SpinnerService,
+    StorageService,
+    TravelService,
     UserService,
     VehicleService,
     { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true}

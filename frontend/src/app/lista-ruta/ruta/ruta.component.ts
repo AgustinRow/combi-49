@@ -7,7 +7,7 @@ import { Ruta } from 'src/app/module/ruta.module';
   styleUrls: ['./ruta.component.css']
 })
 export class RutaComponent implements OnInit {
-  @Input() rutaConInfo: Ruta;
+  @Input() rutaConInfo: Ruta = new Ruta();
 
   constructor() { }
 

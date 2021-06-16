@@ -53,6 +53,7 @@ export class ListaRutaComponent implements OnInit {
     this.routeService.getRoutes().subscribe(
       (list: any) => {
         this.listRutas = list.data as Ruta[];
+        console.log(this.listRutas);
       },
       (error) => {
         if (error.status >= 500) {

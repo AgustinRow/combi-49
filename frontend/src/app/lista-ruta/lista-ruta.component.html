@@ -17,8 +17,8 @@
         <tbody>
             <tr *ngFor="let ruta of listRutas">
                 <td data-title="Nombre">{{ruta.nombre}}</td>
-                <td data-title="Distancia">{{ruta.distancia}}</td>
-                <td data-title="Duracion">{{ruta.duracion}}</td>
+                <td data-title="Distancia">{{ruta.distancia}} Km</td>
+                <td data-title="Duracion">{{ruta.duracion}} min</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info" 
@@ -42,11 +42,8 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-ruta-editar [(rutaModificada)]="rutaSeleccionada" (routeEditEvent)="refreshList(); c('Close click')">
-            Cargando</app-ruta-editar>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+        <app-ruta-editar [rutaModificada]="rutaSeleccionada" (routeEditEvent)="refreshList(); c('Close click')" (closeEvent)="c('Close click')">
+            Cargando...</app-ruta-editar>
     </div>
 </ng-template>
 
@@ -58,10 +55,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-ruta-nuevo (rutaNewEvent)="refreshList(); c('Close click')">Cargando</app-ruta-nuevo>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+        <app-ruta-nuevo (rutaNewEvent)="refreshList(); c('Close click')" (closeEvent)="c('Close click')">Cargando...</app-ruta-nuevo>
     </div>
 </ng-template>
 

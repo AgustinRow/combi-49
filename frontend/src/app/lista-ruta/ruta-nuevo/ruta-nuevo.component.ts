@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { Ciudad } from 'src/app/module/ciudad.module';
 import { Ruta } from 'src/app/module/ruta.module';
 import { CityService } from 'src/app/service/city.service';
@@ -18,7 +18,7 @@ export class RutaNuevoComponent implements OnInit {
   rutaNueva = new Ruta();
   @Input() listCiudades: Ciudad[];
   @Output() rutaNewEvent = new EventEmitter<Ruta>();
-  form: FormGroup;
+  @Output() closeEvent = new EventEmitter();
 
   constructor(
     private cityService: CityService,
@@ -40,20 +40,13 @@ export class RutaNuevoComponent implements OnInit {
       }
     )
     
-    this.form = new FormGroup({
-      'nombre': new FormControl({}),
-      'distancia': new FormControl({}),
-      'duracion': new FormControl({}),
-      'origen': new FormControl({}),
-      'destino': new FormControl({})
-    });
   }
 
-  newRoute() {
-    if(this.form.valid) 
+  newRoute(form: NgForm) {
+    if(form.valid) 
     {
-      this.rutaNueva.Origen = this.listCiudades[this.form.value.origen];
-      this.rutaNueva.Destino = this.listCiudades[this.form.value.destino];
+      this.rutaNueva.Origen = this.listCiudades[form.value.origen];
+      this.rutaNueva.Destino = this.listCiudades[form.value.destino];
       this.routeService.addRoute(this.rutaNueva).subscribe(
         (data: any) => {
           if (data != null) {
@@ -71,5 +64,9 @@ export class RutaNuevoComponent implements OnInit {
         }
       );
     }
+  }
+  
+  close(){
+    this.closeEvent.emit();
   }
 }
