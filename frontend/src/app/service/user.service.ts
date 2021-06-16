@@ -32,6 +32,10 @@ export class UserService {
     return this.http.get<Usuario[]>(this.usersUrl + 'lista_choferes');
   }
 
+  getAvailableChoffers(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(this.usersUrl + 'lista_choferes_disponibles');
+  }
+
   getUser(userId: Number): Observable<Usuario> {
     return this.http.get<Usuario>(this.usersUrl + 'buscar/' + userId, httpOptions)
   }

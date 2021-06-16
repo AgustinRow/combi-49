@@ -7,7 +7,9 @@ const create = async (req, res) => {
     model.Provincia.findOne({ where: { nombre: provincia.nombre } }).then(
       (response) => {
         if (response) {
-          res.status(400).json({ message: "Province already exist" });
+          res
+            .status(400)
+            .json({ message: "La provincia que intenta agregar ya existe" });
         } else {
           model.Provincia.create({
             nombre: provincia.nombre,
@@ -22,9 +24,18 @@ const create = async (req, res) => {
     res.status(500).json({ message: "Internal serve error" });
   }
 };
-
 const list = async (req, res) => {
-  model.Provincia.findAll({ where: { habilitado: true } }).then((response) => {
+  model.Provincia.findAll({
+    where: { habilitado: true },
+    attributes: ["id", "nombre"],
+    include: [
+      {
+        as: "Ciudad",
+        model: model.Ciudad,
+        attributes: ["id", "nombre", "cp"],
+      },
+    ],
+  }).then((response) => {
     try {
       res.status(200).json({ data: response });
     } catch {
@@ -32,76 +43,63 @@ const list = async (req, res) => {
     }
   });
 };
-
-const listCities = async (req, res) => {
+const find = async (req, res) => {
   const { id } = req.params;
-  const provincia = await model.Provincia.findOne({
-    where: { id: id, habilitado: true },
-  }).then((response) => response);
-  if (provincia != null) {
-    provincia.getCiudads().then((ciudades) => {
-      res.status(200).json({ provincia: provincia.nombre, ciudades });
-    });
-  } else {
-    res.status(400).json({ message: "Province without cities associated" });
-  }
-};
-
-//modificar provincia
-const updateProvince = async (req, res) => {
-  const updateProvince = req.body;
   try {
-    model.Provincia.findOne({ where: { id: updateProvince.id } }).then(
-      (response) => {
-        if (response) {
-          model.Provincia.update(updateProvince, {
-            where:
-            {
-              id: updateProvince.id
-            }
-          }).then(
-            (response) => {
-              res.status(200).json({ data: response });
-            });
-        } else {
-          res.status(400).json({ message: "No se encontro la provincia a modificar" });
-        }
-      }
-    );
+    const provincia = await model.Provincia.findOne({
+      where: { id: id, habilitado: true },
+      attributes: ["id", "nombre"],
+      include: [
+        {
+          as: "Ciudad",
+          model: model.Ciudad,
+          attributes: ["id", "nombre", "cp"],
+        },
+      ],
+    });
+    if (provincia != null) {
+      res.status(200).json({ data: provincia });
+    } else {
+      res
+        .status(400)
+        .json({ message: "La provincia que intenta bsucar con existe" });
+    }
   } catch {
-    res.status(500).json({ message: "Internal serve error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
-//Eliminar provincia
-const remove = async (req, res) => {
-  const id = req.params.id;
-  model.Provincia.findOne({ where: { id: id } }).then((response) => {
-    try {
-      if (response.dataValues.habilitado) {
-        model.Provincia.update(
-          {
-            habilitado: false,
-          },
-          {
-            where: { id: id },
-          }
-        ).then((response) => {
-          res.status(200).json({ message: "removed" });
+const update = async (req, res) => {
+  const provincia = req.body;
+  try {
+    const provinciaOld = await model.Provincia.findOne({
+      where: { nombre: provincia.nombre },
+    });
+    if (provinciaOld == null) {
+      model.Provincia.update(
+        { nombre: provincia.nombre },
+        {
+          where: { id: provincia.id, habilitado: true },
+        }
+      ).then((response) => {
+        if (response > 0) {
+          res.status(200).json({ data: provincia });
+        } else {
+          res.status(400).json({ message: "No se pudo actualizar provincia" });
+        }
+      });
+    } else {
+      res
+        .status(400)
+        .json({
+          message:
+            "El nombre de la provincia ya existe, ingrese otro por favor",
         });
-      } else {
-        res.status(400).json({ message: "La provincia no existe" });
-      }
-    } catch (err) {
-      res.status(400).json({ message: "Bad Request" });
     }
-  });
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
-module.exports = {
-  list,
-  create,
-  listCities,
-  updateProvince,
-  remove
-};
+module.exports = { list, create, find, update,
+ };

@@ -3,11 +3,7 @@ const Op = require("sequelize").Op;
 
 const checkDuplicates = async (origen, destino) => {
   return await model.Ruta.findOne({
-    where: {
-      origenId: origen.id,
-      destinoId: destino.id,
-      habilitado: true
-    },
+    where: { origenId: origen.id, destinoId: destino.id, habilitado: true },
   }).then((response) => {
     return response;
   });
@@ -16,46 +12,41 @@ const checkDuplicates = async (origen, destino) => {
 // sin duplicados, origen y destino obligatorio, origen != destino
 const create = async (req, res) => {
   const ruta = req.body;
+  console.log(ruta);
   try {
-    if (ruta.origen.id != ruta.destino.id) {
+    if (ruta.origen != ruta.destino) {
       const origen = await model.Ciudad.findOne({
-        where: {
-          id: ruta.origen.id,
-          habilitado: true
-        },
+        where: { id: ruta.origen.id, habilitado: true },
       }).then((response) => response);
       const destino = await model.Ciudad.findOne({
-        where: {
-          id: ruta.destino.id,
-          habilitado: true
-        },
+        where: { id: ruta.destino.id, habilitado: true },
       }).then((response) => response);
       if (origen && destino) {
         const result = await checkDuplicates(origen, destino);
         if (result != null) {
           res.status(401).json({ message: "La ruta ya existe" });
-        }
-        else {
+        } else {
           model.Ruta.create({
             nombre: ruta.nombre,
             distancia: ruta.distancia,
+            duracion: ruta.duracion,
             habilitado: true,
-          }).then(
-            (response) => {
-              try {
-                response.setOrigen(ruta.origen.id);
-                response.setDestino(ruta.destino.id);
-                res.status(201).json({ data: response, origen, destino });
-              } catch (err) {
-                res.status(400).json({ message: "Error en origen o destino" });
-              }
-            });
+          }).then((response) => {
+            try {
+              response.setOrigen(origen);
+              response.setDestino(destino);
+              res.status(201).json({ data: response, origen, destino });
+            } catch (err) {
+              res.status(400).json({ message: "Error en origen o destino" });
+            }
+          });
         }
       }
     } else {
       res.status(400).json({ message: "Origen y destino son iguales" });
     }
-  } catch {
+  } catch (err) {
+    console.log(err);
     res.status(500).json({ message: "Internal Server error" });
   }
 };
@@ -63,62 +54,26 @@ const create = async (req, res) => {
 const parseRoute = async (routes) => {
   let result = [];
   for (var i = 0; i < routes.length; i++) {
-    /*const origen = await routes[i].getOrigen();
-    const oProv = await model.Provincia.findOne({ where: { id: origen.provinciaId } });
+    console.log(routes[i]);
+    const origen = await routes[i].getOrigen();
     const destino = await routes[i].getDestino();
-    const dProv = await model.Provincia.findOne({ where: { id: destino.provinciaId } });*/
     let ruta = {
-      id: routes[i].id,
-      nombre: routes[i].nombre,
-      distancia: routes[i].distancia,
-      origen: parseCity(routes[i].dataValues.Origen),
-      destino: parseCity(routes[i].dataValues.Destino),
+      ruta: routes[i],
+      origen,
+      destino,
     };
     result.unshift(ruta);
   }
   return await result;
 };
 
-function parseCity(city, province) {
-  return {
-    id: city.id,
-    nombre: city.nombre,
-    cp: city.cp,
-    provincia: {
-      id: city.Provincium.id,
-      nombre: city.Provincium.nombre
-    }
-  };
-}
-
-//Listar rutas
-const list = async (req, res) => {
+const listOld = async (req, res) => {
   try {
     const rutas = await model.Ruta.findAll({
-      where: {
-        habilitado: true
-      },
-      include: [{
-        model: model.Ciudad,
-        as: 'Origen',
-        atributes: ['id', 'nombre', 'cp'],
-        include: [{
-          model: model.Provincia,
-          atributes: ['id', 'nombre']
-        }]
-      },{
-        model: model.Ciudad,
-        as: 'Destino',
-        atributes: ['id', 'nombre', 'cp'],
-        include: [{
-          model: model.Provincia,
-          atributes: ['id', 'nombre']
-        }]
-      }]
-    }).then(
-      (response) => {
-        return response;
-      });
+      where: { habilitado: true },
+    }).then((response) => {
+      return response;
+    });
     const result = await parseRoute(rutas);
     res.status(200).json({ data: result });
   } catch (err) {
@@ -127,14 +82,29 @@ const list = async (req, res) => {
 };
 
 //solo de prueba
-const listOrigin = async (req, res) => {
-  const cityId = req.params.id;
-  model.Ruta.findAll({ where: { origenId: cityId } }).then((response) => {
-    response.getOrigen().then((resp) => {
-      console.log(resp);
+const list = async (req, res) => {
+  try {
+    model.Ruta.findAll({
+      attributes: ["id", "nombre", "distancia", "duracion"],
+      where: { habilitado: true },
+      include: [
+        {
+          model: model.Ciudad,
+          as: "Origen",
+          attributes: ["id", "nombre", "cp"],
+        },
+        {
+          model: model.Ciudad,
+          as: "Destino",
+          attributes: ["id", "nombre", "cp"],
+        },
+      ],
+    }).then((rutas) => {
+      res.status(200).json({ data: rutas });
     });
-    res.status(200).json({ data: response });
-  });
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 const getRoute = async (req, res) => {
@@ -156,14 +126,14 @@ const getRoute = async (req, res) => {
             if (response.length) {
               res.status(200).json({ data: response, origen, destino });
             } else {
-              res.status(400).json({ message: "Route not found" });
+              res.status(400).json({ message: "Ruta no encontrada" });
             }
           });
       } else {
-        res.status(400).json({ message: "Cities not found" });
+        res.status(400).json({ message: "Ciduad no encontrada" });
       }
     } else {
-      res.status(400).json({ message: "Origen and Destiny are equal" });
+      res.status(400).json({ message: "El origen y el destino son iguales" });
     }
   } catch (err) {
     console.log(err);
@@ -174,6 +144,36 @@ const getRoute = async (req, res) => {
 const remove = async (req, res) => {
   const { id } = req.params;
   //para eliminar una ruta no debe tener viaje en asignado
+  try {
+    const ruta = await model.Ruta.findOne({
+      where: { id: id, habilitado: true },
+      include: [
+        {
+          model: model.Viaje,
+          include: [
+            {
+              model: model.Estado,
+              as: "Estado",
+              where: {
+                [Op.or]: [{ id: 1 }, { id: 2 }],
+              },
+            },
+          ],
+        },
+      ],
+    });
+    if (ruta.Viajes.length > 0) {
+      res.status(400).json({
+        message: "No se puede eliminar ruta ya que tiene viaje asociado",
+      });
+    } else {
+      ruta.update({ habilitado: false }).then((response) => {
+        res.status(200).json({ message: "Ruta eliminada exitosamente" });
+      });
+    }
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 //TODO modificar una ruta
@@ -204,7 +204,6 @@ const update = async (req, res) => {
 module.exports = {
   list,
   create,
-  listOrigin,
   getRoute,
   remove,
   update,

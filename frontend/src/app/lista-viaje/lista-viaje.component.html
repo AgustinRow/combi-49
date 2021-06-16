@@ -40,7 +40,9 @@
             <tr>
                 <th>Ruta</th>
                 <th>Fecha de salida</th>
-                <th>Hora de Salida</th>
+                <th>Hora de salida</th>
+                <th>Duracion</th>
+                <th>Distancia</th>
                 <th>Vehiculo</th>
                 <ng-template [ngIf]="usuarioIdentificado">
                     <th *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">Chofer</th>
@@ -52,20 +54,24 @@
             <tr *ngFor="let viaje of lViajes">
                 <td data-title="Ruta">{{viaje.Ruta.nombre}}</td>
                 <td data-title="Fecha de Salida">{{viaje.fecha_salida}}</td>
-                <td data-title="Hora de salida">{{viaje.hora }}</td>
-                <td data-title="Vehiculo">{{viaje.Vehiculo[0].patente}}</td>
-                <ng-template [ngIf]="usuarioIdentificado">
-                    <td data-title="Chofer" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
-                        {{viaje.Chofer[0].nombre}}</td>
-                    <td data-title="Acciones" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR; else buyBlock">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-info" (click)="openModal(contentShow, viaje)"><i
-                                    class="bi bi-info-circle"></i></button>
-                            <button type="button" class="btn btn-warning" (click)="openModal(contentEdit, viaje)"><i
-                                    class="bi bi-pencil-square"></i></button>
-                            <button type="button" class="btn btn-danger" (click)="deleteTravel(viaje)"><i
-                                    class="bi bi-trash"></i></button>
-                        </div>
+                <td data-title="Hora de Salida">{{viaje.hora}}</td>
+                <td data-title="Duracion">{{viaje.Ruta.duracion}}</td>
+                <td data-title="Duracion">{{viaje.Ruta.distancia}}</td>
+                <td data-title="Vehiculo">{{viaje.Vehiculo.patente}}</td>
+                <td data-title="Chofer" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">{{viaje.Vehiculo.Chofer.nombre}}</td>
+                <td data-title="Acciones" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR; else buyBlock">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info" 
+                            (click)="openModal(contentShow, viaje)">Informacion</button>
+                        <button type="button" class="btn btn-warning"
+                            (click)="openModal(contentEdit, viaje)">Editar</button>
+                        <button type="button" class="btn btn-danger"
+                            (click)="deleteTravel(viaje)">Eliminar</button>
+                    </div>
+                </td>
+                <ng-template #buyBlock>
+                    <td data-title="Acciones">
+                        <button type="button" class="btn btn-danger">Comprar</button>
                     </td>
                     <ng-template #buyBlock>
                         <td data-title="Acciones">

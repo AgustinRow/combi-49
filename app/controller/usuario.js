@@ -3,10 +3,6 @@ const Op = require("sequelize").Op;
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const USUARIO_ADMINISTRADOR = 1;
-const USUARIO_CHOFER = 2;
-const USUARIO_PASAJERO = 3;
-
 function jwtToken(user) {
   return jwt.sign(
     {
@@ -26,19 +22,21 @@ const findUser = async (req, res) => {
       if (response) {
         res.status(200).json({ data: parse(response) });
       } else {
-        res.status(402).json({ message: "Bad request." });
+        res.status(402).json({ error: "Bad request." });
       }
     } catch (err) {
-      res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ error: "Internal server error" });
     }
   });
 };
 
 const login = async (req, res) => {
   const user = req.body;
-  model.Usuario.findOne({ where: { email: user.email } }).then((response) => {
+  model.Usuario.findOne({
+    where: { email: user.email, habilitado: true },
+  }).then((response) => {
     try {
-      if (response.habilitado) {
+      if (response != null) {
         if (user.password === response.password) {
           const token = jwtToken(response);
 
@@ -48,16 +46,14 @@ const login = async (req, res) => {
           //res.json({ data: parse(response) });
           //res.status(200);
         } else {
-          res
-            .status(400)
-            .json({ message: "Contraseña invalida" });
+          res.status(400).json({ error: "Email o contraseña incorrecto" });
         }
       } else {
-        res.status(401).json({ message: "El usuario no se encuentra habilitado" });
+        res.status(401).json({ error: "Not Found" });
       }
     } catch (err) {
       console.log(err);
-      res.status(400).json({ message: "Email no regisrado" });
+      res.status(500).json({ error: "Internal server error" });
     }
   });
 };
@@ -73,37 +69,16 @@ const getAllDrivers = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Internal Server error" });
   }
-  function parseUsersData(users) {
-    var result = [];
-    users.forEach((element) => {
-      result.unshift(element);
-    });
-
-    return result;
-  }
 };
 
-//Listar usuarios pasajeros
-const getAllUsers = async (req, res) => {
-  try {
-    model.Usuario.findAll({ where: { habilitado: true, tipo: USUARIO_PASAJERO } }).then(
-      (response) => {
-        res.json({ data: parseUsersData(response) });
-        res.status(200);
-      }
-    );
-  } catch (err) {
-    res.status(500).json({ message: "Internal Server error" });
-  }
-  function parseUsersData(users) {
-    var result = [];
-    users.forEach((element) => {
-      result.unshift(parse(element));
-    });
+function parseUsersData(users) {
+  var result = [];
+  users.forEach((element) => {
+    result.unshift(element);
+  });
 
-    return result;
-  }
-};
+  return result;
+}
 
 const parse = (user) => {
   return {
@@ -120,7 +95,12 @@ const parse = (user) => {
 const findDuplicates = async (user) => {
   return model.Usuario.findAll({
     where: {
-      [Op.or]: [{ email: user.email }, { dni: user.dni }],
+      [Op.and]: [
+        {
+          id: { [Op.ne]: user.id },
+          [Op.or]: [{ email: user.email }, { dni: user.dni }],
+        },
+      ],
     },
   });
 };
@@ -165,8 +145,33 @@ const register = async (req, res) => {
     });
   }
 };
+
 //modificar chofer
-const updateUser = async (req, res) => {
+const update = async (req, res) => {[]
+  const updatedUser = req.body;
+  try {
+    const user = await findDuplicates(updatedUser);
+    if (user.length > 0) {
+      res.status(400).json({
+        message:
+          "El DNI o email que intenta modificar ya se encuentra registrado",
+      });
+    } else {
+      model.Usuario.update(updatedUser, {
+        where: {
+          id: updatedUser.id,
+        },
+      }).then((response) => {
+        res.status(200).json({ message: "Usuario modificado correctamente" });
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const updateX = async (req, res) => {
   const updatedUser = req.body;
   const oldUser = await findDuplicates(updatedUser).then((response) => {
     try {
@@ -178,6 +183,12 @@ const updateUser = async (req, res) => {
     }
   });
   if (oldUser.id == updatedUser.id) {
+    if (oldUser.email === updatedUser.email) {
+      res.status(401).json({ message: "El e-mail ya se encuentra registrado" });
+    }
+    if (oldUser.dni === updatedUser.dni) {
+      res.status(401).json({ message: "El DNI ya se encuentra registrado" });
+    }
     model.Usuario.update(updatedUser, {
       where: {
         id: updatedUser.id,
@@ -190,46 +201,93 @@ const updateUser = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
       }
     });
-  } else {
-    if (oldUser.email === updatedUser.email) {
-      res.status(401).json({ message: "El e-mail ya se encuentra registrado" });
-    }
-    if (oldUser.dni === updatedUser.dni) {
-      res.status(401).json({ message: "El DNI ya se encuentra registrado" });
-    }
   }
 };
 
 const remove = async (req, res) => {
   const id = req.params.id;
-  model.Usuario.findOne({ where: { id: id } }).then((response) => {
-    try {
-      if (response.dataValues.habilitado) {
-        model.Usuario.update(
-          {
-            habilitado: false,
-          },
-          {
-            where: { id: id },
-          }
-        ).then((response) => {
-          res.status(200).json({ message: "removed" });
+  try {
+    const usuario = await model.Usuario.findOne({
+      where: { id: id, habilitado: true },
+    });
+    if (usuario != null) {
+      const hasVehiculo = await usuario.getVehiculo();
+      if (hasVehiculo != null) {
+        res.status(400).json({
+          message: "No se puede eliminar chofer con viaje pendiente",
         });
-      } else {
-        res.status(400).json({ message: "Este usuario no existe" });
+        return;
       }
-    } catch (err) {
-      res.status(400).json({ message: "Bad Request" });
+      model.Usuario.update(
+        {
+          habilitado: false,
+        },
+        {
+          where: { id: id },
+        }
+      ).then((response) => {
+        res.status(200).json({ message: "Usuario eliminado exitosamente" });
+      });
+    } else {
+      res.status(400).json({ message: "Este usuario no existe" });
     }
-  });
+  } catch {
+    res.status(500).json({ message: "Internal Server error" });
+  }
 };
+
+const listPassengers = async (req, res) => {
+  try {
+    model.Usuario.findAll({ where: { habilitado: true, tipo: 3 } }).then(
+      (response) => {
+        res.json({ data: response });
+        res.status(200);
+      }
+    );
+  } catch (err) {
+    res.status(500).json({ message: "Internal Server error" });
+  }
+};
+
+const profile = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await model.Usuario.findOne({
+      where: { id: id, habilitado: true },
+    });
+    if (user != null) {
+      res.status(200).json({ data: user });
+    }
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const listAvailableDriver = async (req, res) => {
+  try {
+    model.Usuario.findAll({
+      where: { tipo: 2, habilitado: true, vehiculoId: null },
+      attributes: ["id", "nombre", "email", "apellido"],
+    }).then((response) => {
+      res.status(200).json({ data: response });
+    });
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+//TODO: implementar el recuperar contraseñ
+const recoverPassword = async (req, res) => {};
 
 module.exports = {
   getAllDrivers,
-  getAllUsers,
   register,
   login,
   findUser,
-  updateUser,
+  update,
   remove,
+  listPassengers,
+  profile,
+  recoverPassword,
+  listAvailableDriver,
 };

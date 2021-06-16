@@ -3,30 +3,22 @@ const Op = require("sequelize").Op;
 
 // listar ciudades
 const list = async (req, res) => {
-  model.Ciudad.findAll({
-    where: {
-      habilitado: true
-    },
-    include: [{
-      model: model.Provincia,
-      atributes: ['id', 'nombre']
-    }]
-  }).then(
-    (response) => {
-      try {
-        res.status(200).json({ data: parseCitiesData(response) });
-      } catch (err) {
-        res.status(500).json({ message: "Internal server error" });
-      }
+  try {
+    model.Ciudad.findAll({
+      where: { habilitado: true },
+      attributes: ["id", "nombre", "cp"],
+      include: [
+        {
+          model: model.Provincia,
+          attributes: ["id", "nombre"],
+          as: "Provincia",
+        },
+      ],
+    }).then((response) => {
+        res.status(200).json({ data: response });
     });
-
-  function parseCitiesData(cities) {
-    var result = [];
-    cities.forEach(
-      (element) => {
-        result.unshift(parse(element));
-      });
-    return result;
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -41,45 +33,34 @@ const findDuplicateById = async (city) => {
   return result;
 };
 
-function parse(city) {
-  return {
-    id: city.id,
-    nombre: city.nombre,
-    cp: city.cp,
-    provincia: {
-      id: city.Provincium.id,
-      nombre: city.Provincium.nombre
-    }
-  };
-}
-
 //alta ciudad
 // chequear que la ciudad este disponible (habilitado: true)
 const create = async (req, res) => {
   const city = req.body;
+  console.log(city);
   const oldCity = await findDuplicates(city);
   if (oldCity) {
     res.status(401).json({ message: "La ciudad ya existe" });
   } else {
-    /*const provincia = await model.Provincia.findOne({
-      where: { id: city.provincia },
-    }).then((response) => response);
-    if (provincia) {*/
-    model.Ciudad.create({
-      nombre: city.nombre,
-      cp: city.cp,
-      provinciaId: city.provincia.id,
-      habilitado: true,
-    }).then(() => {
-      try {
-        res.status(201).json({ data: city });
-      } catch (err) {
-        res.status(500).json({ message: "Internal server error" });
-      }
+    const provincia = await model.Provincia.findOne({
+      where: { id: city.provincia.id },
     });
-    /*} else {
+    if (provincia != null) {
+      model.Ciudad.create({
+        nombre: city.nombre,
+        cp: city.cp,
+        provinciaId: provincia.id,
+        habilitado: true,
+      }).then(() => {
+        try {
+          res.status(201).json({ data: city });
+        } catch (err) {
+          res.status(500).json({ message: "Internal server error" });
+        }
+      });
+    } else {
       res.status(400).json({ message: "Error, id de provincia invalido" });
-    }*/
+    }
   }
 };
 
@@ -88,16 +69,25 @@ const find = async (req, res) => {
   const city = req.params.id;
   if (city != undefined) {
     try {
-      model.Ciudad.findOne({ where: { id: city, habilitado: true } }).then(
-        (response) => {
-          try {
-            res.status(200).json({ data: parse(response) });
-          } catch (err) {
-            res.status(400).json({ message: "Id not found" });
-          }
+      model.Ciudad.findOne({
+        where: { habilitado: true },
+        attributes: ["id", "nombre", "cp"],
+        include: [
+          {
+            model: model.Provincia,
+            attributes: ["id", "nombre"],
+            as: "Provincia",
+          },
+        ],
+      }).then((response) => {
+        try {
+          res.status(200).json({ data: response });
+        } catch (err) {
+          res.status(400).json({ message: "Id not found" });
         }
-      );
+      });
     } catch (err) {
+      console.log(err);
       res.status(400).json({ message: "Bad Request" });
     }
   } else {
@@ -106,7 +96,8 @@ const find = async (req, res) => {
   }
 };
 
-//TODO: actualizar la modificacion para la provincia y la parada
+//TODO: actualizar la modificacion para la provincia
+
 const update = async (req, res) => {
   const city = req.body;
   const exist = await findDuplicates(city);
@@ -122,7 +113,7 @@ const update = async (req, res) => {
       }
     });
   } else {
-    res.status(400).json({ message: "This city already exist or id is wrong" });
+    res.status(400).json({ message: "La ciudad ya existe" });
   }
 };
 
@@ -171,12 +162,12 @@ const remove = async (req, res, next) => {
       const canBeRemoved = await hasOrigenOrDestiny(ciudad);
       if (canBeRemoved) {
         ciudad.update({ habilitado: false }).then((response) => {
-          res.status(200).json({ message: "Succesfully removed" });
+          res.status(200).json({ message: "Eliminado exitosamente" });
         });
       } else {
         res.status(400).json({
           message:
-            "Cannot remove city due to it has an origen or a destiny associatied",
+            "La ciudad no se puede eliminar ya que esta asociada a una ruta",
         });
       }
     } catch (err) {

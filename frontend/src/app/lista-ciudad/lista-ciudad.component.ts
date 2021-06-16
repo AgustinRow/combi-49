@@ -1,6 +1,7 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Ciudad } from '../module/ciudad.module';
+import { Provincia } from '../module/provincia.module';
 import { CityService } from '../service/city.service';
 
 @Component({
@@ -26,11 +27,13 @@ export class ListaCiudadComponent implements OnInit {
   }
 
   openModal(contentEdit, select: Ciudad) {
+    
     if (select !== null) {
       this.ciudadSeleccionada = this.listCiudades.indexOf(select);
+      var prov= new Provincia()
       this.aux = new Ciudad();
       this.aux.nombre = select.nombre;
-      this.aux.Provincia = select.Provincia;
+      this.aux.Provincia = prov
       this.aux.id = select.id;
       this.aux.cp = select.cp;
     }

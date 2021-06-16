@@ -1,29 +1,25 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Provincia extends Model {
+  class Estado extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      Provincia.hasMany(models.Ciudad, {
-        as: "Ciudad",
-        foreignKey: "provinciaId",
-      });
+      Estado.hasOne(models.Pasaje, { as: "Pasaje", foreignKey: "EstadoId" });
+      Estado.hasOne(models.Viaje, { as: "Viaje", foreignKey: "EstadoId" });
     }
   }
-  Provincia.init(
+  Estado.init(
     {
-      nombre: DataTypes.STRING,
-      habilitado: DataTypes.BOOLEAN,
+      estado: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: "Provincia",
+      modelName: "Estado",
     }
   );
-  return Provincia;
+  return Estado;
 };

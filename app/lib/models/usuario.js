@@ -9,7 +9,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Usuario.hasMany(models.Viaje, { foreignKey: "RutaId" });//belongsTo(models.Vehiculo, { foreignKey: "vehiculoId" });
+      //Usuario.belongsTo(models.Vehiculo, { foreignKey: "vehiculoId" });
+      Usuario.hasMany(models.Pasaje, { as: "Pasaje", foreignKey: "UsuarioId" });
+      Usuario.belongsToMany(models.Viaje, {
+        as: "Viaje",
+        foreignKey: "UsuarioId",
+        through: "Viaje_Chofer",
+      });
     }
   }
   Usuario.init(
@@ -28,6 +34,5 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Usuario",
     }
   );
-
   return Usuario;
 };
