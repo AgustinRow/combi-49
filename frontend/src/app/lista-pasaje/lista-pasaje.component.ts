@@ -63,7 +63,7 @@ export class ListaPasajeComponent implements OnInit {
 
   payment(estaPago: boolean) {
     if (estaPago) {
-      this.foodboxService.addFoodbox({ "viandas": this.viandasCompradas, "pasajeId": this.pasajeSeleccionado.id }).subscribe(
+      this.foodboxService.buyFoodbox({ "viandas": this.viandasCompradas, "pasajeId": this.pasajeSeleccionado.id }).subscribe(
         (data: any) => {
           if (data != null) {
             alert("Se ha pagado correctamente");
@@ -82,6 +82,26 @@ export class ListaPasajeComponent implements OnInit {
     else {
       alert("No se pudo completar el pago");
     }
+  }
+
+  cancelTrip(){
+    console.log(this.pasajeSeleccionado)
+    this.passageService.cancelPassage(this.pasajeSeleccionado).subscribe(
+      (data: any) => {
+        if (data != null) {
+          alert("Se ha cancelado el pasaje y se le ha devuelto el dinero");
+        }
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert(error.error.message);
+        }
+      }
+    )
+
   }
 
 }
