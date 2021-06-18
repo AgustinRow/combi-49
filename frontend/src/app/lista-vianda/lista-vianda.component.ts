@@ -43,6 +43,7 @@ export class ListaViandaComponent implements OnInit {
       (data: Vianda) => {
         if (data != null) {
           alert("Se ha eliminado la vianda correctamente");
+          this.refreshList();
         }
       },
       (error) => {

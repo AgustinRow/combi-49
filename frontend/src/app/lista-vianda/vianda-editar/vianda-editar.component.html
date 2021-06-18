@@ -27,5 +27,8 @@
             name="descripcion" required></textarea>
     </div>
 
-    <button type="submit" class="btn btn-success" [disabled]="!(modifyFoodboxForm.form.valid&&modifyFoodboxForm.form.dirty)">Guardar</button>
+    <div class="d-flex justify-content-around">
+        <button type="submit" class="btn btn-success" [disabled]="!(modifyFoodboxForm.form.valid&&modifyFoodboxForm.form.dirty)">Guardar</button>
+        <a class="btn btn-light" (click)="close()">Cancelar</a>
+    </div>
 </form>

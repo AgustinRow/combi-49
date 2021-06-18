@@ -63,7 +63,7 @@ export class ListaPasajeComponent implements OnInit {
 
   payment(estaPago: boolean) {
     if (estaPago) {
-      this.foodboxService.addFoodbox({ "viandas": this.viandasCompradas, "pasajeId": this.pasajeSeleccionado.id }).subscribe(
+      this.foodboxService.buyFoodbox(this.viandasCompradas, this.pasajeSeleccionado).subscribe(
         (data: any) => {
           if (data != null) {
             alert("Se ha pagado correctamente");

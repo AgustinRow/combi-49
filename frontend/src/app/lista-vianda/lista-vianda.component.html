@@ -42,11 +42,8 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-vianda-editar [viandaModificada]="aux" (viandaEditEvent)="refreshList(); c('Close click')">
+        <app-vianda-editar [viandaModificada]="aux" (viandaEditEvent)="refreshList(); c('Close click')" (closeEvent)="c('Close click')">
             Cargando</app-vianda-editar>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
     </div>
 </ng-template>
 
@@ -73,9 +70,6 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-vianda-nuevo (viandaNewEvent)="refreshList(); c('Close click')">Cargando</app-vianda-nuevo>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+        <app-vianda-nuevo (viandaNewEvent)="refreshList(); c('Close click')" (closeEvent)="c('Close click')">Cargando</app-vianda-nuevo>
     </div>
 </ng-template>

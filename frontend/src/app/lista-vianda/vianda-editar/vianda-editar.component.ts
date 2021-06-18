@@ -14,6 +14,7 @@ import { FoodboxService } from 'src/app/service/foodbox.service';
 export class ViandaEditarComponent implements OnInit {
   @Input() viandaModificada:Vianda = new Vianda();
   @Output() viandaEditEvent = new EventEmitter();
+  @Output() closeEvent = new EventEmitter();
 
   constructor(
     private foodboxServica: FoodboxService
@@ -43,4 +44,8 @@ export class ViandaEditarComponent implements OnInit {
     }
   }
 
+  close(){
+    this.closeEvent.emit();
+  }
+  
 }

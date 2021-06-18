@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 import { Vianda } from '../module/vianda.module';
+import { Pasaje } from '../module/pasaje.module';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -18,8 +19,12 @@ export class FoodboxService {
     private http: HttpClient
   ) { }
 
-  addFoodbox(vianda: any): Observable<Vianda> {
-    return this.http.post<Vianda>(this.usersUrl + 'comprar', vianda, httpOptions);
+  addFoodbox(vianda: Vianda): Observable<Vianda> {
+    return this.http.post<Vianda>(this.usersUrl + 'alta', vianda, httpOptions);
+  }
+
+  buyFoodbox(viandas: Vianda[], pasaje: Pasaje): Observable<Vianda> {
+    return this.http.post<Vianda>(this.usersUrl + 'comprar', { "viandas": viandas, "pasajeId": pasaje.id }, httpOptions);
   }
 
   getFoodboxs(): Observable<Vianda[]> {
