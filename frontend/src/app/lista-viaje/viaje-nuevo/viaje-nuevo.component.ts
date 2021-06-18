@@ -39,6 +39,7 @@ export class ViajeNuevoComponent implements OnInit {
       'ruta': new FormControl({}),
       'fecha_salida': new FormControl({}),
       'fecha_llegada': new FormControl({}),
+      //'hora': newFormControl({}), 
       'chofer': new FormControl({}),
       'vehiculo': new FormControl({}),
       'detalle': new FormControl({})
@@ -71,7 +72,7 @@ export class ViajeNuevoComponent implements OnInit {
   }
 
   refreshListUser(){
-    this.userService.getChoffers().subscribe(
+    this.userService.getAvailableChoffers().subscribe(
       (list: any) => {
         this.listChoferes = list.data as Usuario[];
       },
@@ -87,7 +88,7 @@ export class ViajeNuevoComponent implements OnInit {
   }
 
   refreshListVehicle(){
-    this.vehicleService.getvehicles().subscribe(
+    this.vehicleService.getavailablevehicles().subscribe(
       (list: any) => {
         this.listVehiculos = list.data as Vehiculo[];
       },

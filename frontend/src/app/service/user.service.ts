@@ -25,11 +25,15 @@ export class UserService {
   }
 
   getUsers(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(this.usersUrl + 'lista_usuarios');
+    return this.http.get<Usuario[]>(this.usersUrl + 'lista_pasajeros');
   }
 
   getChoffers(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(this.usersUrl + 'lista_choferes');
+  }
+
+  getAvailableChoffers(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(this.usersUrl + 'lista_choferes_disponibles');
   }
 
   getUser(userId: Number): Observable<Usuario> {

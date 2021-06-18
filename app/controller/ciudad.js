@@ -95,6 +95,7 @@ const find = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 //TODO: actualizar la modificacion para la provincia
 
 const update = async (req, res) => {

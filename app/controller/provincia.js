@@ -68,6 +68,7 @@ const find = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 const update = async (req, res) => {
   const provincia = req.body;
   try {
