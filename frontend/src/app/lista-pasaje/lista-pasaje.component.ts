@@ -84,8 +84,8 @@ export class ListaPasajeComponent implements OnInit {
     }
   }
 
+  //agregar validaciones correspondientes
   cancelTrip(){
-    console.log(this.pasajeSeleccionado)
     this.passageService.cancelPassage(this.pasajeSeleccionado).subscribe(
       (data: any) => {
         if (data != null) {
