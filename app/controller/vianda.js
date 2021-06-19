@@ -10,6 +10,7 @@ const findViandaWithName = async (vianda) => {
 
 const create = async (req, res) => {
   const vianda = req.body;
+  console.log(vianda);
   try {
     if ((await findViandaWithName(vianda)) != null) {
       res
@@ -36,10 +37,14 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   const vianda = req.body;
   try {
-    const result = model.Vianda.findOne({
-      where: { nombre: vianda.nombre, habiltiado: true },
+    const result = await model.Vianda.findOne({
+      where: {
+        nombre: vianda.nombre,
+        habilitado: true,
+        id: { [Op.ne]: vianda.id },
+      },
     });
-    if (vianda.id == result.id || result != null) {
+    if (result == null) {
       model.Vianda.update(
         {
           nombre: vianda.nombre,
@@ -87,6 +92,7 @@ const remove = async (req, res) => {
 
 const buy = async (req, res) => {
   const { body } = req;
+
   try {
     const pasaje = await model.Pasaje.findOne({
       where: { id: body.pasajeId, habilitado: true },

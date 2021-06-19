@@ -135,8 +135,7 @@ const remove = async (req, res) => {
     });
     if (vehiculo != null) {
       const hasTravel = await vehiculo.getViaje();
-      console.log(vehiculo);
-      if (hasTravel != null) {
+      if (hasTravel.length) {
         res.status(400).json({
           message:
             "No se puede eliminar vehiculo con viaje pendiente o en curso",

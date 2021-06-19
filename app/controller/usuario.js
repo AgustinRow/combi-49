@@ -135,6 +135,7 @@ const register = async (req, res) => {
       apellido: user.apellido,
       dni: user.dni,
       tipo: user.tipo,
+      saldo: 0,
       habilitado: true,
     }).then(() => {
       try {
@@ -148,7 +149,8 @@ const register = async (req, res) => {
 };
 
 //modificar chofer
-const update = async (req, res) => {[]
+const update = async (req, res) => {
+  [];
   const updatedUser = req.body;
   try {
     const user = await findDuplicates(updatedUser);
@@ -212,8 +214,8 @@ const remove = async (req, res) => {
       where: { id: id, habilitado: true },
     });
     if (usuario != null) {
-      const hasVehiculo = await usuario.getVehiculo();
-      if (hasVehiculo != null) {
+      const tieneViaje = await usuario.getViaje();
+      if (tieneViaje.length) {
         res.status(400).json({
           message: "No se puede eliminar chofer con viaje pendiente",
         });
@@ -232,7 +234,7 @@ const remove = async (req, res) => {
     } else {
       res.status(400).json({ message: "Este usuario no existe" });
     }
-  } catch {
+  } catch (err) {
     res.status(500).json({ message: "Internal Server error" });
   }
 };

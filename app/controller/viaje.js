@@ -215,7 +215,11 @@ const find = async (req, res) => {
         },
       ],
     }).then((viajes) => {
-      res.status(200).json({ viajes });
+      if (viajes.length) {
+        res.status(200).json({ viajes });
+      } else {
+        res.status(400).json({ message: "Sin resultados para la busqueda" });
+      }
     });
   } catch (err) {
     console.log(err);
