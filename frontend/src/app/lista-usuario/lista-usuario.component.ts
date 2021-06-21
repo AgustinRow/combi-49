@@ -16,6 +16,7 @@ export class ListaUsuarioComponent implements OnInit {
   tipo: String[] = ["Pasajero", "Chofer", "Administrador"];
   usuarioSeleccionado: Usuario;
   findName:string[] = [ "", "" ];
+  aux: Usuario;
 
   constructor(
     private userService: UserService,
@@ -28,6 +29,7 @@ export class ListaUsuarioComponent implements OnInit {
 
   openModal(contentEdit, userselect: Usuario) {  
     this.usuarioSeleccionado = userselect;
+    this.aux = Object.assign({}, userselect);
     this.modalService.open(contentEdit);
   }
 

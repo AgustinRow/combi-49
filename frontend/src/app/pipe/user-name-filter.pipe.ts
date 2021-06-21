@@ -12,8 +12,12 @@ export class UserNameFilterPipe implements PipeTransform {
     lastNameSearch?: string
   ): Usuario[] {
 
+    console.log("pipe");
+    console.log(nameSearch);
+    console.log(lastNameSearch);
     if (!users) return [];
-    if (!nameSearch) return users;
+    if (!nameSearch) 
+      if(!lastNameSearch) return users;
     nameSearch = nameSearch.toLocaleLowerCase();
     users = [...users.filter(user => user.nombre.toLocaleLowerCase().includes(nameSearch))];
 
