@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, NgForm } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { Ruta } from 'src/app/module/ruta.module';
 import { Usuario } from 'src/app/module/usuario.module';
 import { Vehiculo } from 'src/app/module/vehiculo.module';
@@ -21,7 +21,6 @@ export class ViajeEditarComponent implements OnInit {
   @Input() viajeModificado = new Viaje();
   @Output() travelEditEvent = new EventEmitter();
   @Output() closeEvent = new EventEmitter();
-  form: FormGroup;
   rIndex: number;
   cIndex: number;
   vIndex: number;
@@ -38,32 +37,21 @@ export class ViajeEditarComponent implements OnInit {
     this.refreshListUser();
     this.refreshListRoute();
 
-    this.form = new FormGroup({
-      'nombre': new FormControl({}),
-      'ruta': new FormControl({}),
-      'fecha_salida': new FormControl({}),
-      'hora': new FormControl({}),
-      'chofer': new FormControl({}),
-      'vehiculo': new FormControl({}),
-      'precio': new FormControl({}),
-      'detalle': new FormControl({})
-    });
-
   }
 
-  modifyTravel() {
-    if (this.form.valid) {
-      this.viajeModificado.Ruta = this.listRutas[this.form.value.ruta];
+  modifyTravel(form:NgForm) {
+    if (form.valid) {
+      this.viajeModificado.Ruta = this.listRutas[form.value.ruta];
       if (this.viajeModificado.Vehiculo.length == 0) {
-        this.viajeModificado.Vehiculo.push(this.listVehiculos[this.form.value.vehiculo]);
+        this.viajeModificado.Vehiculo.push(this.listVehiculos[form.value.vehiculo]);
       } else {
-        this.viajeModificado.Vehiculo[0] = this.listVehiculos[this.form.value.vehiculo];
+        this.viajeModificado.Vehiculo[0] = this.listVehiculos[form.value.vehiculo];
       }
 
       if (this.viajeModificado.Vehiculo.length == 0) {
-        this.viajeModificado.Chofer.push(this.listChoferes[this.form.value.chofer]);
+        this.viajeModificado.Chofer.push(this.listChoferes[form.value.chofer]);
       } else {
-        this.viajeModificado.Chofer[0] = this.listChoferes[this.form.value.chofer];
+        this.viajeModificado.Chofer[0] = this.listChoferes[form.value.chofer];
       }
       this.travelService.modifyTravel(this.viajeModificado).subscribe(
         (data: any) => {

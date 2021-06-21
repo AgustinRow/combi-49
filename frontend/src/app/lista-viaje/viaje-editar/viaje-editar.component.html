@@ -1,38 +1,38 @@
-<form (ngSubmit)="modifyTravel()" [formGroup]="form">
+<form (ngSubmit)="modifyTravel(editForm)" #editForm="ngForm">
     <div class="form-group">
         <label for="nombre">Nombre:</label>
-        <input type="text" class="form-control" formControlName="nombre" [(ngModel)]="viajeModificado.nombre"
+        <input type="text" class="form-control" ngModel [(ngModel)]="viajeModificado.nombre"
             name="nombre" required/>
     </div>
 
     <div class="form-group">
         <label for="ruta">Ruta:</label>
-        <select type="text" class="form-control" formControlName="ruta" name="ruta" required  [(ngModel)]="rIndex">
+        <select type="text" class="form-control" ngModel name="ruta" required  [(ngModel)]="rIndex">
                 <option *ngFor="let ruta of listRutas; index as i" [value]="i">{{ ruta.nombre }}</option>
         </select>
     </div>
 
     <div class="form-group">
         <label for="fecha_salida">Fecha de salida:</label>
-        <input type="date" class="form-control" formControlName="fecha_salida" [(ngModel)]="viajeModificado.fecha_salida" name="fecha_salida" required>
+        <input type="date" class="form-control" ngModel [(ngModel)]="viajeModificado.fecha_salida" name="fecha_salida" required>
     </div>
 
     <div class="form-group">
         <label for="hora">Hora de Salida:</label>
-        <input type="time" class="form-control" formControlName="hora" [(ngModel)]="viajeModificado.hora" name="hora"
+        <input type="time" class="form-control" ngModel [(ngModel)]="viajeModificado.hora" name="hora"
             min="{{viajeNuevo.hora" required>
     </div>
     
     <div class="form-group">
         <label for="chofer">Chofer:</label>
-        <select type="text" class="form-control" formControlName="chofer" name="chofer" required [(ngModel)]="cIndex">
+        <select type="text" class="form-control" ngModel name="chofer" required [(ngModel)]="cIndex">
                 <option *ngFor="let chofer of listChoferes; index as i" [value]="i">{{ chofer.nombre }}</option>
         </select>
     </div>
     
     <div class="form-group">
         <label for="vehiculo">Vehiculo:</label>
-        <select type="text" class="form-control" formControlName="vehiculo" name="vehiculo" required [(ngModel)]="vIndex">
+        <select type="text" class="form-control" ngModel name="vehiculo" required [(ngModel)]="vIndex">
                 <option *ngFor="let vehiculo of listVehiculos; index as i" [value]="i">{{ vehiculo.patente }}</option>
         </select>
     </div>
@@ -43,17 +43,17 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">$</span>
             </div>
-            <input type="number" min="0" class="form-control" formControlName="precio" name="precio" [(ngModel)]="viajeModificado.precio" aria-label="Monto en pesos">
+            <input type="number" min="0" class="form-control" ngModel name="precio" [(ngModel)]="viajeModificado.precio" aria-label="Monto en pesos">
         </div>
     </div>
 
     <div class="form-group">
         <label for="detalle">Detalle:</label>
-        <textarea type="texta" class="form-control" formControlName="detalle" [(ngModel)]="viajeModificado.detalle" name="detalle" required></textarea>
+        <textarea type="texta" class="form-control" ngModel [(ngModel)]="viajeModificado.detalle" name="detalle" required></textarea>
     </div>
 
     <div class="d-flex justify-content-around">
-        <button type="submit" class="btn btn-success" [disabled]="!(form.valid&&form.dirty)">Guardar</button>
+        <button type="submit" class="btn btn-success" [disabled]="!(editForm.valid&&editForm.dirty)">Guardar</button>
         <a class="btn btn-light" (click)="close()">Cancelar</a>
     </div>
 </form>
