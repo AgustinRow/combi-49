@@ -22,6 +22,7 @@ export class ViajeNuevoComponent implements OnInit {
   @Output() travelNewEvent = new EventEmitter<Viaje>();
   form: FormGroup;
   hoy = new Date(Date.now());
+  @Output() closeEvent = new EventEmitter();
 
   constructor(
     private travelService: TravelService,
@@ -36,6 +37,7 @@ export class ViajeNuevoComponent implements OnInit {
     this.refreshListRoute();
     
     this.form = new FormGroup({
+      'nombre': new FormControl({}),
       'ruta': new FormControl({}),
       'fecha_salida': new FormControl({}),
       'hora': new FormControl({}),
@@ -118,4 +120,9 @@ export class ViajeNuevoComponent implements OnInit {
       }
     )
   }
+  
+  close(){
+    this.closeEvent.emit();
+  }
+
 }

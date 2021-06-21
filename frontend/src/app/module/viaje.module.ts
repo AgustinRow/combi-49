@@ -4,6 +4,7 @@ import { Usuario } from "./usuario.module";
 
 export class Viaje{
     id: number;
+    nombre: string;
     fecha_salida: Date;
     //fecha_llegada: Date;
     hora: Date;

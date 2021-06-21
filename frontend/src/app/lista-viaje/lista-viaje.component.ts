@@ -19,6 +19,7 @@ export class ListaViajeComponent implements OnInit {
   ver: String = "viajes";
   @Input() lViajes: Viaje[] = [];
   @Input() buscar = true;
+  aux: Viaje;
 
   usuarioIdentificado: Usuario;
   USUARIO_ADMINISTRADOR = UserService.USUARIO_ADMINISTRADOR;
@@ -42,6 +43,16 @@ export class ListaViajeComponent implements OnInit {
 
   openModal(contentEdit, select: Viaje) {
     this.viajeSeleccionado = select;
+    this.aux = new Viaje();
+    this.aux.id = select.id
+    this.aux.nombre = select.nombre;
+    this.aux.Vehiculo = select.Vehiculo;
+    this.aux.Chofer = select.Chofer;
+    this.aux.Ruta = select.Ruta;
+    this.aux.detalle = select.detalle;
+    this.aux.fecha_salida = select.fecha_salida;
+    this.aux.hora = select.hora;
+    this.aux.precio = select.precio;
     this.modalService.open(contentEdit);
   }
 

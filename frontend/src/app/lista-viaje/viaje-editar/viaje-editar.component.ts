@@ -20,6 +20,7 @@ export class ViajeEditarComponent implements OnInit {
   @Input() listChoferes: Usuario[];
   @Input() viajeModificado = new Viaje();
   @Output() travelEditEvent = new EventEmitter();
+  @Output() closeEvent = new EventEmitter();
   form: FormGroup;
   rIndex: number;
   cIndex: number;
@@ -38,6 +39,7 @@ export class ViajeEditarComponent implements OnInit {
     this.refreshListRoute();
 
     this.form = new FormGroup({
+      'nombre': new FormControl({}),
       'ruta': new FormControl({}),
       'fecha_salida': new FormControl({}),
       'hora': new FormControl({}),
@@ -131,6 +133,10 @@ export class ViajeEditarComponent implements OnInit {
         }
       }
     )
+  }
+
+  close(){
+    this.closeEvent.emit();
   }
 
 }

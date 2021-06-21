@@ -38,6 +38,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Nombre</th>
                 <th>Ruta</th>
                 <th>Fecha de salida</th>
                 <th>Hora de Salida</th>
@@ -50,6 +51,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let viaje of lViajes">
+                <td data-title="Nombre">{{viaje.nombre}}</td>
                 <td data-title="Ruta">{{viaje.Ruta.nombre}}</td>
                 <td data-title="Fecha de Salida">{{viaje.fecha_salida}}</td>
                 <td data-title="Hora de salida">{{viaje.hora }}</td>
@@ -89,11 +91,8 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-viaje-editar [(viajeModificado)]="viajeSeleccionado" (travelEditEvent)="refreshList(); c('Close click')">
+        <app-viaje-editar [(viajeModificado)]="aux" (travelEditEvent)="refreshList(); c('Close click')" (closeEvent)="c('Close click')">
             Cargando</app-viaje-editar>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
     </div>
 </ng-template>
 
@@ -105,10 +104,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-viaje-nuevo (travelNewEvent)="refreshList(); c('Close click')">Cargando</app-viaje-nuevo>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+        <app-viaje-nuevo (travelNewEvent)="refreshList(); c('Close click')" (closeEvent)="c('Close click')">Cargando</app-viaje-nuevo>
     </div>
 </ng-template>
 
