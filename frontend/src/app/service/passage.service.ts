@@ -35,6 +35,10 @@ export class PassageService {
     return this.http.delete<Pasaje>(this.usersUrl + 'borrar/' + passage.id, httpOptions);
   }
 
+  cancelPassage(passage: Pasaje): Observable<any>{
+    return this.http.put<Pasaje>(this.usersUrl + 'cancelar/'+passage.id, httpOptions)
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

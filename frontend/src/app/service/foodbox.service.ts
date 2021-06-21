@@ -26,6 +26,7 @@ export class FoodboxService {
   buyFoodbox(viandas: Vianda[], pasaje: Pasaje): Observable<Vianda> {
     return this.http.post<Vianda>(this.usersUrl + 'comprar', { "viandas": viandas, "pasajeId": pasaje.id }, httpOptions);
   }
+  
 
   getFoodboxs(): Observable<Vianda[]> {
     return this.http.get<Vianda[]>(this.usersUrl + 'listar');

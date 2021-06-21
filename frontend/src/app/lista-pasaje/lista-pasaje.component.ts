@@ -84,4 +84,24 @@ export class ListaPasajeComponent implements OnInit {
     }
   }
 
+  //agregar validaciones correspondientes
+  cancelTrip(){
+    this.passageService.cancelPassage(this.pasajeSeleccionado).subscribe(
+      (data: any) => {
+        if (data != null) {
+          alert("Se ha cancelado el pasaje y se le ha devuelto el dinero");
+        }
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert(error.error.message);
+        }
+      }
+    )
+
+  }
+
 }
