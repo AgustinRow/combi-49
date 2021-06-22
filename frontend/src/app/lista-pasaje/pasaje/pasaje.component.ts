@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Pasaje } from 'src/app/module/pasaje.module';
 
 @Component({
   selector: 'app-pasaje',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pasaje.component.css']
 })
 export class PasajeComponent implements OnInit {
+  @Input() pasajeConInfo: Pasaje;
 
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.pasajeConInfo);
   }
 
 }

@@ -1,1 +1,56 @@
-<p>pasaje works!</p>
+<div class="container">
+    <div class="row">
+        <h4> Pasaje para el {{ pasajeConInfo.Viaje.fecha_salida }} a las {{ pasajeConInfo.Viaje.hora }}</h4>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>Precio: {{ pasajeConInfo.precio }}</p>
+        </div>
+        <div class="col">
+            <p>Estado: {{ pasajeConInfo.Estado.estado }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>Desde {{ pasajeConInfo.Viaje.Ruta.Origen.nombre }} hasta {{ pasajeConInfo.Viaje.Ruta.Destino.nombre }}
+            </p>
+        </div>
+        <div class="col">
+            <p>Confort: {{ pasajeConInfo.Viaje.Vehiculo[0].confort }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>Duracion aproximada: {{ pasajeConInfo.Viaje.Ruta.duracion }}</p>
+        </div>
+        <div class="col">
+            <p>Distancia recorrida: {{ pasajeConInfo.Viaje.Ruta.distancia }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>Vehiculo: {{ pasajeConInfo.Viaje.Vehiculo[0].patente }}</p>
+        </div>
+    </div>
+
+    <br>
+    <div class="row" *ngIf="pasajeConInfo.Vianda">
+        <h6>Viandas adquiridas</h6>
+    </div>
+    <table class="table table-hover" *ngIf="pasajeConInfo.Vianda">
+        <thead>
+            <tr scope="row">
+                <th>Item</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let vianda of pasajeConInfo.Vianda; index as i">
+                <td data-title="Item">{{ i+1 }}</td>
+                <td data-title="Nombre">{{vianda.nombre}}</td>
+                <td data-title="Precio">{{vianda.precio}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
