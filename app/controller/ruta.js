@@ -14,7 +14,7 @@ const create = async (req, res) => {
   const ruta = req.body;
   console.log(ruta);
   try {
-    if (ruta.Origen.id != ruta.Destino.id) {
+    if (ruta.Origen != ruta.Destino) {
       const origen = await model.Ciudad.findOne({
         where: { id: ruta.Origen.id, habilitado: true },
       }).then((response) => response);
@@ -111,12 +111,12 @@ const list = async (req, res) => {
 const getRoute = async (req, res) => {
   const ruta = req.body;
   try {
-    if (ruta.origen != ruta.destino) {
+    if (ruta.Origen != ruta.Destino) {
       const origen = await model.Ciudad.findOne({
-        where: { id: ruta.origen, habilitado: true },
+        where: { id: ruta.Origen, habilitado: true },
       }).then((response) => response);
       const destino = await model.Ciudad.findOne({
-        where: { id: ruta.destino, habilitado: true },
+        where: { id: ruta.Destino, habilitado: true },
       }).then((response) => response);
       if (origen && destino) {
         origen
@@ -182,9 +182,9 @@ const update = async (req, res) => {
   const ruta = req.body;
   model.Ruta.findOne({ where: { id: ruta.id, habilitado: true } }).then(
     (response) => {
-      const result = checkDuplicates(ruta.origen, ruta.destino);
+      const result = checkDuplicates(ruta.Origen, ruta.Destino);
       if (result.id == response.id) {
-        if (ruta.origen != ruta.destino) {
+        if (ruta.Origen != ruta.Destino) {
           response.update(ruta).then((response) => {
             res.status(200).json({ data: response });
           });

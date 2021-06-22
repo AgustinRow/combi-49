@@ -109,19 +109,19 @@ const updateX = async (req, res) => {
     if (viaje != null) {
       resetDriverAndTravel(viaje);
       const vehiculo = await model.Vehiculo.findOne({
-        where: { id: form.vehiculo },
+        where: { id: form.Vehiculo },
       });
       const chofer = await model.Usuario.findOne({
-        where: { id: form.chofer },
+        where: { id: form.Chofer },
       });
       const result = {
         nombre: form.nombre,
         detalle: form.detalle,
-        ruta: form.ruta,
+        ruta: form.Ruta,
         fecha_salida: form.fecha_salida,
         hora: form.hora,
-        precio: form.hora,
-        RutaId: form.ruta,
+        precio: form.precio,
+        RutaId: form.Ruta,
       };
       viaje.setVehiculo(vehiculo);
       vehiculo.setChofer(chofer);
@@ -181,8 +181,8 @@ const find = async (req, res) => {
           model: model.Ruta,
           where: {
             [Op.and]: [
-              { origenId: viaje.origen },
-              { destinoId: viaje.destino },
+              { origenId: viaje.Origen },
+              { destinoId: viaje.Destino },
             ],
           },
           attributes: ["id", "nombre", "distancia", "duracion"],
@@ -232,7 +232,7 @@ const findXX = async (req, res) => {
   try {
     model.Ruta.findAll({
       where: {
-        [Op.and]: [{ origenId: viaje.origen }, { destinoId: viaje.destino }],
+        [Op.and]: [{ origenId: viaje.Origen }, { destinoId: viaje.Destino }],
       },
       attributes: ["id", "nombre", "distancia", "duracion"],
       include: [
