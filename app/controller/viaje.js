@@ -176,8 +176,8 @@ const find = async (req, res) => {
           model: model.Ruta,
           where: {
             [Op.and]: [
-              { origenId: viaje.Origen },
-              { destinoId: viaje.Destino },
+              { origenId: viaje.origen },
+              { destinoId: viaje.destino },
             ],
           },
           attributes: ["id", "nombre", "distancia", "duracion"],
