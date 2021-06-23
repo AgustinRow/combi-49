@@ -239,7 +239,7 @@ const cancel = async (req, res) => {
     const viaje = await pasaje.getViaje();
     console.log(viandas);
     await actualizarStock(viandas, viaje);
-    pasaje.setEstado(3).then((response) => {
+    pasaje.setEstado({ estado: "Cancelado" }).then((response) => {
       res.status(200).json({ message: "Pasaje Cancelado" });
     });
   } catch (err) {
