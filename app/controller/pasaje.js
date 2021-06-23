@@ -141,7 +141,7 @@ const list = async (req, res) => {
         {
           model: model.Vianda,
           as: "Vianda",
-          attributes: ["id", "nombre"],
+          attributes: ["id", "nombre", "precio", "descripcion"],
         },
         {
           model: model.Viaje,

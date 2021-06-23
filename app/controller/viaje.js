@@ -99,7 +99,7 @@ const update = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
+//TODO- borrar metodo
 const updateX = async (req, res) => {
   const form = req.body;
   try {
@@ -140,6 +140,7 @@ const remove = async (req, res) => {};
 
 const find = async (req, res) => {
   const viaje = req.query;
+  console.log(viaje);
   try {
     model.Viaje.findAll({
       where: { habilitado: true, fecha_salida: viaje.fecha },
@@ -181,8 +182,8 @@ const find = async (req, res) => {
           model: model.Ruta,
           where: {
             [Op.and]: [
-              { origenId: viaje.Origen },
-              { destinoId: viaje.Destino },
+              { origenId: viaje.origen },
+              { destinoId: viaje.destino },
             ],
           },
           attributes: ["id", "nombre", "distancia", "duracion"],
@@ -226,7 +227,7 @@ const find = async (req, res) => {
     res.status(500).json({ message: "Internal server" });
   }
 };
-
+//TODO- borrar metodo
 const findXX = async (req, res) => {
   const viaje = req.query;
   try {
@@ -283,7 +284,7 @@ const findXX = async (req, res) => {
     res.status(500).json({ message: "internal server error" });
   }
 };
-
+//TODO- borrar metodo
 const listTravel = async (ruta, fecha) => {
   let result = [];
   for (i = 0; i < ruta.length; i++) {
@@ -317,7 +318,7 @@ const parseViajes = async (res, viajes) => {
   }
   res.status(200).json({ data: result });
 };
-
+//TODO- borrar metodo
 const listOLD = async (req, res) => {
   const viaje = req.body;
   try {
@@ -358,6 +359,7 @@ const initialize = async (viaje, res) => {
   }
 };
 
+//TODO- borrar metodo
 const createX = async (req, res, next) => {
   try {
     const viaje = req.body;
