@@ -12,5 +12,6 @@ router.post("/comprar", Pasaje.create);
 router.get("/buscar/(:id)", Pasaje.findTravelsForUser);
 router.delete("/borrar/(:id)", Pasaje.remove);
 router.get("/listar", Pasaje.list);
+router.put("/cancelar/(:id)", Pasaje.cancel);
 
 module.exports = router;

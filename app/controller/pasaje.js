@@ -3,6 +3,7 @@ const Op = require("sequelize").Op;
 
 const create = async (req, res) => {
   const pasaje = req.body;
+  console.log(pasaje);
   try {
     const viaje = await model.Viaje.findOne({
       where: { id: pasaje.viajeId, habilitado: true },
@@ -140,7 +141,7 @@ const list = async (req, res) => {
         {
           model: model.Vianda,
           as: "Vianda",
-          attributes: ["id", "nombre"],
+          attributes: ["id", "nombre", "precio", "descripcion"],
         },
         {
           model: model.Viaje,
@@ -181,7 +182,7 @@ const list = async (req, res) => {
             {
               model: model.Ruta,
               as: "Ruta",
-              attributes: ["id", "distancia", "duracion"],
+              attributes: ["id", "distancia", "duracion", "nombre"],
               include: [
                 {
                   model: model.Ciudad,
@@ -220,9 +221,36 @@ const list = async (req, res) => {
   }
 };
 
+const actualizarStock = async (viandas, viaje) => {
+  for (i = 0; i < viandas.length; i++) {
+    viandas[i].update({ stock: viandas[i].stock + 1 });
+  }
+  viaje.update({ asientos_disponibles: viaje.asientos_disponibles + 1 });
+};
+
+//TODO: devolver dinero al usuario, ver que hacer en el sistema
+const cancel = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const pasaje = await model.Pasaje.findOne({ where: { id: id } });
+    const pasajero = await pasaje.getPasajero();
+    pasajero.update({ saldo: pasaje.precio + pasajero.saldo });
+    const viandas = await pasaje.getVianda();
+    const viaje = await pasaje.getViaje();
+    console.log(viandas);
+    await actualizarStock(viandas, viaje);
+    pasaje.setEstado(3).then((response) => {
+      res.status(200).json({ message: "Pasaje Cancelado" });
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 module.exports = {
   create,
   findTravelsForUser,
   remove,
   list,
+  cancel,
 };

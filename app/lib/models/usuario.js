@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       apellido: DataTypes.STRING,
       dni: DataTypes.INTEGER,
       tipo: DataTypes.INTEGER,
+      saldo: DataTypes.INTEGER,
       habilitado: DataTypes.BOOLEAN,
       vehiculoId: DataTypes.INTEGER,
     },

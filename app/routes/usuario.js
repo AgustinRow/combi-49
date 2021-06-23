@@ -3,6 +3,9 @@ var router = express.Router();
 const Usuario = require("../controller/usuario");
 const verify = require("../controller/verifyToken");
 const auth = require("../controller/auth");
+const recovery = require("../controller/recovery");
+
+router.post("/recuperar_password", recovery.sendEmail);
 
 //rutas pasajeros
 router.get("/perfil/(:id)", Usuario.profile);

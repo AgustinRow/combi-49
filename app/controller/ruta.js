@@ -21,6 +21,7 @@ const create = async (req, res) => {
       const destino = await model.Ciudad.findOne({
         where: { id: ruta.Destino.id, habilitado: true },
       }).then((response) => response);
+      console.log(origen, destino);
       if (origen && destino) {
         const result = await checkDuplicates(origen, destino);
         if (result != null) {

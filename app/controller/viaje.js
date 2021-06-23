@@ -28,26 +28,31 @@ const update = async (req, res) => {
     const viajeAux = await model.Viaje.findOne({
       where: { habilitado: true, id: viaje.id },
     });
+    console.log(viaje);
     if (viajeAux != null) {
       const chofer = await model.Usuario.findOne({
-        where: { id: viaje.choferId, tipo: 2, habilitado: true },
+        where: { id: viaje.Chofer[0].id, tipo: 2, habilitado: true },
       });
       const vehiculo = await model.Vehiculo.findOne({
-        where: { id: viaje.vehiculoId, habilitado: true },
+        where: { id: viaje.Vehiculo[0].id, habilitado: true },
       });
       const vehiculoOld = await viajeAux.getVehiculo();
-      //const choferOld = await viajeAux.getChofer();
+      const choferOld = await viajeAux.getChofer();
 
-      await resetDriverAndTravel(viajeAux);
       const choferTieneViaje = await chofer.getViaje({
-        where: { habilitado: true, fecha_salida: viaje.fecha_salida },
+        where: {
+          habilitado: true,
+          fecha_salida: viaje.fecha_salida,
+          id: { [Op.ne]: viajeAux.id },
+        },
       });
       const vehiculoTieneViaje = await vehiculo.getViaje({
-        where: { habilitado: true, fecha_salida: viaje.fecha_salida },
+        where: {
+          habilitado: true,
+          fecha_salida: viaje.fecha_salida,
+          id: { [Op.ne]: viajeAux.id },
+        },
       });
-      console.log(
-        vehiculoOld[0].dataValues.asientos - viajeAux.asientos_disponibles
-      );
       if (choferTieneViaje.length == 0) {
         if (vehiculoTieneViaje.length == 0) {
           if (
@@ -72,10 +77,10 @@ const update = async (req, res) => {
             });
             await viajeNuevo.setChofer(chofer);
             await viajeNuevo.setVehiculo(vehiculo);
-            res.status(200).json(viajeNuevo);
+            res.status(200).json({ message: "Se ha modificado el viaje" });
           } else {
             res.status(400).json({
-              message: "Vehiculo no tiene asientos disponibles para este viaje",
+              message: "Vehiculo sin asientos disponibles para este viaje",
             });
           }
         } else {
@@ -94,7 +99,7 @@ const update = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
+//TODO- borrar metodo
 const updateX = async (req, res) => {
   const form = req.body;
   try {
@@ -135,6 +140,7 @@ const remove = async (req, res) => {};
 
 const find = async (req, res) => {
   const viaje = req.query;
+  console.log(viaje);
   try {
     model.Viaje.findAll({
       where: { habilitado: true, fecha_salida: viaje.fecha },
@@ -210,14 +216,18 @@ const find = async (req, res) => {
         },
       ],
     }).then((viajes) => {
-      res.status(200).json({ viajes });
+      if (viajes.length) {
+        res.status(200).json({ viajes });
+      } else {
+        res.status(400).json({ message: "Sin resultados para la busqueda" });
+      }
     });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Internal server" });
   }
 };
-
+//TODO- borrar metodo
 const findXX = async (req, res) => {
   const viaje = req.query;
   try {
@@ -274,7 +284,7 @@ const findXX = async (req, res) => {
     res.status(500).json({ message: "internal server error" });
   }
 };
-
+//TODO- borrar metodo
 const listTravel = async (ruta, fecha) => {
   let result = [];
   for (i = 0; i < ruta.length; i++) {
@@ -308,7 +318,7 @@ const parseViajes = async (res, viajes) => {
   }
   res.status(200).json({ data: result });
 };
-
+//TODO- borrar metodo
 const listOLD = async (req, res) => {
   const viaje = req.body;
   try {
@@ -349,6 +359,7 @@ const initialize = async (viaje, res) => {
   }
 };
 
+//TODO- borrar metodo
 const createX = async (req, res, next) => {
   try {
     const viaje = req.body;
@@ -471,6 +482,7 @@ const list = async (req, res) => {
 const findOne = async (req, res) => {
   const { id } = req.params;
   try {
+    console.log(id);
     model.Viaje.findOne({
       order: ["fecha_salida"],
       where: { habilitado: true, id: id },
