@@ -12,7 +12,6 @@ export class PasajeComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.pasajeConInfo);
   }
 
 }

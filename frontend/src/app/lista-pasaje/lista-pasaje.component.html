@@ -5,6 +5,7 @@
     <table class="table table-hover">
         <thead>
             <tr scope="row">
+                <th>Nombre</th>
                 <th>Estado</th>
                 <th>Fecha</th>
                 <th>Hora</th>
@@ -14,6 +15,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let pasaje of listT">
+                <td data-title="Nombre">{{ pasaje.Viaje.Ruta.nombre }}</td>
                 <td data-title="Estado">{{ pasaje.Estado.estado }}</td>
                 <td data-title="Fecha">{{ pasaje.Viaje.fecha_salida }}</td>
                 <td data-title="Hora">{{ pasaje.Viaje.hora }}</td>

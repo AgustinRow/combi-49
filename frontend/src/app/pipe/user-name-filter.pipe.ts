@@ -12,9 +12,6 @@ export class UserNameFilterPipe implements PipeTransform {
     lastNameSearch?: string
   ): Usuario[] {
 
-    console.log("pipe");
-    console.log(nameSearch);
-    console.log(lastNameSearch);
     if (!users) return [];
     if (!nameSearch) 
       if(!lastNameSearch) return users;
