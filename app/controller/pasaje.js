@@ -221,7 +221,7 @@ const list = async (req, res) => {
   }
 };
 
-const actualizarStock = async (viandas, viaje) => {
+const actualizarStock = (viandas, viaje) => {
   for (i = 0; i < viandas.length; i++) {
     viandas[i].update({ stock: viandas[i].stock + 1 });
   }
@@ -233,15 +233,19 @@ const cancel = async (req, res) => {
   const { id } = req.params;
   try {
     const pasaje = await model.Pasaje.findOne({ where: { id: id } });
-    const pasajero = await pasaje.getPasajero();
-    pasajero.update({ saldo: pasaje.precio + pasajero.saldo });
-    const viandas = await pasaje.getVianda();
-    const viaje = await pasaje.getViaje();
-    console.log(viandas);
-    await actualizarStock(viandas, viaje);
-    pasaje.setEstado({ where: { estado: "Cancelado" } }).then((response) => {
-      res.status(200).json({ message: "Pasaje Cancelado" });
-    });
+    const estado = await pasaje.getEstado();
+    if (estado.estado == "Pendiente") {
+      const pasajero = await pasaje.getPasajero();
+      pasajero.update({ saldo: pasaje.precio + pasajero.saldo });
+      const viandas = await pasaje.getVianda();
+      const viaje = await pasaje.getViaje();
+      pasaje.setEstado(3).then((response) => {
+        actualizarStock(viandas, viaje);
+        res.status(200).json({ message: "Pasaje Cancelado" });
+      });
+    } else {
+      res.status(400).json({ message: "No se puede realizar accion" });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Internal server error" });

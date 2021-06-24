@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         as: "Estado",
         foreignKey: "EstadoId",
       });
+      Viaje.hasMany(models.Valoracion, {as: "Valoracion"})
     }
   }
   Viaje.init(

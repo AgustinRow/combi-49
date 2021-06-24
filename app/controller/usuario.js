@@ -279,8 +279,39 @@ const listAvailableDriver = async (req, res) => {
   }
 };
 
-//TODO: implementar el recuperar contraseñ
-const recoverPassword = async (req, res) => {};
+const close = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await model.Usuario.findOne({
+      where: { id: id, habilitado: true },
+    });
+    const pasajes = await user.getPasaje();
+    if (await hasPendingTravel(pasajes)) {
+      res.status(400).json({
+        message:
+          "La baja de la cuenta , no se puede generar por que existe pasajes pendientes",
+      });
+    } else {
+      user.update({habilitado: false}).then((response)=>{
+       res.status(200).json({message:"La baja de la cuenta se genero con éxito"}) 
+      })
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const hasPendingTravel = async (pasajes) => {
+  let result = false;
+  for (i = 0; i < pasajes.length; i++) {
+    let estado = await pasajes[i].getEstado();
+    if (estado.estado == "Pendiente") {
+      result = true;
+      break;
+    }
+  }
+  return result;
+};
 
 module.exports = {
   getAllDrivers,
@@ -291,6 +322,6 @@ module.exports = {
   remove,
   listPassengers,
   profile,
-  recoverPassword,
   listAvailableDriver,
+  close,
 };

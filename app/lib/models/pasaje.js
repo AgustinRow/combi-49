@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "PasajeId",
         through: "Pasaje_Vianda",
       });
+      Pasaje.hasMany(models.Valoracion, { as: "Valoracion" });
     }
   }
   Pasaje.init(
