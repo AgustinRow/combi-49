@@ -17,6 +17,8 @@ import { StorageService } from 'src/app/service/storage.service';
 export class LoginComponent implements OnInit {
   usuario = new Usuario();
   @Output() submittedLogin = new EventEmitter();
+  @Output() cancelLoginEvent = new EventEmitter();
+  @Output() recoverPassEvent = new EventEmitter();
   sessionForm: FormGroup;
   private errorMSN = new String();
 
@@ -72,6 +74,11 @@ export class LoginComponent implements OnInit {
   }
 
   cancel() {
-    this.submittedLogin.emit();
+    this.cancelLoginEvent.emit();
   }
+
+  recoverPassword(){
+    this.recoverPassEvent.emit();
+  }
+
 }

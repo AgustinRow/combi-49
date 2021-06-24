@@ -74,7 +74,6 @@ export class ListaPasajeComponent implements OnInit {
         (data: any) => {
           if (data != null) {
             alert("Se ha pagado correctamente");
-            this.router.navigate(['/']);
           }
         },
         (error) => {

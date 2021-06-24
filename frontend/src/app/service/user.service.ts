@@ -45,6 +45,10 @@ export class UserService {
     return this.http.delete<Usuario>(this.usersUrl + 'borrar/' + id, httpOptions);
   }
 
+  recoverPassword(mail: string): Observable<any> {
+    return this.http.post<Usuario>(this.usersUrl + 'recuperar_password', {email: mail} , httpOptions);
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
