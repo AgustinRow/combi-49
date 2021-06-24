@@ -21,7 +21,7 @@ export class Viaje{
     }
     public set Chofer(c: Usuario[]) {
         this._Chofer = c;
-        this.vehiculoId = c[0].id;
+        this.choferId = c[0].id;
     }
 
     private _Vehiculo: Vehiculo[];

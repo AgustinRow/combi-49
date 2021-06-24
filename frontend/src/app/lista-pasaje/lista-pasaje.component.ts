@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pasaje } from '../module/pasaje.module';
 import { Vianda } from '../module/vianda.module';
@@ -17,12 +18,13 @@ import { PassageService } from '../service/passage.service';
 export class ListaPasajeComponent implements OnInit {
   listT: Pasaje[] = [];
   pasajeSeleccionado: Pasaje;
-  aPagar = false;
-  viandasCompradas: Vianda[] = [];
+  viandasCompradas: { aPagar: boolean; viandas: Vianda[]; total: number }[] = [];
   totalViandas: number = 0;
+  indexPasajeSeleccionado: number;
 
   constructor(
     private modalService: NgbModal,
+    private router: Router,
     private passageService: PassageService,
     private foodboxService: FoodboxService
   ) { }
@@ -31,8 +33,12 @@ export class ListaPasajeComponent implements OnInit {
     this.refreshList();
   }
 
-  openModal(contentEdit, passageSelected: Pasaje) {
+
+
+  openModal(contentEdit, passageSelected: Pasaje, index: number) {
     this.pasajeSeleccionado = passageSelected;
+    this.indexPasajeSeleccionado = index;
+    this.totalViandas = this.viandasCompradas[this.indexPasajeSeleccionado].total
     this.modalService.open(contentEdit);
   }
 
@@ -40,6 +46,7 @@ export class ListaPasajeComponent implements OnInit {
     this.passageService.getPassages().subscribe(
       (list: any) => {
         this.listT = list.pasajes as Pasaje[];
+        this.listT.forEach(() => { this.viandasCompradas.push({ aPagar: false, viandas: [], total: 0 }) });
       },
       (error) => {
         if (error.status >= 500) {
@@ -53,20 +60,21 @@ export class ListaPasajeComponent implements OnInit {
   }
 
   toBuy(listaVianda: Vianda[]) {
-    this.aPagar = true;
-
-    this.viandasCompradas = listaVianda;
-    this.viandasCompradas.forEach(vianda => {
-      this.totalViandas += vianda.precio;
+    var index = this.listT.indexOf(this.pasajeSeleccionado);
+    this.viandasCompradas[index].aPagar = true;
+    this.viandasCompradas[index].viandas = listaVianda;
+    this.viandasCompradas[index].viandas.forEach(vianda => {
+      this.viandasCompradas[index].total += vianda.precio;
     });
   }
 
   payment(estaPago: boolean) {
     if (estaPago) {
-      this.foodboxService.buyFoodbox(this.viandasCompradas, this.pasajeSeleccionado).subscribe(
+      this.foodboxService.buyFoodbox(this.viandasCompradas[this.indexPasajeSeleccionado].viandas, this.pasajeSeleccionado).subscribe(
         (data: any) => {
           if (data != null) {
             alert("Se ha pagado correctamente");
+            this.router.navigate(['/']);
           }
         },
         (error) => {
@@ -85,7 +93,7 @@ export class ListaPasajeComponent implements OnInit {
   }
 
   //agregar validaciones correspondientes
-  cancelTrip(){
+  cancelTrip() {
     this.passageService.cancelPassage(this.pasajeSeleccionado).subscribe(
       (data: any) => {
         if (data != null) {

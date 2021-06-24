@@ -11,10 +11,11 @@
                 <th>Hora</th>
                 <th>Cantidad de viandas</th>
                 <th>Total</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let pasaje of listT">
+            <tr *ngFor="let pasaje of listT; index as i">
                 <td data-title="Nombre">{{ pasaje.Viaje.Ruta.nombre }}</td>
                 <td data-title="Estado">{{ pasaje.Estado.estado }}</td>
                 <td data-title="Fecha">{{ pasaje.Viaje.fecha_salida }}</td>
@@ -23,18 +24,18 @@
                 <td data-title="Total">{{ pasaje.precio }}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-info" (click)="openModal(contentShow, pasaje)"><i
+                        <button type="button" class="btn btn-info" (click)="openModal(contentShow, pasaje, 0)"><i
                                 class="bi bi-info-circle"></i></button>
-                        <ng-container *ngIf="!aPagar; else BlockPagar">
+                        <ng-container *ngIf="!viandasCompradas[i].aPagar; else BlockPagar">
                             <button type="button" class="btn btn-success"
-                                (click)="openModal(contentAddFoodBox, pasaje)">Agregar vianda</button>
+                                (click)="openModal(contentAddFoodBox, pasaje, i)">Agregar vianda</button>
                         </ng-container>
                         <ng-template #BlockPagar>
                             <button type="button" class="btn btn-warning"
-                                (click)="openModal(contentPay, pasaje)">Pagar</button>
+                                (click)="openModal(contentPay, pasaje, i)">Pagar ${{viandasCompradas[i].total}}</button>
                         </ng-template>
                         <button type="button" class="btn btn-danger"
-                            (click)="openModal(contentCancel, pasaje)">Cancelar</button>
+                            (click)="openModal(contentCancel, pasaje, i)">Cancelar pasaje</button>
                     </div>
                 </td>
             </tr>

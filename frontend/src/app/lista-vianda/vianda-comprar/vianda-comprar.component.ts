@@ -58,7 +58,6 @@ export class ViandaComprarComponent implements OnInit {
   }
 
   addFoodBox(formulario: NgForm){
-    this.viandasCompradas.push(this.viandasParaVenta[formulario.value.vianda]);
     this.viandasAgregadas.push(this.viandasParaVenta[formulario.value.vianda]);
     this.totalViandas += this.viandasParaVenta[formulario.value.vianda].precio;
     this.totalViandasAgregadas += this.viandasParaVenta[formulario.value.vianda].precio;
@@ -66,10 +65,7 @@ export class ViandaComprarComponent implements OnInit {
   }
 
   deleteFood(v: Vianda){
-    var i = this.viandasCompradas.indexOf( v );
-    i !== -1 && this.viandasCompradas.splice( i, 1 );
-
-    i = this.viandasAgregadas.indexOf( v );
+    var i = this.viandasAgregadas.indexOf( v );
     i !== -1 && this.viandasAgregadas.splice( i, 1 );
     
     this.totalViandas -= v.precio;
