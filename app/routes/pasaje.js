@@ -13,5 +13,6 @@ router.get("/buscar/(:id)", Pasaje.findTravelsForUser);
 router.delete("/borrar/(:id)", Pasaje.remove);
 router.get("/listar", Pasaje.list);
 router.put("/cancelar/(:id)", Pasaje.cancel);
+router.get("/listar_por_usuario/(:id)", Pasaje.listUsedTicket)
 
 module.exports = router;

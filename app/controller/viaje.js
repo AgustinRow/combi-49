@@ -359,46 +359,6 @@ const initialize = async (viaje, res) => {
   }
 };
 
-//TODO- borrar metodo
-const createX = async (req, res, next) => {
-  try {
-    const viaje = req.body;
-    console.log(viaje);
-    const chofer = await model.Usuario.findOne({
-      where: { id: viaje.choferId, tipo: 2, habilitado: true },
-    });
-    chofer.getVehiculo({ where: { habilitado: true } }).then((response) => {
-      if (response == null) {
-        model.Vehiculo.findOne({
-          where: { id: viaje.vehiculoId, habilitado: true },
-        }).then((vehiculo) => {
-          vehiculo
-            .getChofer({ where: { habilitado: true } })
-            .then((response) => {
-              //TODO: un vehiculo puede asignarse a un viaje que sea otro dia.
-              if (response == null) {
-                chofer.setVehiculo(vehiculo).then((response) => response);
-                initialize(viaje, res);
-              } else {
-                res.status(400).json({
-                  message:
-                    "El vehiculo seleccionado ya tiene un viaje asignado",
-                });
-              }
-            });
-        });
-      } else {
-        res.status(400).json({
-          message: "El chofer seleccionado ya tiene un viaje asignado",
-        });
-      }
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
 const list = async (req, res) => {
   try {
     model.Viaje.findAll({

@@ -174,39 +174,6 @@ const update = async (req, res) => {
   }
 };
 
-const updateX = async (req, res) => {
-  const updatedUser = req.body;
-  const oldUser = await findDuplicates(updatedUser).then((response) => {
-    try {
-      return response[0].dataValues;
-    } catch {
-      res
-        .status(400)
-        .json({ message: "El usuario que intenta modificar no existe" });
-    }
-  });
-  if (oldUser.id == updatedUser.id) {
-    if (oldUser.email === updatedUser.email) {
-      res.status(401).json({ message: "El e-mail ya se encuentra registrado" });
-    }
-    if (oldUser.dni === updatedUser.dni) {
-      res.status(401).json({ message: "El DNI ya se encuentra registrado" });
-    }
-    model.Usuario.update(updatedUser, {
-      where: {
-        id: updatedUser.id,
-      },
-    }).then((response) => {
-      try {
-        res.status(201).json({ data: updatedUser });
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal server error" });
-      }
-    });
-  }
-};
-
 const remove = async (req, res) => {
   const id = req.params.id;
   try {
@@ -279,7 +246,7 @@ const listAvailableDriver = async (req, res) => {
   }
 };
 
-const close = async (req, res) => {
+const closeAccount = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await model.Usuario.findOne({
@@ -323,5 +290,5 @@ module.exports = {
   listPassengers,
   profile,
   listAvailableDriver,
-  close,
+  closeAccount,
 };

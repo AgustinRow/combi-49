@@ -9,7 +9,7 @@ router.post("/recuperar_password", recovery.sendEmail);
 
 //rutas pasajeros
 router.get("/perfil/(:id)", Usuario.profile);
-router.put("/cerrar_cuenta/(:id)", Usuario.close);
+router.put("/cerrar_cuenta/(:id)", Usuario.closeAccount);
 
 //rutas acceso admi/chofer/pasajero
 router.put("/modificar_usuario", Usuario.update);

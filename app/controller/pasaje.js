@@ -251,10 +251,41 @@ const cancel = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+const listUsedTicket = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const pasajes = await model.Usuario.findOne({
+      where: { id: id },
+      attributes: ["id", "nombre", "apellido", "email"],
+      include: [
+        {
+          model: model.Pasaje,
+          as: "Pasaje",
+          attributes: ["id", "precio"],
+          include: [
+            {
+              model: model.Estado,
+              as: "Estado",
+              attributes: ["id", "estado"],
+              where: { estado: "Finalizado" },
+            },
+          ],
+        },
+      ],
+    });
+    res.status(200).json({ data: pasajes });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   create,
   findTravelsForUser,
   remove,
   list,
   cancel,
+  listUsedTicket,
 };
