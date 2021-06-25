@@ -49,6 +49,10 @@ export class UserService {
     return this.http.post<Usuario>(this.usersUrl + 'recuperar_password', {email: mail} , httpOptions);
   }
 
+  cancelUserAcount(user: Usuario): Observable<any> {
+    return this.http.put( this.usersUrl + 'cerrar_cuenta/' + user.id, httpOptions);
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

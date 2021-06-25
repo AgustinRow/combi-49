@@ -4,11 +4,29 @@
             <a class="nav-link" (click)="onSelect('info')" [ngClass]="{ active: ver == 'info'}">Informacion</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" (click)="onSelect('historial')" [ngClass]="{ active: ver == 'historial'}" *ngIf="usuarioIdentificado.tipo === USUARIO_PASAJERO">Historial</a>
+            <a class="nav-link" (click)="onSelect('historial')" [ngClass]="{ active: ver == 'historial'}"
+                *ngIf="usuarioIdentificado.tipo === USUARIO_PASAJERO">Historial</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" (click)="onSelect('pendientes')" [ngClass]="{ active: ver == 'pendientes'}" *ngIf="usuarioIdentificado.tipo === USUARIO_PASAJERO">Pasajes pendientes</a>
+            <a class="nav-link" (click)="onSelect('pendientes')" [ngClass]="{ active: ver == 'pendientes'}"
+                *ngIf="usuarioIdentificado.tipo === USUARIO_PASAJERO">Pasajes pendientes</a>
         </li>
     </ul>
 </nav>
 <app-usuario [(usuarioConInfo)]="usuarioIdentificado" *ngIf="ver == 'info'">Cargando usuario...</app-usuario>
+<div class="container" *ngIf="usuarioIdentificado.tipo === USUARIO_PASAJERO">
+    <p>Solo si esta desea dejar de utilizar los servicios para la compra de pasajes y viandas de ahora en adelante, haga click en el siguiente boton</p>
+    <a class="btn btn-danger" (click)="openModal(logOut)">Cerrar cuenta</a>
+</div>
+
+<!-- Modal para cerrar-->
+<ng-template #logOut let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h6 class="modal-title">¿Realmente quiere cerrar su cuenta?</h6>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="cancelAcount(); c('Close click')">Si, deseo cerrar mi
+            cuenta</button>
+    </div>
+</ng-template>
