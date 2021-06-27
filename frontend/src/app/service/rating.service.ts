@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 import { Valoracion } from '../module/valoracion.module';
+import { Viaje } from '../module/viaje.module';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -24,6 +25,10 @@ export class RatingService {
 
   getRatings(): Observable<Valoracion[]> {
     return this.http.get<Valoracion[]>(this.usersUrl + 'listar');
+  }  
+
+  getRatingById(viaje: Viaje): Observable<Valoracion[]> {
+    return this.http.get<Valoracion[]>(this.usersUrl + 'listar_por_viaje/' + viaje.id);
   }
 
   modifyRating(rating: Valoracion): Observable<Valoracion> {

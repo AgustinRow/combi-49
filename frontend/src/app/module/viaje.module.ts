@@ -1,8 +1,10 @@
 import { Vehiculo } from "./vehiculo.module";
 import { Ruta } from "./ruta.module";
 import { Usuario } from "./usuario.module";
+import { Valoracion } from "./valoracion.module";
+import { isEmpty } from "rxjs/operators";
 
-export class Viaje{
+export class Viaje {
     id: number;
     nombre: string;
     fecha_salida: Date;
@@ -14,6 +16,8 @@ export class Viaje{
     rutaId: number;
     vehiculoId: number;
     choferId: number;
+    Valoracion: Valoracion[];
+    asientos_disponibles: number;
 
     private _Chofer: Usuario[];
     public get Chofer(): Usuario[] {
@@ -41,4 +45,9 @@ export class Viaje{
         this._Ruta = r;
         this.rutaId = r.id;
     }
+
+    public valoracionPromedio: number;
+    
+    public valoracionCompletada: number;
+
 }

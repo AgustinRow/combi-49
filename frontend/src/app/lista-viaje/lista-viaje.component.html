@@ -6,6 +6,9 @@
                 <a class="nav-link" (click)="onSelect('viajes')" [ngClass]="{ active: ver == 'viajes'}">Lista Viajes</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" (click)="onSelect('calificaciones')" [ngClass]="{ active: ver == 'calificaciones'}">Calificaciones</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" (click)="onSelect('rutas')" [ngClass]="{ active: ver == 'rutas'}">Rutas</a>
             </li>
             <li class="nav-item">
@@ -22,6 +25,7 @@
 <app-lista-ruta [(listaRuta)]="lRutas" *ngIf="ver == 'rutas'">Carcgando rutas...</app-lista-ruta>
 <app-lista-ciudad [(listCiudades)]="lCiudades" *ngIf="ver == 'ciudades'">Carcgando ciudades...</app-lista-ciudad>
 <app-lista-provincia *ngIf="ver == 'provincias'">Carcgando provincias...</app-lista-provincia>
+<app-lista-valoracion *ngIf="ver == 'calificaciones'">Carcgando calificaciones...</app-lista-valoracion>
 
 <div class="container" *ngIf="ver == 'viajes'">
     <h2>Lista de viajes </h2>
@@ -82,7 +86,7 @@
     </table>
 </div>
 
-
+<!-- Modificar viaje -->
 <ng-template #contentEdit let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">Editar viaje</h4>
@@ -96,6 +100,7 @@
     </div>
 </ng-template>
 
+<!-- Nuevo viaje -->
 <ng-template #contentNew let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">Nuevo viaje</h4>
@@ -108,6 +113,7 @@
     </div>
 </ng-template>
 
+<!-- Mostrar datos viaje -->
 <ng-template #contentShow let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">Infirmacion del vieje</h4>
