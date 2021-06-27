@@ -32,7 +32,7 @@ export class ValoracionNuevoComponent implements OnInit {
         this.ratingService.addRating(this.nuevaValoracion).subscribe(
           (data: any) => {
             if (data != null) {
-              alert("Se ha creado el viaje correctamente");
+              alert("Gracias por su ayuda");
               this.ratingNewEvent.emit(data.data);
             }
           },

@@ -1,0 +1,9 @@
+<div *ngFor="let pasaje of pasajesComprados">
+    <app-pasaje  [pasajeConInfo]="pasaje" >Cargando...</app-pasaje>
+    <ng-template [ngIf]="pasaje.Valoracion" [ngIfElse]="BlockNuevaValoracion">
+        <app-valoracion-nuevo>Cargando...</app-valoracion-nuevo>
+    </ng-template>
+    <ng-template #BlockNuevaValoracion>
+        <app-valoracion [valoracion]="pasaje.Valoracion">Cargando...</app-valoracion>
+    </ng-template>
+</div>

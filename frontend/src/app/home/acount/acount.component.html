@@ -7,14 +7,11 @@
             <a class="nav-link" (click)="onSelect('historial')" [ngClass]="{ active: ver == 'historial'}"
                 *ngIf="usuarioIdentificado.tipo === USUARIO_PASAJERO">Historial</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" (click)="onSelect('pendientes')" [ngClass]="{ active: ver == 'pendientes'}"
-                *ngIf="usuarioIdentificado.tipo === USUARIO_PASAJERO">Pasajes pendientes</a>
-        </li>
     </ul>
 </nav>
+
 <app-usuario [(usuarioConInfo)]="usuarioIdentificado" *ngIf="ver == 'info'">Cargando usuario...</app-usuario>
-<div class="container" *ngIf="usuarioIdentificado.tipo === USUARIO_PASAJERO">
+<div class="container" *ngIf="(usuarioIdentificado.tipo === USUARIO_PASAJERO)&&(ver === 'info')">
     <p>Solo si esta desea dejar de utilizar los servicios para la compra de pasajes y viandas de ahora en adelante, haga click en el siguiente boton</p>
     <a class="btn btn-danger" (click)="openModal(logOut)">Cerrar cuenta</a>
 </div>
@@ -30,3 +27,5 @@
             cuenta</button>
     </div>
 </ng-template>
+
+<app-pasaje-historial [(usuarioConInfo)]="usuarioIdentificado" *ngIf="ver == 'historial'">Cargando usuario...</app-pasaje-historial>

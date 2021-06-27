@@ -73,6 +73,7 @@ import { ProvinceService } from './service/province.service';
 import { RatingService } from './service/rating.service';
 import { SpinnerService } from './service/spinner.service';
 import { RecoverPasswordComponent } from './home/recover-password/recover-password.component';
+import { PasajeHistorialComponent } from './lista-pasaje/pasaje-historial/pasaje-historial.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -145,7 +146,8 @@ export function tokenGetter() {
     ViandaEditarComponent,
     PagoComponent,
     ViandaComprarComponent,
-    RecoverPasswordComponent
+    RecoverPasswordComponent,
+    PasajeHistorialComponent
   ],
   imports: [
     BrowserModule,

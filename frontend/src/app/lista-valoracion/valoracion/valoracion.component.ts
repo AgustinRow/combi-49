@@ -12,8 +12,6 @@ export class ValoracionComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.valoracion.puntuacion = 0;
-    this.valoracion.detalle = "Ingrese un detalle";
   }
 
 }

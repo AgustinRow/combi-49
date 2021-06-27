@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 import { Pasaje } from '../module/pasaje.module';
+import { Usuario } from '../module/usuario.module';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -25,6 +26,10 @@ export class PassageService {
 
   getPassages(): Observable<Pasaje[]> {
     return this.http.get<Pasaje[]>(this.usersUrl + 'listar');
+  }
+
+  getPassagesBoughtByIdUser( pasajero: Usuario): Observable<Pasaje[]> {
+    return this.http.get<Pasaje[]>(this.usersUrl + 'listar_por_usuario/' + pasajero.id);
   }
 
   modifyPassage(passage: Pasaje): Observable<Pasaje> {
