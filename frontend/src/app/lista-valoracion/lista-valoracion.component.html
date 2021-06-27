@@ -17,12 +17,17 @@
                 <td data-title="Nombre">{{viaje.nombre}}</td>
                 <td data-title="Ruta">{{viaje.Ruta.nombre}}</td>
                 <td data-title="Fecha de Salida">{{viaje.fecha_salida}} {{viaje.hora}}</td>
-                <td data-title="Valoracion completada">{{ viaje.valoracionCompletada | percent:'1.2-2'}}</td>
-                <td data-title="Valoracion promedio">{{ viaje.valoracionPromedio | percent:'1.2-2'}}</td>
+                <td data-title="Valoracion completada">{{ viaje.valoracionCompletada | percent }}</td>
+                <td data-title="Valoracion promedio">{{ viaje.valoracionPromedio }}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info" (click)="openModal(contentShow, viaje)">
                             <i class="bi bi-info-circle"></i>
+                        </button>
+                        <button type="button" class="btn btn-info" 
+                            [disabled]="viaje.Valoracion.length === 0"
+                            (click)="openModal(contentShowListValue, viaje)">
+                            valoraciones por usuario
                         </button>
                     </div>
                 </td>
@@ -41,6 +46,39 @@
     </div>
     <div class="modal-body">
         <app-viaje [(viajeConInfo)]="viajeSeleccionado">Cargando</app-viaje>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<!-- Mostrar validaciones del viaje -->
+<ng-template #contentShowListValue let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Valoraciones del vieje</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Calificacion</th>
+                    <th>Descripcion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let valoracion of viajeSeleccionado.Valoracion">
+                    <td data-title="Nombre">.... ....</td>
+                    <td data-title="Calificacion">
+                        <ngb-rating [max]="5" [(rate)]="valoracion.puntuacion" [readonly]="true"></ngb-rating>
+                    </td>
+                    <td data-title="Descripcion">{{valoracion.descripcion}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
