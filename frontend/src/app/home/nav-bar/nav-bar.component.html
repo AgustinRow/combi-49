@@ -1,5 +1,5 @@
 <ng-container *ngIf="isLoggedNavbar; else BlockLogin">
-    <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #3eb7db;">
+    <nav class="navbar navbar-expand-sm justify-content-center navbar-dark" style="background-color: #3eb7db;">
         <a class="nav-link" routerLink="/" [routerLinkActiveOptions]="{exact: true}">
             <img src="/assets/image/Combi19.png" width="80px">
         </a>
@@ -10,16 +10,26 @@
 
         <div class="collapse navbar-collapse" #c="ngbCollapse" [(ngbCollapse)]="isCollapsed">
 
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item" *ngIf="usuarioIdentificado.tipo === USUARIO_PASAJERO">
-                    <a class="nav-link" routerLink="/Pasajes">Mis pasajes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/MyAcount">Mi cuenta</a>
-                </li>
-            </ul>
+            <ng-template #BlockNavUser>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item" *ngIf="usuarioIdentificado.tipo === USUARIO_PASAJERO, else BlockNavChoffer">
+                        <a class="nav-link" routerLink="/Pasajes">Mis pasajes</a>
+                    </li>
+                    <ng-template #BlockNavChoffer>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink="/Viajes">Mis Viajes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink="/EnCurso">Viaje en curso</a>
+                        </li>
+                    </ng-template>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/MyAcount">Mi cuenta</a>
+                    </li>
+                </ul>
+            </ng-template>
 
-            <ul class="navbar-nav" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
+            <ul class="navbar-nav ml-auto" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR; else BlockNavUser">
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/Usuarios">Pasajeros</a>
                 </li>
@@ -86,11 +96,9 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-login 
-            (submittedLogin)="ngOnChanges(); c('Close click')" 
-            (recoverPassEvent)="onSelect(recoberPass); c('Close click')" 
-            (cancelLoginEvent)="c('Close click')"
-            >Cargando formulario</app-login>
+        <app-login (submittedLogin)="ngOnChanges(); c('Close click')"
+            (recoverPassEvent)="onSelect(recoberPass); c('Close click')" (cancelLoginEvent)="c('Close click')">Cargando
+            formulario</app-login>
         <!--this.isLoggedNavbar = true -->
     </div>
 </ng-template>
@@ -115,7 +123,8 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-recover-password (recoverPassEvent)="ngOnChanges(); c('Close click')" (closeEvent)="c('Close click')">Cargando formulario</app-recover-password>
+        <app-recover-password (recoverPassEvent)="ngOnChanges(); c('Close click')" (closeEvent)="c('Close click')">
+            Cargando formulario</app-recover-password>
         <!--this.isLoggedNavbar = true -->
     </div>
 </ng-template>

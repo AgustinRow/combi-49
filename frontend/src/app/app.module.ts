@@ -74,6 +74,8 @@ import { RatingService } from './service/rating.service';
 import { SpinnerService } from './service/spinner.service';
 import { RecoverPasswordComponent } from './home/recover-password/recover-password.component';
 import { PasajeHistorialComponent } from './lista-pasaje/pasaje-historial/pasaje-historial.component';
+import { ViajeIniciadoComponent } from './lista-viaje/viaje-iniciado/viaje-iniciado.component';
+import { UserNameDniFilterPipe } from './pipe/user-name-dni-filter.pipe';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -87,7 +89,27 @@ const appRoutes: Routes = [
   { path: 'Choferes', component: ListaChoferComponent },
   { path: 'Viandas', component: ListaViandaComponent },
   { path: 'CompraPasaje/:viajeId', component: PasajeNuevoComponent },
-  { path: 'Pasajes', component: ListaPasajeComponent }
+  { path: 'Pasajes', component: ListaPasajeComponent },
+  { path: 'EnCurso', component: ViajeIniciadoComponent,
+    /*children: [
+      {
+        path: 'Detalle', // child route path
+        component: ViajeIniciadoComponent, // child route component that the router renders
+      },
+      {
+        path: 'Vehiculo', // child route path
+        component: ViajeIniciadoComponent, // child route component that the router renders
+      },
+      {
+        path: 'Pasajeros', // child route path
+        component: ViajeIniciadoComponent, // child route component that the router renders
+      },
+      {
+        path: 'Viandas', // child route path
+        component: ViajeIniciadoComponent, // child route component that the router renders
+      },
+    ] */
+  },
 ]
 
 export function tokenGetter() {
@@ -147,7 +169,9 @@ export function tokenGetter() {
     PagoComponent,
     ViandaComprarComponent,
     RecoverPasswordComponent,
-    PasajeHistorialComponent
+    PasajeHistorialComponent,
+    ViajeIniciadoComponent,
+    UserNameDniFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -181,7 +205,7 @@ export function tokenGetter() {
     TravelService,
     UserService,
     VehicleService,
-    { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

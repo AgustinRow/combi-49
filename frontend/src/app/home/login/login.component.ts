@@ -5,6 +5,7 @@ import { Session } from 'src/app/module/session.module';
 import { Usuario } from 'src/app/module/usuario.module';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { StorageService } from 'src/app/service/storage.service';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +36,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnChange(){
+  ngOnChange() {
 
   }
 
@@ -67,17 +68,20 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  private correctLogin( object: any) {
+  private correctLogin(object: any) {
     this.storageService.login(new Session(object));
+    //Re-direccionamiento por tipo de usuario
+    if (this.storageService.getCurrentUser().tipo === UserService.USUARIO_CHOFER) {
+      this.router.navigate(['/Viajes']);
+    }
     this.submittedLogin.emit();
-    //this.router.navigate(['/']);
   }
 
   cancel() {
     this.cancelLoginEvent.emit();
   }
 
-  recoverPassword(){
+  recoverPassword() {
     this.recoverPassEvent.emit();
   }
 

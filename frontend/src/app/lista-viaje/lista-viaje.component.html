@@ -6,7 +6,8 @@
                 <a class="nav-link" (click)="onSelect('viajes')" [ngClass]="{ active: ver == 'viajes'}">Lista Viajes</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" (click)="onSelect('calificaciones')" [ngClass]="{ active: ver == 'calificaciones'}">Calificaciones</a>
+                <a class="nav-link" (click)="onSelect('calificaciones')"
+                    [ngClass]="{ active: ver == 'calificaciones'}">Calificaciones</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" (click)="onSelect('rutas')" [ngClass]="{ active: ver == 'rutas'}">Rutas</a>
@@ -37,7 +38,16 @@
             *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
             Crear viaje
         </button>
+
+        <div class="container" *ngIf="usuarioIdentificado.tipo === USUARIO_CHOFER">
+            <ngb-alert [dismissible]="false" class="co">
+                <strong>¡Advertencia!</strong> Tiene un viaje en Curso.
+                <a class="btn btn-primary m-2" routerLink="/EnCurso">Seguir viaje</a>
+            </ngb-alert>
+        </div>
     </ng-template>
+
+    <router-outlet></router-outlet>
 
     <table class="table">
         <thead>
@@ -63,7 +73,8 @@
                 <ng-template [ngIf]="usuarioIdentificado">
                     <td data-title="Chofer" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR">
                         {{viaje.Chofer[0].nombre}}</td>
-                    <td data-title="Acciones" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR; else buyBlock">
+                    <td data-title="Acciones"
+                        *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR; else NoAdminBlock">
                         <div class="btn-group">
                             <button type="button" class="btn btn-info" (click)="openModal(contentShow, viaje)"><i
                                     class="bi bi-info-circle"></i></button>
@@ -73,12 +84,20 @@
                                     class="bi bi-trash"></i></button>
                         </div>
                     </td>
-                    <ng-template #buyBlock>
-                        <td data-title="Acciones">
-                            <a [routerLink]="['/CompraPasaje', viaje.id]">
-                                <span class="btn btn-danger">Comprar</span>
-                            </a>
+                    <ng-template #NoAdminBlock>
+                        <td data-title="Acciones"
+                            *ngIf="usuarioIdentificado.tipo === USUARIO_CHOFER; else BlockPassager">
+                            <button class="btn btn-success" [disabled]="!(viaje.fecha_salida === hoy)">
+                                <span>Iniciar</span>
+                            </button>
                         </td>
+                        <ng-template #BlockPassager>
+                            <td data-title="Acciones">
+                                <a [routerLink]="['/CompraPasaje', viaje.id]">
+                                    <span class="btn btn-danger">Comprar</span>
+                                </a>
+                            </td>
+                        </ng-template>
                     </ng-template>
                 </ng-template>
             </tr>
@@ -95,7 +114,8 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-viaje-editar [(viajeModificado)]="aux" (travelEditEvent)="refreshList(); c('Close click')" (closeEvent)="c('Close click')">
+        <app-viaje-editar [(viajeModificado)]="aux" (travelEditEvent)="refreshList(); c('Close click')"
+            (closeEvent)="c('Close click')">
             Cargando</app-viaje-editar>
     </div>
 </ng-template>
@@ -109,7 +129,8 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-viaje-nuevo (travelNewEvent)="refreshList(); c('Close click')" (closeEvent)="c('Close click')">Cargando</app-viaje-nuevo>
+        <app-viaje-nuevo (travelNewEvent)="refreshList(); c('Close click')" (closeEvent)="c('Close click')">Cargando
+        </app-viaje-nuevo>
     </div>
 </ng-template>
 

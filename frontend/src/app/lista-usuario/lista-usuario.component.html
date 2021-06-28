@@ -24,7 +24,7 @@
             <tr *ngFor="let user of listaU | userNameFilter: findName[0]: findName[1]">
                 <td data-title="Nombre">{{user.nombre}}</td>
                 <td data-title="Apellido">{{user.apellido}}</td>
-                <td data-title="Usuario">{{user.email}}</td>
+                <td data-title="E-mail">{{user.email}}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info" (click)="openModal(contentShow, user)"><i class="bi bi-info-circle"></i></button>
