@@ -259,9 +259,11 @@ const closeAccount = async (req, res) => {
           "La baja de la cuenta , no se puede generar por que existe pasajes pendientes",
       });
     } else {
-      user.update({habilitado: false}).then((response)=>{
-       res.status(200).json({message:"La baja de la cuenta se genero con éxito"}) 
-      })
+      user.update({ habilitado: false }).then((response) => {
+        res
+          .status(200)
+          .json({ message: "La baja de la cuenta se genero con éxito" });
+      });
     }
   } catch (err) {
     console.log(err);
@@ -280,6 +282,47 @@ const hasPendingTravel = async (pasajes) => {
   return result;
 };
 
+const listPassengersTravel = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const viaje = await model.Viaje.findOne({
+      where: { id: id, habilitado: true },
+      attributes: [
+        "id",
+        "nombre",
+        "precio",
+        "fecha_salida",
+        "hora",
+        "asientos_disponibles",
+      ],
+      include: [
+        {
+          model: model.Estado,
+          attributes: ["estado"],
+          as: "Estado",
+        },
+        {
+          model: model.Pasaje,
+          as: "Pasaje",
+          attributes: ["id", "precio"],
+          include: [
+            {
+              model: model.Usuario,
+              as: "Pasajero",
+              attributes: ["id", "nombre", "apellido", "email"],
+            },
+          ],
+        },
+      ],
+    }).then((response) => {
+      res.status(200).json({ data: response });
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ mesage: "Internal Server error" });
+  }
+};
+
 module.exports = {
   getAllDrivers,
   register,
@@ -291,4 +334,5 @@ module.exports = {
   profile,
   listAvailableDriver,
   closeAccount,
+  listPassengersTravel,
 };

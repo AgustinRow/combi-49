@@ -15,8 +15,7 @@ router.put("/cerrar_cuenta/(:id)", Usuario.closeAccount);
 router.put("/modificar_usuario", Usuario.update);
 router.post("/registrar", Usuario.register);
 router.post("/login", Usuario.login);
-//router.put("/recuperar_passowrd", Usuario.recoverPassword);
-
+router.get("/listado_pasajeros_viaje/(:id)", Usuario.listPassengersTravel);
 //ruta admin
 router.get("/lista_pasajeros", Usuario.listPassengers);
 router.get("/lista_choferes", Usuario.getAllDrivers);

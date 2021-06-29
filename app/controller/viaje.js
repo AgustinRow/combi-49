@@ -523,6 +523,7 @@ const findOne = async (req, res) => {
 const create = async (req, res) => {
   const viaje = req.body;
   try {
+    const ruta = await model.Ruta.findOne({ where: { id: viaje.rutaId } });
     const chofer = await model.Usuario.findOne({
       where: { id: viaje.choferId, tipo: 2, habilitado: true },
     });
@@ -538,7 +539,7 @@ const create = async (req, res) => {
     if (choferTieneViaje.length == 0) {
       if (vehiculoTieneViaje.length == 0) {
         const viajeNuevo = await model.Viaje.create({
-          nombre: viaje.nombre,
+          nombre: ruta.nombre,
           detalle: viaje.detalle,
           hora: viaje.hora,
           asientos_disponibles: vehiculo.asientos,
