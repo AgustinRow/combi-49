@@ -76,6 +76,7 @@ import { RecoverPasswordComponent } from './home/recover-password/recover-passwo
 import { PasajeHistorialComponent } from './lista-pasaje/pasaje-historial/pasaje-historial.component';
 import { ViajeIniciadoComponent } from './lista-viaje/viaje-iniciado/viaje-iniciado.component';
 import { UserNameDniFilterPipe } from './pipe/user-name-dni-filter.pipe';
+import { AlertComponent } from './home/alert/alert.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -171,7 +172,8 @@ export function tokenGetter() {
     RecoverPasswordComponent,
     PasajeHistorialComponent,
     ViajeIniciadoComponent,
-    UserNameDniFilterPipe
+    UserNameDniFilterPipe,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
