@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "VehiculoId",
         through: "Viaje_Vehiculo",
       });
-      //Vehiculo.hasOne(models.Usuario, {
-      //  as: "Chofer",
-      //  foreignKey: "vehiculoId",
-      //});
     }
   }
   Vehiculo.init(

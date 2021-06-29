@@ -28,7 +28,6 @@ module.exports = (sequelize, DataTypes) => {
       tipo: DataTypes.INTEGER,
       saldo: DataTypes.INTEGER,
       habilitado: DataTypes.BOOLEAN,
-      vehiculoId: DataTypes.INTEGER,
     },
     {
       sequelize,

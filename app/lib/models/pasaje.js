@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         through: "Pasaje_Vianda",
       });
       Pasaje.belongsTo(models.Valoracion, { as: "Valoracion" });
+      Pasaje.hasOne(models.Test);
     }
   }
   Pasaje.init(
