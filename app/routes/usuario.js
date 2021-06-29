@@ -16,6 +16,10 @@ router.put("/modificar_usuario", Usuario.update);
 router.post("/registrar", Usuario.register);
 router.post("/login", Usuario.login);
 router.get("/listado_pasajeros_viaje/(:id)", Usuario.listPassengersTravel);
+
+//ruta chofer
+router.get("/mis_viajes/(:id)", Usuario.myTravels)
+
 //ruta admin
 router.get("/lista_pasajeros", Usuario.listPassengers);
 router.get("/lista_choferes", Usuario.getAllDrivers);

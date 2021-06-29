@@ -31,10 +31,10 @@ const update = async (req, res) => {
     console.log(viaje);
     if (viajeAux != null) {
       const chofer = await model.Usuario.findOne({
-        where: { id: viaje.Chofer[0].id, tipo: 2, habilitado: true },
+        where: { id: viaje._Chofer[0].id, tipo: 2, habilitado: true },
       });
       const vehiculo = await model.Vehiculo.findOne({
-        where: { id: viaje.Vehiculo[0].id, habilitado: true },
+        where: { id: viaje._Vehiculo[0].id, habilitado: true },
       });
       const vehiculoOld = await viajeAux.getVehiculo();
       const choferOld = await viajeAux.getChofer();

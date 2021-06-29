@@ -323,6 +323,50 @@ const listPassengersTravel = async (req, res) => {
   }
 };
 
+const myTravels = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const chofer = await model.Usuario.findOne({
+      where: { id: id, tipo: 2, habilitado: true },
+      attributes: ["id", "nombre", "apellido", "email", "dni"],
+      include: [
+        {
+          model: model.Viaje,
+          as: "Viaje",
+          attributes: [
+            "id",
+            "nombre",
+            "fecha_salida",
+            "hora",
+            "detalle",
+            "precio",
+            "asientos_disponibles",
+          ],
+          include: [
+            { model: model.Estado, as: "Estado", attributes: ["estado"] },
+            {
+              model: model.Vehiculo,
+              as: "Vehiculo",
+              attributes: [
+                "id",
+                "marca",
+                "patente",
+                "modelo",
+                "asientos",
+                "confort",
+              ],
+            },
+          ],
+        },
+      ],
+    }).then((response) => {
+      res.status(200).json({ data: response });
+    });
+  } catch {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   getAllDrivers,
   register,
@@ -335,4 +379,5 @@ module.exports = {
   listAvailableDriver,
   closeAccount,
   listPassengersTravel,
+  myTravels,
 };
