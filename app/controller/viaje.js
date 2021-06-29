@@ -568,6 +568,18 @@ const create = async (req, res) => {
   }
 };
 
+const start = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const viaje = model.Viaje.findOne({ where: { id: id } });
+    const pasajes = viaje.getPasaje();
+    res.status(200).json({ data: viaje, pasajes });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   remove,
   list,
@@ -576,4 +588,5 @@ module.exports = {
   find,
   driverAndTravel,
   findOne,
+  start,
 };

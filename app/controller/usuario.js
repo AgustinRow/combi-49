@@ -309,7 +309,7 @@ const listPassengersTravel = async (req, res) => {
             {
               model: model.Usuario,
               as: "Pasajero",
-              attributes: ["id", "nombre", "apellido", "email"],
+              attributes: ["id", "nombre", "apellido", "dni"],
             },
           ],
         },
@@ -343,6 +343,37 @@ const myTravels = async (req, res) => {
             "asientos_disponibles",
           ],
           include: [
+            {
+              model: model.Ruta,
+              as: "Ruta",
+              attributes: ["id", "nombre", "distancia", "duracion"],
+              include: [
+                {
+                  model: model.Ciudad,
+                  as: "Origen",
+                  attributes: ["id", "nombre", "cp"],
+                  include: [
+                    {
+                      model: model.Provincia,
+                      as: "Provincia",
+                      attributes: ["id", "nombre"],
+                    },
+                  ],
+                },
+                {
+                  model: model.Ciudad,
+                  as: "Destino",
+                  attributes: ["id", "nombre", "cp"],
+                  include: [
+                    {
+                      model: model.Provincia,
+                      as: "Provincia",
+                      attributes: ["id", "nombre"],
+                    },
+                  ],
+                },
+              ],
+            },
             { model: model.Estado, as: "Estado", attributes: ["estado"] },
             {
               model: model.Vehiculo,

@@ -28,6 +28,7 @@ const listByTravel = async (req, res) => {
 };
 const create = async (req, res) => {
   const { body } = req;
+  console.log(body);
   try {
     const pasaje = await model.Pasaje.findOne({ where: { id: body.pasajeId } });
     const viaje = await pasaje.getViaje();
