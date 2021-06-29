@@ -1,9 +1,15 @@
-<div *ngFor="let pasaje of pasajesComprados">
-    <app-pasaje  [pasajeConInfo]="pasaje" >Cargando...</app-pasaje>
-    <ng-template [ngIf]="pasaje.Valoracion" [ngIfElse]="BlockNuevaValoracion">
-        <app-valoracion-nuevo>Cargando...</app-valoracion-nuevo>
-    </ng-template>
-    <ng-template #BlockNuevaValoracion>
-        <app-valoracion [valoracion]="pasaje.Valoracion">Cargando...</app-valoracion>
-    </ng-template>
+<div class="container" *ngFor="let pasaje of pasajesComprados">
+    <div class="row">
+        <div class="col">
+            <app-pasaje [pasajeConInfo]="pasaje">Cargando...</app-pasaje>
+        </div>
+        <div class="col">
+            <ng-template [ngIf]="pasaje.Valoracion" [ngIfElse]="BlockNuevaValoracion">
+                <app-valoracion [valoracion]="pasaje.Valoracion">Cargando...</app-valoracion>
+            </ng-template>
+            <ng-template #BlockNuevaValoracion>
+                <app-valoracion-nuevo (ratingNewEvent)="refreshList()">Cargando...</app-valoracion-nuevo>
+            </ng-template>
+        </div>
+    </div>
 </div>
