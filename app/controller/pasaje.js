@@ -134,6 +134,11 @@ const list = async (req, res) => {
       include: [
         { model: model.Estado, as: "Estado", attributes: ["id", "estado"] },
         {
+          model: model.Valoracion,
+          as: "Valoracion",
+          attributes: ["id", "descripcion", "puntuacion"],
+        },
+        {
           model: model.Usuario,
           as: "Pasajero",
           attributes: ["id", "nombre", "apellido", "email", "dni"],
@@ -216,7 +221,8 @@ const list = async (req, res) => {
     }).then((pasajes) => {
       res.status(200).json({ pasajes: pasajes });
     });
-  } catch {
+  } catch (err) {
+    console.log(err);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -265,10 +271,67 @@ const listUsedTicket = async (req, res) => {
           attributes: ["id", "precio"],
           include: [
             {
+              model: model.Vianda,
+              as: "Vianda",
+              attributes: ["id", "nombre"],
+            },
+            {
               model: model.Estado,
               as: "Estado",
               attributes: ["id", "estado"],
               where: { estado: "Finalizado" },
+            },
+            {
+              model: model.Viaje,
+              as: "Viaje",
+              order: ["fecha_salida"],
+              attributes: [
+                "id",
+                "nombre",
+                "fecha_salida",
+                "hora",
+                "detalle",
+                "asientos_disponibles",
+                "precio",
+              ],
+              include: [
+                {
+                  model: model.Estado,
+                  as: "Estado",
+                  attributes: ["id", "estado"],
+                },
+                {
+                  model: model.Ruta,
+                  as: "Ruta",
+                  attributes: ["id", "distancia", "duracion"],
+                  include: [
+                    {
+                      model: model.Ciudad,
+                      as: "Origen",
+                      attributes: ["id", "nombre", "cp"],
+                      include: [
+                        {
+                          model: model.Provincia,
+                          as: "Provincia",
+                          attributes: ["id", "nombre"],
+                        },
+                      ],
+                    },
+                    {
+                      model: model.Ciudad,
+                      as: "Destino",
+                      attributes: ["id", "nombre", "cp"],
+                      include: [
+                        {
+                          model: model.Provincia,
+                          as: "Provincia",
+                          attributes: ["id", "nombre"],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },

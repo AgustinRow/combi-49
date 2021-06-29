@@ -26,13 +26,10 @@ const listByTravel = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
-
-
 const create = async (req, res) => {
   const { body } = req;
   try {
-    const pasaje = await model.Pasaje.findOne({ where: { id: body.pasaje } });
+    const pasaje = await model.Pasaje.findOne({ where: { id: body.pasajeId } });
     const viaje = await pasaje.getViaje();
     if ((await pasaje.getValoracion()) == null) {
       const estadoViaje = await viaje.getEstado();
