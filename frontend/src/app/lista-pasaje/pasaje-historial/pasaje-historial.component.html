@@ -9,7 +9,7 @@
                     <app-valoracion [valoracion]="pasaje.Valoracion">Cargando...</app-valoracion>
                 </ng-template>
                 <ng-template #BlockNuevaValoracion>
-                    <app-valoracion-nuevo (ratingNewEvent)="refreshList()">Cargando...</app-valoracion-nuevo>
+                    <app-valoracion-nuevo [pasajeA_Valorar]="pasaje" (ratingNewEvent)="refreshList()">Cargando...</app-valoracion-nuevo>
                 </ng-template>
             </div>
         </div>
