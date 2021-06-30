@@ -571,9 +571,21 @@ const create = async (req, res) => {
 const start = async (req, res) => {
   const { id } = req.params;
   try {
-    const viaje = model.Viaje.findOne({ where: { id: id } });
-    const pasajes = viaje.getPasaje();
-    res.status(200).json({ data: viaje, pasajes });
+    const viaje = await model.Viaje.findOne({ where: { id: id } });
+    const pasajes = await viaje.getPasaje({
+      include: [
+        { model: model.Estado, as: "Estado", where: { estado: "Pendiente" } },
+      ],
+    });
+    if (pasajes.length > 0) {
+      // TODO: recorrer el arreglo de pasajes y cambiar el estado a EnCurso
+      res.status(200).json({ data: pasajes });
+    } else {
+      res.status(400).json({
+        message:
+          "No hay pasajes activos para este viaje. Desea continuar con el viaje?",
+      });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Internal server error" });

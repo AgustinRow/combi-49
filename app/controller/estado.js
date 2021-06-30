@@ -17,6 +17,9 @@ const create = async (req, res) => {
   model.Estado.create({
     estado: "Rechazado por covid-19",
   });
+  model.Estado.create({
+    estado: "Ausente",
+  });
 };
 
 module.exports = {

@@ -35,6 +35,7 @@ const create = async (req, res) => {
     if ((await pasaje.getValoracion()) == null) {
       const estadoViaje = await viaje.getEstado();
       const estadoPasaje = await pasaje.getEstado();
+      console.log(estadoPasaje.estado, estadoViaje.estado);
       if (
         estadoViaje.estado == "Finalizado" &&
         estadoPasaje.estado == "Finalizado"

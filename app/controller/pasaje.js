@@ -344,6 +344,32 @@ const listUsedTicket = async (req, res) => {
   }
 };
 
+const ausente = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const pasaje = await model.Pasaje.findOne({
+      where: { id: id },
+      include: [
+        { model: model.Estado, as: "Estado", where: { estado: "Pendiente" } },
+      ],
+    });
+    if (pasaje != null) {
+      const estado = await model.Estado.findOne({
+        where: { estado: "Ausente" },
+      });
+      pasaje.setEstado(estado);
+      res
+        .status(200)
+        .json({ message: "Se cambio estado de pasajero a Ausente" });
+    } else {
+      res.status(400).json({ message: "No se puede cambiar estado" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   create,
   findTravelsForUser,
@@ -351,4 +377,5 @@ module.exports = {
   list,
   cancel,
   listUsedTicket,
+  ausente,
 };
