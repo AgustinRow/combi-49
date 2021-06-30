@@ -12,10 +12,10 @@ import { UserService } from '../service/user.service';
   ]
 })
 export class ListaUsuarioComponent implements OnInit {
-  listaU : Usuario[] = [];
+  listaU: Usuario[] = [];
   tipo: String[] = ["Pasajero", "Chofer", "Administrador"];
   usuarioSeleccionado: Usuario;
-  findName:string[] = [ "", "" ];
+  findName: string[] = ["", ""];
   aux: Usuario;
 
   constructor(
@@ -27,21 +27,23 @@ export class ListaUsuarioComponent implements OnInit {
     this.refreshList();
   }
 
-  openModal(contentEdit, userselect: Usuario) {  
-    this.usuarioSeleccionado = userselect;
-    this.aux = Object.assign({}, userselect);
+  openModal(contentEdit, userselect: Usuario) {
+    if (userselect !== null) {
+      this.usuarioSeleccionado = userselect;
+      this.aux = Object.assign({}, userselect);
+    }
     this.modalService.open(contentEdit);
   }
 
-  deleteUser(userselect: Usuario){
-    var i = this.listaU.indexOf( userselect );
-    i !== -1 && this.listaU.splice( i, 1 );
+  deleteUser(userselect: Usuario) {
+    var i = this.listaU.indexOf(userselect);
+    i !== -1 && this.listaU.splice(i, 1);
   }
-  
-  addUser(userNew: Usuario){
+
+  addUser(userNew: Usuario) {
     this.listaU.push(userNew);
   }
-  
+
   refreshList() {
     this.userService.getUsers().subscribe(
       (list: any) => {

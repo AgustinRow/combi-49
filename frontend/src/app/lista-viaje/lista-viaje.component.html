@@ -30,8 +30,6 @@
 
 <div class="container" *ngIf="ver == 'viajes'">
     <h2>Lista de viajes </h2>
-    <p>Para realizar la compra de un viaje puede selecionar en la tabla, los viajes son dado de alta por la empresa y se
-        disponen para los usuarios :</p>
 
     <ng-template [ngIf]="usuarioIdentificado">
         <button class="btn btn-primary m-2" (click)="openModal(contentNew, viajeSeleccionado)"
@@ -39,7 +37,7 @@
             Crear viaje
         </button>
 
-        <div class="container" *ngIf="usuarioIdentificado.tipo === USUARIO_CHOFER">
+        <div class="container" *ngIf="this.viajeEnCurso">
             <ngb-alert [dismissible]="false" class="co">
                 <strong>¡Advertencia!</strong> Tiene un viaje en Curso.
                 <a class="btn btn-primary m-2" routerLink="/EnCurso">Seguir viaje</a>
@@ -53,7 +51,9 @@
         <thead>
             <tr>
                 <th>Nombre</th>
-                <th>Ruta</th>
+                <ng-template #BlockRutaColum>
+                    <th >Ruta</th>
+                </ng-template>
                 <th>Fecha de salida</th>
                 <th>Hora de Salida</th>
                 <th>Vehiculo</th>
@@ -66,7 +66,7 @@
         <tbody>
             <tr *ngFor="let viaje of lViajes">
                 <td data-title="Nombre">{{viaje.nombre}}</td>
-                <td data-title="Ruta">{{viaje.Ruta.nombre}}</td>
+                <td data-title="Ruta" *ngIf="viaje.Ruta; then BlockRutaColum">{{viaje.Ruta.nombre}}</td>
                 <td data-title="Fecha de Salida">{{viaje.fecha_salida}}</td>
                 <td data-title="Hora de salida">{{viaje.hora }}</td>
                 <td data-title="Vehiculo">{{viaje.Vehiculo[0].patente}}</td>

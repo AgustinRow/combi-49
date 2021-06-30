@@ -35,7 +35,7 @@ export class ListaViandaComponent implements OnInit {
       this.aux.nombre = viandaselect.nombre;
       this.aux.stock = viandaselect.stock;
     }
-      this.modalService.open(contentEdit);
+    this.modalService.open(contentEdit);
   }
 
   deleteVianda(viandaselect: Vianda) {
