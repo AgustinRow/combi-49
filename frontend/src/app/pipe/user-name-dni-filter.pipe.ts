@@ -15,12 +15,13 @@ export class UserNameDniFilterPipe implements PipeTransform {
     if (!users) return [];
     if (!arg) return users;
 
-    var args = arg.split("");
+    var args = arg.split(" ");
 
     args.forEach((word) => {
-      users = [...users.filter(user => user.dni.toString().includes(word.toLocaleLowerCase()))];
-      users = [...users.filter(user => user.nombre.toLocaleLowerCase().includes(word.toLocaleLowerCase()))];
-      users = [...users.filter(user => user.apellido.toLocaleLowerCase().includes(word.toLocaleLowerCase()))];
+      users = [...users.filter(user => user.dni.toString().includes(word.toLocaleLowerCase())
+        || user.nombre.toLocaleLowerCase().includes(word.toLocaleLowerCase())
+        || user.apellido.toLocaleLowerCase().includes(word.toLocaleLowerCase())
+      )]
     }
     );
 
