@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Viaje } from "../module/viaje.module";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../service/user.service';
@@ -19,11 +19,12 @@ import { DatePipe } from '@angular/common';
 })
 export class ListaViajeComponent implements OnInit {
   viajeSeleccionado: Viaje;
+  private viajeEnCurso: Viaje;
   ver: String = "viajes";
   @Input() lViajes: Viaje[] = [];
   @Input() buscar = true;
   aux: Viaje;
-  hoy:string = this.datePipe.transform(new Date(Date.now()),"yyyy-MM-dd");
+  hoy: string = this.datePipe.transform(new Date(Date.now()), "yyyy-MM-dd");
 
   usuarioIdentificado: Usuario;
   USUARIO_ADMINISTRADOR = UserService.USUARIO_ADMINISTRADOR;
@@ -32,6 +33,7 @@ export class ListaViajeComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private travelService: TravelService,
+    private userService: UserService,
     private storageService: StorageService,
     private router: Router,
     private datePipe: DatePipe
@@ -49,17 +51,19 @@ export class ListaViajeComponent implements OnInit {
   }
 
   openModal(contentEdit, select: Viaje) {
-    this.viajeSeleccionado = select;
-    this.aux = new Viaje();
-    this.aux.id = select.id
-    this.aux.nombre = select.nombre;
-    this.aux.Vehiculo = select.Vehiculo;
-    this.aux.Chofer = select.Chofer;
-    this.aux.Ruta = select.Ruta;
-    this.aux.detalle = select.detalle;
-    this.aux.fecha_salida = select.fecha_salida;
-    this.aux.hora = select.hora;
-    this.aux.precio = select.precio;
+    if (select !== null) {
+      this.viajeSeleccionado = select;
+      this.aux = new Viaje();
+      this.aux.id = select.id
+      this.aux.nombre = select.nombre;
+      this.aux.Vehiculo = select.Vehiculo;
+      this.aux.Chofer = select.Chofer;
+      this.aux.Ruta = select.Ruta;
+      this.aux.detalle = select.detalle;
+      this.aux.fecha_salida = select.fecha_salida;
+      this.aux.hora = select.hora;
+      this.aux.precio = select.precio;
+    }
     this.modalService.open(contentEdit);
   }
 
@@ -99,9 +103,10 @@ export class ListaViajeComponent implements OnInit {
       );
     } else {
       //TODO Viajes del chofer pendientes y el posible que este en curso
-      this.travelService.getTravels().subscribe(
+      this.userService.getChofferTravels(this.usuarioIdentificado.id).subscribe(
         (list: any) => {
-          this.lViajes = list.data as Viaje[];
+          this.lViajes = [...(list.data.Viaje as Viaje[]).filter(viaje => viaje.Estado.estado.match('Pendiente'))];
+          this.viajeEnCurso = [...(list.data.Viaje as Viaje[]).filter(viaje => viaje.Estado.estado.match('En curso'))][0];
         },
         (error) => {
           if (error.status >= 500) {

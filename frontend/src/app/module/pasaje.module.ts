@@ -10,7 +10,7 @@ export class Pasaje{
     precio: number;
     Vianda: Vianda[];
     viajeId: number;
-    test: Test;
+    Test: Test;
     habilitado: number;  //activo
     pasajero: number
     

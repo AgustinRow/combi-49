@@ -77,6 +77,10 @@ import { PasajeHistorialComponent } from './lista-pasaje/pasaje-historial/pasaje
 import { ViajeIniciadoComponent } from './lista-viaje/viaje-iniciado/viaje-iniciado.component';
 import { UserNameDniFilterPipe } from './pipe/user-name-dni-filter.pipe';
 import { AlertComponent } from './home/alert/alert.component';
+import { PassageNameDniFilterPipe } from './pipe/passage-name-dni-filter.pipe';
+import { ListaTestComponent } from './lista-test/lista-test.component';
+import { TestComponent } from './lista-test/test/test.component';
+import { TestNuevoComponent } from './lista-test/test-nuevo/test-nuevo.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -91,26 +95,7 @@ const appRoutes: Routes = [
   { path: 'Viandas', component: ListaViandaComponent },
   { path: 'CompraPasaje/:viajeId', component: PasajeNuevoComponent },
   { path: 'Pasajes', component: ListaPasajeComponent },
-  { path: 'EnCurso', component: ViajeIniciadoComponent,
-    /*children: [
-      {
-        path: 'Detalle', // child route path
-        component: ViajeIniciadoComponent, // child route component that the router renders
-      },
-      {
-        path: 'Vehiculo', // child route path
-        component: ViajeIniciadoComponent, // child route component that the router renders
-      },
-      {
-        path: 'Pasajeros', // child route path
-        component: ViajeIniciadoComponent, // child route component that the router renders
-      },
-      {
-        path: 'Viandas', // child route path
-        component: ViajeIniciadoComponent, // child route component that the router renders
-      },
-    ] */
-  },
+  { path: 'EnCurso', component: ViajeIniciadoComponent },
 ]
 
 export function tokenGetter() {
@@ -173,7 +158,11 @@ export function tokenGetter() {
     PasajeHistorialComponent,
     ViajeIniciadoComponent,
     UserNameDniFilterPipe,
-    AlertComponent
+    AlertComponent,
+    PassageNameDniFilterPipe,
+    ListaTestComponent,
+    TestComponent,
+    TestNuevoComponent
   ],
   imports: [
     BrowserModule,

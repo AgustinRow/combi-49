@@ -3,20 +3,23 @@ import { Ruta } from "./ruta.module";
 import { Usuario } from "./usuario.module";
 import { Valoracion } from "./valoracion.module";
 import { isEmpty } from "rxjs/operators";
+import { Estado } from "./estado.module";
+import { Pasaje } from "./pasaje.module";
 
 export class Viaje {
     id: number;
     nombre: string;
     fecha_salida: Date;
-    //fecha_llegada: Date;
     hora: Date;
     detalle: string;
     habilitado: number;  //activo
     precio: number;
+    Estado: Estado;
     rutaId: number;
     vehiculoId: number;
     choferId: number;
     Valoracion: Valoracion[];
+    Pasaje: Pasaje[];
     asientos_disponibles: number;
 
     private _Chofer: Usuario[];

@@ -1,9 +1,11 @@
 import { Pasaje } from "./pasaje.module";
 
 export class Test{
-    idTest: number;
+    id: number;
     temperatura: number;
     olfato: boolean;
+    contacto_estrecho: boolean;
+    resultado: boolean;
     habilitado: number;  //activo
-    pasajes: Pasaje;
+    pasajeId: number;
 }

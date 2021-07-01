@@ -2,16 +2,16 @@
     <nav class="navbar navbar-expand-sm justify-content-center bg-info navbar-dark">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" (click)="onSelect('Detalles')">Detalles</a>
+                <a class="nav-link" (click)="onSelect('Detalles')" [ngClass]="{ active: ver == 'Detalles'}">Detalles</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" (click)="onSelect('Vehiculo')">Vehiculo</a>
+                <a class="nav-link" (click)="onSelect('Vehiculo')" [ngClass]="{ active: ver == 'Vehiculo'}">Vehiculo</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" (click)="onSelect('Pasajeros')">Pasajeros</a>
+                <a class="nav-link" (click)="onSelect('Pasajeros')" [ngClass]="{ active: ver == 'Pasajeros'}">Pasajeros</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" (click)="onSelect('Viandas')">Viandas</a>
+                <a class="nav-link" (click)="onSelect('Viandas')" [ngClass]="{ active: ver == 'Viandas'}">Viandas</a>
             </li>
         </ul>
     </nav>
@@ -20,7 +20,7 @@
     <div *ngIf="ver == 'Detalles'">
         <div class="card">
             <div class="card-body">
-                <app-viaje [viajeConInfo]="">Cargando</app-viaje>
+                <app-viaje [viajeConInfo]="viajeEnCurso">Cargando</app-viaje>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
     <div *ngIf="ver == 'Vehiculo'">
         <div class="card">
             <div class="card-body">
-                <app-vehiculo [vehiculoConInfo]="">Cargando</app-vehiculo>
+                <app-vehiculo [vehiculoConInfo]="viajeEnCurso.Vehiculo[0]">Cargando</app-vehiculo>
             </div>
         </div>
     </div>
@@ -46,7 +46,14 @@
     <!-- Lista de pasajeros para el test -->
     <div *ngIf="ver == 'Pasajeros'">
         <div class="container">
-            <h2>Lista de pasajeros </h2>
+            <!-- Test individuales -->
+            <ng-template [ngIf]="showTestForm">
+                <app-test-nuevo [pasaje]="listP[seleccionado]" (testNewEvent)="refreshList(); finalizarTest();" (closeEvent)="finalizarTest()">Carcando...</app-test-nuevo>
+            </ng-template>
+
+            <!-- Lista de todos los pasajeros -->
+            <h2>Lista de pasajeros pendientes</h2>
+
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
@@ -64,19 +71,52 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let user of listaU | userNameDniFilter: findString">
-                        <td data-title="Nombre">{{user.nombre}}</td>
-                        <td data-title="Apellido">{{user.apellido}}</td>
-                        <td data-title="DNI">{{user.dni}}</td>
+                    <tr *ngFor="let pasaje of listP | passageNameDniFilter: findString; index as i">
+                        <td data-title="Nombre">{{pasaje.Pasajero.nombre}}</td>
+                        <td data-title="Apellido">{{pasaje.Pasajero.apellido}}</td>
+                        <td data-title="DNI">{{pasaje.Pasajero.dni}}</td>
                         <td data-title="Acciones">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-info" (click)="openModal(contentShow, user)"><i
-                                        class="bi bi-info-circle"></i></button>
-                                <button type="button" class="btn btn-warning" (click)="openModal(contentEdit, user)"><i
-                                        class="bi bi-pencil-square"></i></button>
-                                <button type="button" class="btn btn-danger" (click)="deleteUser(user)"><i
-                                        class="bi bi-trash"></i></button>
+                                <a class="btn btn-secondary" (click)="iniciarTest(i)">Test</a>
                             </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Lista de pasajeros con test completado-->
+    <div *ngIf="ver == 'Pasajeros'">
+        <div class="container">
+            <!-- Test individuales -->
+            <ng-template [ngIf]="showTestForm">
+                <app-test-nuevo [pasaje]="listP[seleccionado]" (testNewEvent)="refreshList(); finalizarTest();" (closeEvent)="finalizarTest()">Carcando...</app-test-nuevo>
+            </ng-template>
+
+            <!-- Lista de todos los pasajeros -->
+            <h2>Lista de pasajeros complatada</h2>
+            <table class="table  table-hover">
+                <thead>
+                    <tr scope="row">
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>DNI</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pasaje of listP_completado">
+                        <td data-title="Nombre">{{pasaje.Pasajero.nombre}}</td>
+                        <td data-title="Apellido">{{pasaje.Pasajero.apellido}}</td>
+                        <td data-title="DNI">{{pasaje.Pasajero.dni}}</td>
+                        <td data-title="Estado">
+                            <ng-template [ngIf]="pasaje.Test.resultado" [ngIfElse]="BlockResultadoNegativo">
+                                Cancelado<!--  {{pasaje.Estado.estado}} -->
+                            </ng-template>
+                            <ng-template #BlockResultadoNegativo>
+                                Puede viajar
+                            </ng-template>
                         </td>
                     </tr>
                 </tbody>

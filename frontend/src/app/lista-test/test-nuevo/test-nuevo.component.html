@@ -1,0 +1,45 @@
+<div class="container">
+    <h3 class="card-title">Test a {{ pasaje.Pasajero.nombre }} {{ pasaje.Pasajero.apellido }}</h3>
+    <div class="card">
+        <div class="card-body">
+            <form (ngSubmit)="newTest(testForm)" #testForm="ngForm">
+                <fieldset class="form-group">
+                    <legend class="row-form-label">Temperatura medida</legend>
+                    <div class="input-group mx-sm-3 mb-2 w-25">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-outline-secondary" type="button" (click)="actualizarTemperatura(false)">-</button>
+                        </div>
+                        <input type="number" class="form-control w-25" placeholder="temp" min="32" max="42" step="0.1" value='0.0' ngModel [(ngModel)]="testNuevo.temperatura" name="temperatura">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" (click)="actualizarTemperatura(true)">+</button>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <legend class="row-form-label">¿A perdido el olfato?</legend>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="olfato" id="noTieneOlfato" [value]="true" ngModel [(ngModel)]="testNuevo.olfato">
+                        <label class="form-check-label mr-3" for="noTieneOlfato">Si</label>
+                        <input class="form-check-input" type="radio" name="olfato" id="siTieneOlfato" [value]="false" ngModel [(ngModel)]="testNuevo.olfato">
+                        <label class="form-check-label" for="siTieneOlfato">No</label>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <legend class="row-form-label">¿A contacto estrecho con paciente de COVID-19 las ultimas 72Hs?
+                    </legend>
+                    <div class="form-check form-check-inline"> 
+                        <input class="form-check-input" type="radio" name="contacto_estrecho" id="siTienecontacto" [value]="true" ngModel [(ngModel)]="testNuevo.contacto_estrecho">
+                        <label class="form-check-label mr-3" for="contacto">Si</label>
+                        <input class="form-check-input" type="radio" name="contacto_estrecho" id="noTienecontacto" [value]="false" ngModel checked [(ngModel)]="testNuevo.contacto_estrecho">
+                        <label class="form-check-label" for="contacto">No</label>
+                    </div>
+                </fieldset>
+
+                <div class="d-flex justify-content-around">
+                    <button type="submit" class="btn btn-success" [disabled]="!testForm.valid">Guardar</button>
+                    <button class="btn btn-light" (click)="close()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -36,6 +36,14 @@ export class UserService {
     return this.http.get<Usuario>(this.usersUrl + 'buscar/' + userId, httpOptions)
   }
 
+  getChofferTravels( chofferId: Number): Observable<Usuario> {
+    return this.http.get<Usuario>(this.usersUrl + 'mis_viajes/' + chofferId, httpOptions)
+  }
+
+  getPassagersInTravel( travelId: Number): Observable<Usuario> {
+    return this.http.get<Usuario>(this.usersUrl + 'listado_pasajeros_viaje/' + travelId, httpOptions)
+  }
+
   modifyUser(user: Usuario): Observable<Usuario> {
     console.log(user);
     return this.http.put<Usuario>(this.usersUrl + 'modificar_usuario', user, httpOptions);

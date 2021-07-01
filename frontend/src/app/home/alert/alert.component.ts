@@ -9,6 +9,7 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class AlertComponent implements OnInit {
   private _success = new Subject<string>();
+  typeAlert: string = "success";
   staticAlertClosed = false;
   successMessage: string;
 
