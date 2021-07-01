@@ -311,9 +311,8 @@ const listPassengersTravel = async (req, res) => {
               as: "Pasajero",
               attributes: ["id", "nombre", "apellido", "dni"],
             },
-            {model: model.Test,
-            as: "Test",
-            attributes: ["resultado"] }
+            { model: model.Test, as: "Test", attributes: ["resultado"] },
+            { model: model.Estado, as: "Estado", attributes: ["estado"] },
           ],
         },
       ],

@@ -577,9 +577,15 @@ const start = async (req, res) => {
         { model: model.Estado, as: "Estado", where: { estado: "Pendiente" } },
       ],
     });
+    const iniciar = await model.Estado.findOne({
+      where: { estado: "En curso" },
+    });
     if (pasajes.length > 0) {
-      // TODO: recorrer el arreglo de pasajes y cambiar el estado a EnCurso
-      res.status(200).json({ data: pasajes });
+      for (i = 0; pasajes.length > i; i++) {
+        pasajes[i].setEstado(iniciar);
+      }
+      viaje.setEstado(iniciar);
+      res.status(200).json({ message: "Viaje iniciado" });
     } else {
       res.status(400).json({
         message:
@@ -592,6 +598,35 @@ const start = async (req, res) => {
   }
 };
 
+const finish = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const viaje = await model.Viaje.findOne({ where: { id: id } });
+    const pasajes = await viaje.getPasaje({
+      include: [
+        { model: model.Estado, as: "Estado", where: { estado: "En Curso" } },
+      ],
+    });
+    const finalizar = await model.Estado.findOne({
+      where: { estado: "Finalizado" },
+    });
+    if (pasajes.length > 0) {
+      for (i = 0; pasajes.length > i; i++) {
+        pasajes[i].setEstado(finalizar);
+      }
+      viaje.setEstado(finalizar);
+      res.status(200).json({ message: "Viaje finalizado con éxito" });
+    } else {
+      res.status(400).json({
+        message: "No hay pasajes en curso para este viaje",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ messag: "Internal server error" });
+  }
+};
+
 module.exports = {
   remove,
   list,
@@ -601,4 +636,5 @@ module.exports = {
   driverAndTravel,
   findOne,
   start,
+  finish,
 };
