@@ -378,4 +378,5 @@ module.exports = {
   cancel,
   listUsedTicket,
   ausente,
+  actualizarStock,
 };

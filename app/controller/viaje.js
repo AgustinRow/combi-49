@@ -582,14 +582,19 @@ const start = async (req, res) => {
     });
     if (pasajes.length > 0) {
       for (i = 0; pasajes.length > i; i++) {
-        pasajes[i].setEstado(iniciar);
+        const test = await pasajes.getTest();
+        if (test.resultado) {
+          console.log("POSITIVO-MO SUBE");
+        } else {
+          console.log("Negativo-------------");
+          pasajes[i].setEstado(iniciar);
+        }
       }
       viaje.setEstado(iniciar);
       res.status(200).json({ message: "Viaje iniciado" });
     } else {
       res.status(400).json({
-        message:
-          "No hay pasajes activos para este viaje. Desea continuar con el viaje?",
+        message: "No hay pasajes activos para este viaje.",
       });
     }
   } catch (err) {
