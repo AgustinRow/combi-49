@@ -32,6 +32,10 @@ export class PassageService {
     return this.http.get<Pasaje[]>(this.usersUrl + 'listar_por_usuario/' + pasajero.id);
   }
 
+  setAbsentPassenger( passageId: number ): Observable<Pasaje[]> {
+    return this.http.get<Pasaje[]>(this.usersUrl + 'pasajero_ausente/' + passageId);
+  }
+
   modifyPassage(passage: Pasaje): Observable<Pasaje> {
     return this.http.put<Pasaje>(this.usersUrl + 'modificar', passage, httpOptions);
   }

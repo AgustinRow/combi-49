@@ -87,7 +87,7 @@
                     <ng-template #NoAdminBlock>
                         <td data-title="Acciones"
                             *ngIf="usuarioIdentificado.tipo === USUARIO_CHOFER; else BlockPassager">
-                            <button class="btn btn-success" [disabled]="!(viaje.fecha_salida === hoy)">
+                            <button class="btn btn-success" [disabled]="!(viaje.fecha_salida === hoy)" (click)="startTravel(viaje)">
                                 <span>Iniciar</span>
                             </button>
                         </td>

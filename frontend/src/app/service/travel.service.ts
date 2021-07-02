@@ -42,6 +42,18 @@ export class TravelService {
   findTravels(origen: Ciudad, destino: Ciudad, salida: String): Observable<Viaje[]> {
     return this.http.get<Viaje[]>(this.usersUrl + 'buscar?origen='+origen.id+'&destino='+destino.id+'&fecha='+salida, httpOptions);
   }
+  
+  startTravel(travelId: number): Observable<Viaje> {
+    return this.http.put<Viaje>(this.usersUrl + 'iniciar/'+ travelId, httpOptions);
+  }
+  
+  inicialMarkTravel(travelId: number): Observable<Viaje> {
+    return this.http.put<Viaje>(this.usersUrl + 'enCurso/'+ travelId, httpOptions);
+  }
+  
+  finishTravel(travelId: number): Observable<Viaje> {
+    return this.http.put<Viaje>(this.usersUrl + 'finalizar/'+ travelId, httpOptions);
+  }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

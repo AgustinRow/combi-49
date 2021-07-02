@@ -106,7 +106,7 @@ export class ListaViajeComponent implements OnInit {
       this.userService.getChofferTravels(this.usuarioIdentificado.id).subscribe(
         (list: any) => {
           this.lViajes = [...(list.data.Viaje as Viaje[]).filter(viaje => viaje.Estado.estado.match('Pendiente'))];
-          this.viajeEnCurso = [...(list.data.Viaje as Viaje[]).filter(viaje => viaje.Estado.estado.match('En curso'))][0];
+          this.viajeEnCurso = [...(list.data.Viaje as Viaje[]).filter(viaje => (viaje.Estado.estado.match('En curso'))||(viaje.Estado.estado.match('Iniciado')))][0];
         },
         (error) => {
           if (error.status >= 500) {
@@ -118,6 +118,25 @@ export class ListaViajeComponent implements OnInit {
         }
       );
     }
+  }
+  
+  startTravel(viaje: Viaje) {
+    this.travelService.startTravel(viaje.id).subscribe(
+      (data: any) => {
+        if (data != null) {
+          alert("A iniciado el viaje");
+          this.router.navigate(['/EnCurso']);
+        }
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert(error.error.message);
+        }
+      }
+    );
   }
 
 }

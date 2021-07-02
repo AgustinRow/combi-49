@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Pasaje } from 'src/app/module/pasaje.module';
 import { Usuario } from 'src/app/module/usuario.module';
 import { Viaje } from 'src/app/module/viaje.module';
+import { PassageService } from 'src/app/service/passage.service';
 import { StorageService } from 'src/app/service/storage.service';
+import { TravelService } from 'src/app/service/travel.service';
 import { UserService } from 'src/app/service/user.service';
 
 @Component({
@@ -12,7 +15,7 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class ViajeIniciadoComponent implements OnInit {
   usuarioIdentificado: Usuario;
-  ver: String = "Detalles";
+  ver: String = "Pasajeros";
   findString: string = "";
   viajeEnCurso: Viaje;
   listP: Pasaje[] = [];
@@ -23,7 +26,10 @@ export class ViajeIniciadoComponent implements OnInit {
 
   constructor(
     private storageService: StorageService,
-    private userService: UserService
+    private userService: UserService,
+    private travelService: TravelService,
+    private passageService: PassageService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -35,7 +41,7 @@ export class ViajeIniciadoComponent implements OnInit {
   refreshList() {
     this.userService.getChofferTravels(this.usuarioIdentificado.id).subscribe(
       (list: any) => {
-        this.viajeEnCurso = [...(list.data.Viaje as Viaje[]).filter(viaje => viaje.Estado.estado.match('En curso'))][0];
+        this.viajeEnCurso = [...(list.data.Viaje as Viaje[]).filter(viaje => (viaje.Estado.estado.match('En curso'))||(viaje.Estado.estado.match('Iniciado')))][0];
         this.viajeEnCurso.Chofer = [this.usuarioIdentificado];
         this.userService.getPassagersInTravel(this.viajeEnCurso.id).subscribe(
           (viajesConPasajeros: any) => {
@@ -43,14 +49,14 @@ export class ViajeIniciadoComponent implements OnInit {
             this.listP_completado.length = 0;
             (viajesConPasajeros.data.Pasaje as Pasaje[]).forEach(
               pasaje => {
-                if((pasaje.Test === null)/*&&(pasaje.Estado.estado != 'Ausente')*/){
+                if ((pasaje.Test === null)&&(pasaje.Estado.estado != 'Ausente')) {
                   this.listP.push(pasaje);
-                }else{
+                } else {
                   this.listP_completado.push(pasaje);
                 }
               }
             );
-            if ((this.listP.length !== 0 )&&(this.listP_completado.length > 0 )) {
+            if ((this.listP.length !== 0) && (this.listP_completado.length > 0)) {
               //Estan todos los pasajeros testeados o ausentes, se puede comenzar a salir
 
             }
@@ -86,6 +92,25 @@ export class ViajeIniciadoComponent implements OnInit {
     this.showTestForm = true;
   }
 
+  marcarAusente(index: number) {
+    this.passageService.setAbsentPassenger(this.listP[index].Pasajero.id).subscribe(
+      (data: any) => {
+        if (data != null) {
+          alert("Se a indicado la ausencia del pasajero");
+          this.refreshList();
+        }
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert(error.error.message);
+        }
+      }
+    );
+  }
+
   finalizarTest() {
     this.showTestForm = false;
   }
@@ -93,4 +118,43 @@ export class ViajeIniciadoComponent implements OnInit {
   cancelTest() {
     this.showTestForm = false;
   }
+
+  startTravel() {
+    this.travelService.inicialMarkTravel(this.viajeEnCurso.id).subscribe(
+      (data: any) => {
+        if (data != null) {
+          alert("Se a marcado el inicio del viaje");
+          this.viajeEnCurso.Estado.estado = "En Curso";
+        }
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert(error.error.message);
+        }
+      }
+    );
+  }
+  
+  finishTravel() {
+    this.travelService.finishTravel(this.viajeEnCurso.id).subscribe(
+      (data: any) => {
+        if (data != null) {
+          alert("A finalizado el viaje");
+          this.router.navigate(['/Viajes']);
+        }
+      },
+      (error) => {
+        if (error.status >= 500) {
+          alert("Problemas para conectarse con el servidor");
+        }
+        else {
+          alert(error.error.message);
+        }
+      }
+    );
+  }
+
 }
