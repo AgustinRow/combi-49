@@ -32,19 +32,14 @@ const findUser = async (req, res) => {
 
 const login = async (req, res) => {
   const user = req.body;
+  console.log(user);
   model.Usuario.findOne({
     where: { email: user.email, habilitado: true },
   }).then((response) => {
     try {
       if (response != null) {
         if (user.password === response.password) {
-          const token = jwtToken(response);
-
-          res
-            .header("auth-token", token)
-            .send({ data: parse(response), token: token });
-          //res.json({ data: parse(response) });
-          //res.status(200);
+          res.status(200).json({ data: parse(response) });
         } else {
           res.status(400).json({ error: "Email o contraseña incorrecto" });
         }
