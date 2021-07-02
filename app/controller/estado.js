@@ -20,6 +20,9 @@ const create = async (req, res) => {
   model.Estado.create({
     estado: "Ausente",
   });
+  model.Estado.create({
+    estado: "Testeado",
+  });
 };
 
 module.exports = {
