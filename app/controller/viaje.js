@@ -431,6 +431,7 @@ const list = async (req, res) => {
         },
       ],
     }).then((viajes) => {
+      console.log(viajes);
       res.status(200).json({ data: viajes });
     });
   } catch (err) {

@@ -271,6 +271,11 @@ const listUsedTicket = async (req, res) => {
           attributes: ["id", "precio"],
           include: [
             {
+              model: model.Valoracion,
+              as: "Valoracion",
+              attributes: ["id", "detalle", "puntuacion"],
+            },
+            {
               model: model.Vianda,
               as: "Vianda",
               attributes: ["id", "nombre"],
