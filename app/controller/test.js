@@ -16,7 +16,7 @@ const changeToRejected = async (pasaje) => {
 };
 
 // chequear que cambie el estado a rechazado
-const create = async (req, res) => {gi
+const create = async (req, res) => {
   const { body } = req;
   try {
     const pasaje = await model.Pasaje.findOne({
@@ -26,7 +26,7 @@ const create = async (req, res) => {gi
     if (test == null) {
       let resultado_covid = !(
         body.olfato &&
-        body.temperatura <= 36.7 &&
+        body.temperatura < 37.5 &&
         !body.contacto_estrecho
       );
       if (resultado_covid) {

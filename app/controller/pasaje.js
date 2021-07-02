@@ -273,7 +273,7 @@ const listUsedTicket = async (req, res) => {
             {
               model: model.Valoracion,
               as: "Valoracion",
-              attributes: ["id", "detalle", "puntuacion"],
+              attributes: ["id", "descripcion", "puntuacion"],
             },
             {
               model: model.Vianda,
