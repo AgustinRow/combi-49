@@ -21,7 +21,7 @@ const create = async (req, res) => {
     estado: "Ausente",
   });
   model.Estado.create({
-    estado: "Testeado",
+    estado: "Iniciado",
   });
 };
 
