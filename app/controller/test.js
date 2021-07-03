@@ -18,17 +18,14 @@ const changeToRejected = async (pasaje) => {
 // chequear que cambie el estado a rechazado
 const create = async (req, res) => {
   const { body } = req;
+  console.log(body);
   try {
     const pasaje = await model.Pasaje.findOne({
       where: { id: body.pasajeId },
     });
     const test = await pasaje.getTest();
     if (test == null) {
-      let resultado_covid = !(
-        body.olfato &&
-        body.temperatura < 37.5 &&
-        !body.contacto_estrecho
-      );
+      let resultado_covid = body.olfato || (body.temperatura >= 37.5) || body.contacto_estrecho;
       if (resultado_covid) {
         await changeToRejected(pasaje);
       }
