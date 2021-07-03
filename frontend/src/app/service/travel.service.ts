@@ -44,15 +44,15 @@ export class TravelService {
   }
   
   startTravel(travelId: number): Observable<Viaje> {
-    return this.http.put<Viaje>(this.usersUrl + 'iniciar/'+ travelId, httpOptions);
+    return this.http.get<Viaje>(this.usersUrl + 'comenzar/'+ travelId, httpOptions);
   }
   
   inicialMarkTravel(travelId: number): Observable<Viaje> {
-    return this.http.put<Viaje>(this.usersUrl + 'enCurso/'+ travelId, httpOptions);
+    return this.http.get<Viaje>(this.usersUrl + 'iniciar/'+ travelId, httpOptions);
   }
   
   finishTravel(travelId: number): Observable<Viaje> {
-    return this.http.put<Viaje>(this.usersUrl + 'finalizar/'+ travelId, httpOptions);
+    return this.http.get<Viaje>(this.usersUrl + 'finalizar/'+ travelId, httpOptions);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

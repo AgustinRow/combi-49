@@ -140,7 +140,7 @@ export class ViajeIniciadoComponent implements OnInit {
     this.travelService.finishTravel(this.viajeEnCurso.id).subscribe(
       (data: any) => {
         if (data != null) {
-          alert("A finalizado el viaje");
+          alert("Ha finalizado el viaje");
           this.router.navigate(['/Viajes']);
         }
       },
