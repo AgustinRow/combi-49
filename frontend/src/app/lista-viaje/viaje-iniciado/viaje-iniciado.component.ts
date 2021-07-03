@@ -41,7 +41,7 @@ export class ViajeIniciadoComponent implements OnInit {
   refreshList() {
     this.userService.getChofferTravels(this.usuarioIdentificado.id).subscribe(
       (list: any) => {
-        this.viajeEnCurso = [...(list.data.Viaje as Viaje[]).filter(viaje => (viaje.Estado.estado.match('En curso'))||(viaje.Estado.estado.match('Iniciado')))][0];
+        this.viajeEnCurso = [...(list.data.Viaje as Viaje[]).filter(viaje => (viaje.Estado.estado.match('En curso')) || (viaje.Estado.estado.match('Iniciado')))][0];
         this.viajeEnCurso.Chofer = [this.usuarioIdentificado];
         this.userService.getPassagersInTravel(this.viajeEnCurso.id).subscribe(
           (viajesConPasajeros: any) => {
@@ -49,7 +49,7 @@ export class ViajeIniciadoComponent implements OnInit {
             this.listP_completado.length = 0;
             (viajesConPasajeros.data.Pasaje as Pasaje[]).forEach(
               pasaje => {
-                if ((pasaje.Test === null)&&(pasaje.Estado.estado != 'Ausente')) {
+                if ((pasaje.Test === null) && (pasaje.Estado.estado != 'Ausente')) {
                   this.listP.push(pasaje);
                 } else {
                   this.listP_completado.push(pasaje);
@@ -135,7 +135,7 @@ export class ViajeIniciadoComponent implements OnInit {
       }
     );
   }
-  
+
   finishTravel() {
     this.travelService.finishTravel(this.viajeEnCurso.id).subscribe(
       (data: any) => {

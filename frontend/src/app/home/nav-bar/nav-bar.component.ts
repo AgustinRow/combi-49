@@ -10,7 +10,8 @@ import { UserService } from 'src/app/service/user.service';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
   providers: [
-    StorageService]
+    StorageService
+  ]
 })
 export class NavBarComponent implements OnInit, OnChanges {
   @Input() isLoggedNavbar: boolean = false;
@@ -20,6 +21,7 @@ export class NavBarComponent implements OnInit, OnChanges {
   usuarioIdentificado: Usuario;
   USUARIO_ADMINISTRADOR = UserService.USUARIO_ADMINISTRADOR;
   USUARIO_PASAJERO = UserService.USUARIO_PASAJERO;
+  private chofferCurretTrip: string;
 
   constructor(
     private router: Router,
@@ -37,6 +39,7 @@ export class NavBarComponent implements OnInit, OnChanges {
         console.log('ERROR verify : ', error);
       },
     );
+    
   }
 
   ngOnInit(): void {
@@ -47,7 +50,6 @@ export class NavBarComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes) {
     this.storageService.logChange.emit(true);
-
   }
 
   isLogged() {

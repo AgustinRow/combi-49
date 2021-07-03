@@ -101,6 +101,7 @@ export class ListaPasajeComponent implements OnInit {
       (data: any) => {
         if (data != null) {
           alert("Se ha cancelado el pasaje y se le ha devuelto el dinero");
+          this.refreshList()
         }
       },
       (error) => {

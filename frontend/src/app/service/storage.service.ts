@@ -6,7 +6,6 @@ import { Session } from '../module/session.module';
 @Injectable()
 export class StorageService {
   private localStorageService;
-  private currentSession : Session = null;
   @Output() logChange = new EventEmitter<boolean>();
 
   constructor(private router: Router) {

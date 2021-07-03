@@ -15,6 +15,19 @@
                 <a class="nav-link" (click)="onSelect('Viandas')" [ngClass]="{ active: ver == 'Viandas'}">Viandas</a>
             </li>
         </ul>
+
+        <!-- Viaje iniciado - carga de estado de cada pasajero -->
+        <ng-template [ngIf]="viajeEnCurso.Estado.estado === 'Iniciado'" [ngIfElse]="BlockFinishTravel">
+            <button type="button" class="btn btn-success h-25 my-3" (click)="startTravel()"
+                [disabled]="listP.length !== 0">Marcar
+                salida</button>
+        </ng-template>
+
+        <!-- Marcar fin del viaje -->
+        <ng-template #BlockFinishTravel>
+            <button type="button" class="btn btn-danger h-25 my-3" (click)="finishTravel()">Marcar
+                fin del viaje</button>
+        </ng-template>
     </nav>
 
     <!-- Detalle del viaje -->
@@ -46,116 +59,90 @@
 
     <!-- Lista de pasajeros para el test -->
     <div *ngIf="ver == 'Pasajeros'">
-
-        <!-- Viaje iniciado - carga de estado de cada pasajero -->
-        <ng-template [ngIf]="viajeEnCurso.Estado.estado === 'Iniciado'" [ngIfElse]="BlockFinishTravel">
-            <!-- Test individuales -->
-            <ng-template [ngIf]="showTestForm" [ngIfElse]="BlockShowTable">
-                <app-test-nuevo [pasaje]="listP[seleccionado]" (testNewEvent)="refreshList(); finalizarTest();"
-                    (closeEvent)="finalizarTest()">Carcando...</app-test-nuevo>
-            </ng-template>
-
-            <!-- Tablas de pasajeros -->
-            <ng-template #BlockShowTable>
-                <!-- Lista de todos los pasajeros -->
-                <ng-template [ngIf]="listP.length !== 0" [ngIfElse]="BlockStartTravel">
-                    <div class="container">
-                        <h2>Lista de pasajeros pendientes</h2>
-
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-                            </div>
-                            <input type="text" class="form-control" name="findFirtName" [(ngModel)]="findString"
-                                placeholder="Nombre, Apellido o DNI" autocomplete="off">
-                        </div>
-                        <table class="table  table-hover">
-                            <thead>
-                                <tr scope="row">
-                                    <th>Nombre</th>
-                                    <th>Apellido</th>
-                                    <th>DNI</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let pasaje of listP | passageNameDniFilter: findString; index as i">
-                                    <td data-title="Nombre">{{pasaje.Pasajero.nombre}}</td>
-                                    <td data-title="Apellido">{{pasaje.Pasajero.apellido}}</td>
-                                    <td data-title="DNI">{{pasaje.Pasajero.dni}}</td>
-                                    <td data-title="Acciones">
-                                        <div class="btn-group">
-                                            <a class="btn btn-secondary" (click)="iniciarTest(i)">Test</a>
-                                            <a class="btn btn-dark" (click)="marcarAusente(i)">Ausente</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Lista de pasajeros con test completado-->
-                    <div class="container" *ngIf="listP_completado.length !== 0">
-                        <!-- Test individuales -->
-                        <ng-template [ngIf]="showTestForm">
-                            <app-test-nuevo [pasaje]="listP[seleccionado]"
-                                (testNewEvent)="refreshList(); finalizarTest();" (closeEvent)="finalizarTest()">
-                                Carcando...</app-test-nuevo>
-                        </ng-template>
-
-                        <!-- Lista de todos los pasajeros -->
-                        <h2>Lista de pasajeros complatada</h2>
-                        <table class="table  table-hover">
-                            <thead>
-                                <tr scope="row">
-                                    <th>Nombre</th>
-                                    <th>Apellido</th>
-                                    <th>DNI</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let pasaje of listP_completado">
-                                    <td data-title="Nombre">{{pasaje.Pasajero.nombre}}</td>
-                                    <td data-title="Apellido">{{pasaje.Pasajero.apellido}}</td>
-                                    <td data-title="DNI">{{pasaje.Pasajero.dni}}</td>
-                                    <td data-title="Estado">
-                                        <ng-template [ngIf]="pasaje.Estado.estado !== 'Pendiente'" [ngIfElse]="BlockResultadoNegativo">
-                                             {{pasaje.Estado.estado}}
-                                        </ng-template>
-                                        <ng-template #BlockResultadoNegativo>
-                                            Puede viajar
-                                        </ng-template>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </ng-template>
-
-                <ng-template #BlockStartTravel>
-                    <div class="container m-5">
-                        <div class="text-center m-2">
-                            <h2 class="m-2">Ya estan todos los pasajeros</h2>
-                            <button type="button" class="btn btn-success w-100 h-25 my-3" (click)="startTravel()">Marcar
-                                salida</button>
-                        </div>
-                    </div>
-                </ng-template>
-            </ng-template>
+        <!-- Test individuales -->
+        <ng-template [ngIf]="showTestForm" [ngIfElse]="BlockShowTable">
+            <app-test-nuevo [pasaje]="listP[seleccionado]" (testNewEvent)="refreshList(); finalizarTest();"
+                (closeEvent)="finalizarTest()">Carcando...</app-test-nuevo>
         </ng-template>
 
-        <!-- Marcar fin del viaje -->
-        <ng-template #BlockFinishTravel>
-            <div class="container m-5">
-                <div class="text-center m-2">
-                    <h2 class="m-2">¿A llegado a destino?</h2>
-                    <button type="button" class="btn btn-danger w-100 h-25 my-3" (click)="finishTravel()">Marcar
-                        fin del viaje</button>
+        <!-- Tablas de pasajeros -->
+        <ng-template #BlockShowTable>
+            <ng-template [ngIf]="listP.length !== 0">
+                <div class="container">
+                    <h2>Lista de pasajeros pendientes</h2>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+                        </div>
+                        <input type="text" class="form-control" name="findFirtName" [(ngModel)]="findString"
+                            placeholder="Nombre, Apellido o DNI" autocomplete="off">
+                    </div>
+                    <table class="table  table-hover">
+                        <thead>
+                            <tr scope="row">
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>DNI</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let pasaje of listP | passageNameDniFilter: findString; index as i">
+                                <td data-title="Nombre">{{pasaje.Pasajero.nombre}}</td>
+                                <td data-title="Apellido">{{pasaje.Pasajero.apellido}}</td>
+                                <td data-title="DNI">{{pasaje.Pasajero.dni}}</td>
+                                <td data-title="Acciones">
+                                    <div class="btn-group">
+                                        <a class="btn btn-secondary" (click)="iniciarTest(i)">Test</a>
+                                        <a class="btn btn-dark" (click)="marcarAusente(i)">Ausente</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </ng-template>
+
+            <!-- Lista de pasajeros con test completado-->
+            <div class="container" *ngIf="listP_completado.length !== 0">
+                <!-- Test individuales -->
+                <ng-template [ngIf]="showTestForm">
+                    <app-test-nuevo [pasaje]="listP[seleccionado]" (testNewEvent)="refreshList(); finalizarTest();"
+                        (closeEvent)="finalizarTest()">
+                        Carcando...</app-test-nuevo>
+                </ng-template>
+
+                <!-- Lista de todos los pasajeros -->
+                <h2>Lista de pasajeros complatada</h2>
+                <table class="table  table-hover">
+                    <thead>
+                        <tr scope="row">
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>DNI</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let pasaje of listP_completado">
+                            <td data-title="Nombre">{{pasaje.Pasajero.nombre}}</td>
+                            <td data-title="Apellido">{{pasaje.Pasajero.apellido}}</td>
+                            <td data-title="DNI">{{pasaje.Pasajero.dni}}</td>
+                            <td data-title="Estado">
+                                <ng-template [ngIf]="pasaje.Estado.estado !== 'Pendiente'"
+                                    [ngIfElse]="BlockResultadoNegativo">
+                                    {{pasaje.Estado.estado}}
+                                </ng-template>
+                                <ng-template #BlockResultadoNegativo>
+                                    Puede viajar
+                                </ng-template>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </ng-template>
-
     </div>
 </ng-template>
 

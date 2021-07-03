@@ -20,7 +20,7 @@
                             <a class="nav-link" routerLink="/Viajes">Mis Viajes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" routerLink="/EnCurso">Viaje en curso</a>
+                            <a class="nav-link" routerLink="/EnCurso">Viaje iniciado</a>
                         </li>
                     </ng-template>
                     <li class="nav-item">
@@ -29,7 +29,8 @@
                 </ul>
             </ng-template>
 
-            <ul class="navbar-nav ml-auto" *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR; else BlockNavUser">
+            <ul class="navbar-nav ml-auto"
+                *ngIf="usuarioIdentificado.tipo === USUARIO_ADMINISTRADOR; else BlockNavUser">
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/Usuarios">Pasajeros</a>
                 </li>
