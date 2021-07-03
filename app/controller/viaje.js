@@ -583,13 +583,7 @@ const start = async (req, res) => {
     });
     if (pasajes.length > 0) {
       for (i = 0; pasajes.length > i; i++) {
-        const test = await pasajes.getTest();
-        if (test.resultado) {
-          console.log("POSITIVO-MO SUBE");
-        } else {
-          console.log("Negativo-------------");
-          pasajes[i].setEstado(iniciar);
-        }
+        pasajes[i].setEstado(iniciar);
       }
       viaje.setEstado(iniciar);
       res.status(200).json({ message: "Viaje iniciado" });
