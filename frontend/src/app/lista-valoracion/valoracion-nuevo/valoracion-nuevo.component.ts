@@ -21,7 +21,7 @@ export class ValoracionNuevoComponent implements OnInit {
 
   ngOnInit(): void {
     this.nuevaValoracion.puntuacion = 0;
-    this.nuevaValoracion.detalle = "";
+    this.nuevaValoracion.descripcion = "";
 
     this.form = new FormGroup({
       'puntuacion': new FormControl({}),

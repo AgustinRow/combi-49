@@ -1,4 +1,4 @@
-<ng-template [ngIf]="usuarioIdentificado&&viajeEnCurso" [ngIfElse]="BlockSinViajeEnCurso">
+<!-- <ng-template [ngIf]="usuarioIdentificado&&viajeEnCurso" [ngIfElse]="BlockSinViajeEnCurso"> -->
     <nav class="navbar navbar-expand-sm justify-content-center bg-info navbar-dark">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -48,7 +48,7 @@
     <div *ngIf="ver == 'Pasajeros'">
 
         <!-- Viaje iniciado - carga de estado de cada pasajero -->
-        <ng-template [ngIf]="viajeEnCurso.Estado.estado === 'Iniciado'" [ngIfElse]="BlockFinishTravel">
+        <ng-template [ngIf]="viajeEnCurso.Estado.estado === 'En curso'" [ngIfElse]="BlockFinishTravel">
             <!-- Test individuales -->
             <ng-template [ngIf]="showTestForm" [ngIfElse]="BlockShowTable">
                 <app-test-nuevo [pasaje]="listP[seleccionado]" (testNewEvent)="refreshList(); finalizarTest();"
@@ -121,8 +121,7 @@
                                     <td data-title="DNI">{{pasaje.Pasajero.dni}}</td>
                                     <td data-title="Estado">
                                         <ng-template [ngIf]="pasaje.Test.resultado" [ngIfElse]="BlockResultadoNegativo">
-                                            Cancelado
-                                            <!--  {{pasaje.Estado.estado}} -->
+                                             {{pasaje.Estado.estado}}
                                         </ng-template>
                                         <ng-template #BlockResultadoNegativo>
                                             Puede viajar
@@ -136,9 +135,11 @@
 
                 <ng-template #BlockStartTravel>
                     <div class="container m-5">
-                        <h2>Ya estan todos los pasajeros</h2>
-                        <button type="button" class="btn btn-success w-100 h-25 m-5" (click)="startTravel()">Marcar
-                            salida</button>
+                        <div class="text-center m-2">
+                            <h2 class="m-2">Ya estan todos los pasajeros</h2>
+                            <button type="button" class="btn btn-success w-100 h-25 my-3" (click)="startTravel()">Marcar
+                                salida</button>
+                        </div>
                     </div>
                 </ng-template>
             </ng-template>
@@ -147,17 +148,19 @@
         <!-- Marcar fin del viaje -->
         <ng-template #BlockFinishTravel>
             <div class="container m-5">
-                <h2>¿A llegado a destino?</h2>
-                <button type="button" class="btn btn-danger w-100 h-25 m-5" (click)="finishTravel()">Marcar
-                    fin del viaje</button>
+                <div class="text-center m-2">
+                    <h2 class="m-2">¿A llegado a destino?</h2>
+                    <button type="button" class="btn btn-danger w-100 h-25 my-3" (click)="finishTravel()">Marcar
+                        fin del viaje</button>
+                </div>
             </div>
         </ng-template>
 
     </div>
-</ng-template>
+<!-- </ng-template>
 
 <ng-template #BlockSinViajeEnCurso>
     <p>
         <ngb-alert type="danger" [dismissible]="false"><strong>Whoa!</strong> No tiene viajes en curso</ngb-alert>
     </p>
-</ng-template>
+</ng-template> -->

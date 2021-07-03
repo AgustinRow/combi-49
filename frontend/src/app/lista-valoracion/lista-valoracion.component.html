@@ -18,7 +18,7 @@
                 <td data-title="Ruta">{{viaje.Ruta.nombre}}</td>
                 <td data-title="Fecha de Salida">{{viaje.fecha_salida}} {{viaje.hora}}</td>
                 <td data-title="Valoracion completada">{{ viaje.valoracionCompletada | percent }}</td>
-                <td data-title="Valoracion promedio">{{ viaje.valoracionPromedio }}</td>
+                <td data-title="Valoracion promedio">{{ viaje.valoracionPromedio| number:'1.2-2' }}</td>
                 <td data-title="Acciones">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info" (click)="openModal(contentShow, viaje)">

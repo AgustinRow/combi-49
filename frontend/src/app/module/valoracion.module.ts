@@ -4,7 +4,7 @@ import { Pasaje } from "./pasaje.module";
 export class Valoracion{
     id: number;
     puntuacion: number;
-    detalle: String;
+    descripcion: String;
     pasajeId: number;
     usuario: Usuario
     habilitado: number;  //activo

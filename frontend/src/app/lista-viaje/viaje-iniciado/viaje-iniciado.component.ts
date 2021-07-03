@@ -58,9 +58,7 @@ export class ViajeIniciadoComponent implements OnInit {
             );
             if ((this.listP.length !== 0) && (this.listP_completado.length > 0)) {
               //Estan todos los pasajeros testeados o ausentes, se puede comenzar a salir
-
             }
-            console.log(viajesConPasajeros);
           },
           (error) => {
             if (error.status >= 500) {
@@ -93,7 +91,7 @@ export class ViajeIniciadoComponent implements OnInit {
   }
 
   marcarAusente(index: number) {
-    this.passageService.setAbsentPassenger(this.listP[index].Pasajero.id).subscribe(
+    this.passageService.setAbsentPassenger(this.listP[index].id).subscribe(
       (data: any) => {
         if (data != null) {
           alert("Se a indicado la ausencia del pasajero");

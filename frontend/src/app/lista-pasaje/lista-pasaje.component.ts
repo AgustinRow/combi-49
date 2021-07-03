@@ -5,6 +5,7 @@ import { Pasaje } from '../module/pasaje.module';
 import { Vianda } from '../module/vianda.module';
 import { FoodboxService } from '../service/foodbox.service';
 import { PassageService } from '../service/passage.service';
+import { StorageService } from '../service/storage.service';
 
 @Component({
   selector: 'app-lista-pasaje',
@@ -26,7 +27,8 @@ export class ListaPasajeComponent implements OnInit {
     private modalService: NgbModal,
     private router: Router,
     private passageService: PassageService,
-    private foodboxService: FoodboxService
+    private foodboxService: FoodboxService,
+    private storageService: StorageService
   ) { }
 
   ngOnInit(): void {
@@ -43,9 +45,11 @@ export class ListaPasajeComponent implements OnInit {
   }
 
   refreshList() {
-    this.passageService.getPassages().subscribe(
+    this.passageService.findByIdUser(this.storageService.getCurrentUser().id).subscribe(
       (list: any) => {
-        this.listT = list.pasajes as Pasaje[];
+        console.log(list);
+        //this.listT = list.data.Pasaje as Pasaje[];
+        this.listT = [...(list.data.Pasaje as Pasaje[]).filter(pasaje => pasaje.Estado.estado.match('Pendiente'))];
         this.listT.forEach(() => { this.viandasCompradas.push({ aPagar: false, viandas: [], total: 0 }) });
       },
       (error) => {
