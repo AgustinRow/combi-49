@@ -585,7 +585,6 @@ const start = async (req, res) => {
       for (i = 0; pasajes.length > i; i++) {
         pasajes[i].setEstado(iniciar);
       }
-      viaje.setEstado(iniciar);
       res.status(200).json({ message: "Viaje iniciado" });
     } else {
       res.status(400).json({
@@ -627,6 +626,22 @@ const finish = async (req, res) => {
   }
 };
 
+const initTravel = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const viaje = await model.Viaje.findOne({
+      where: { id: id, habilitado: true },
+    });
+    const iniciado = await model.Estado.findOne({
+      where: { estado: "Iniciado" },
+    });
+    viaje.setEstado(iniciado).then((response) => {
+      res.status(200).json({ message: "Exito" });
+    });
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 module.exports = {
   remove,
   list,
@@ -637,4 +652,5 @@ module.exports = {
   findOne,
   start,
   finish,
+  initTravel,
 };

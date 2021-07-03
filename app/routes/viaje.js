@@ -10,7 +10,8 @@ router.post("/alta", Viaje.create);
 router.put("/modificar", Viaje.update);
 router.get("/choferes_viajes_libres", Viaje.driverAndTravel);
 router.delete("/baja", Viaje.remove); //no esta implementado
-router.put("/iniciar/(:id)", Viaje.start);
-router.put("/finalizar/(:id)", Viaje.finish);
+router.get("/iniciar/(:id)", Viaje.start);
+router.get("/finalizar/(:id)", Viaje.finish);
+router.get("/comenzar/(:id)", Viaje.initTravel);
 
 module.exports = router;
