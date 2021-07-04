@@ -49,7 +49,7 @@ export class ViajeIniciadoComponent implements OnInit {
             this.listP_completado.length = 0;
             (viajesConPasajeros.data.Pasaje as Pasaje[]).forEach(
               pasaje => {
-                if ((pasaje.Test === null) || (pasaje.Estado.estado === 'Pendiente')) {
+                if ((pasaje.Test === null) && (pasaje.Estado.estado === 'Pendiente')) {
                   this.listP.push(pasaje);
                 } else {
                   this.listP_completado.push(pasaje);
