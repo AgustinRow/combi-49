@@ -48,6 +48,7 @@ export class LoginComponent implements OnInit {
         (data: any) => {
           if (data.data != null) {
             this.correctLogin(data);
+            console.log(data);
           }
           else {
             console.log("El usuario o contraseña son incorrectos");

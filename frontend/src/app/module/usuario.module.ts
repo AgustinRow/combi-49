@@ -1,3 +1,4 @@
+import { Membresia } from "./membresia.module";
 import { Pasaje } from "./pasaje.module";
 
 export class Usuario{
@@ -10,4 +11,5 @@ export class Usuario{
     password: string;    //password
     habilitado: boolean;  //activo
     pasajes: Pasaje[];
+    Membresia: Membresia;
 }

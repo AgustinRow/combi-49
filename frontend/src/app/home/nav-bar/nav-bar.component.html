@@ -49,6 +49,9 @@
             </ul>
 
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item" *ngIf="(usuarioIdentificado.tipo === USUARIO_PASAJERO)&&(usuarioIdentificado.Membresia === null)">
+                    <a class="btn btn-info" (click)="onSelect(buyMembership)">Comprar membresia</a>
+                </li>
                 <li class="nav-item">
                     <a class="btn btn-danger" (click)="onSelect(logOut)">Cerrar sesion</a>
                 </li>
@@ -129,3 +132,24 @@
         <!--this.isLoggedNavbar = true -->
     </div>
 </ng-template>
+
+<!-- Modal para comprar membrecia-->
+<ng-template #buyMembership let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h6 class="modal-title">Membrecia mesual</h6>
+    </div>
+    <div class="modal-body">
+        <p>Con la compra de la membresia se le aplicara un 10% de descuento en su proxima compra de pasajes o viandas.</p>
+        <p>Se le debitara mes a mes el valor hasta que realice el pedido de cancelacion</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="openModal(contentPay); c('Close click')">Salir</button>
+    </div>
+</ng-template>
+
+<!-- Modal pago de membrecia -->
+<!-- <ng-template #contentPay let-c="close" let-d="dismiss">
+    <app-pago [(total)]="250" (closeEvent)="c('Close click')" (payEvent)="payment($event); c('Close click')">
+        Cargando...</app-pago>
+</ng-template> -->

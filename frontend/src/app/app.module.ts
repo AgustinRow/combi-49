@@ -81,6 +81,7 @@ import { PassageNameDniFilterPipe } from './pipe/passage-name-dni-filter.pipe';
 import { ListaTestComponent } from './lista-test/lista-test.component';
 import { TestComponent } from './lista-test/test/test.component';
 import { TestNuevoComponent } from './lista-test/test-nuevo/test-nuevo.component';
+import { ListaMembresiaComponent } from './lista-membresia/lista-membresia.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -162,7 +163,8 @@ export function tokenGetter() {
     PassageNameDniFilterPipe,
     ListaTestComponent,
     TestComponent,
-    TestNuevoComponent
+    TestNuevoComponent,
+    ListaMembresiaComponent
   ],
   imports: [
     BrowserModule,

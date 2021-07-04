@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Usuario } from 'src/app/module/usuario.module';
+import { MembershipService } from 'src/app/service/membership.service';
 import { StorageService } from 'src/app/service/storage.service';
 import { UserService } from 'src/app/service/user.service';
 
@@ -21,13 +22,13 @@ export class NavBarComponent implements OnInit, OnChanges {
   usuarioIdentificado: Usuario;
   USUARIO_ADMINISTRADOR = UserService.USUARIO_ADMINISTRADOR;
   USUARIO_PASAJERO = UserService.USUARIO_PASAJERO;
-  private chofferCurretTrip: string;
 
   constructor(
     private router: Router,
     private storageService: StorageService,
     private userService: UserService,
-    private modalCommentService: NgbModal
+    private modalCommentService: NgbModal,
+    private membershipService: MembershipService
   ) {
     //Ver porque no lo toma
     this.storageService.logChange.subscribe(
@@ -69,5 +70,31 @@ export class NavBarComponent implements OnInit, OnChanges {
   logout() {
     this.storageService.logout();
     this.router.navigate(['/']);
+  }
+
+  
+  payment(estaPago: boolean) {
+    if (estaPago) {
+      this.membershipService.addMembership(this.usuarioIdentificado).subscribe(
+        (data: any) => {
+          if (data != null) {
+            alert("Se ha pagado la membrecia correctamente");
+            //this.passageNewEvent.emit(data.data);
+            this.router.navigate(['/']);
+          }
+        },
+        (error) => {
+          if (error.status >= 500) {
+            alert("Problemas para conectarse con el servidor");
+          }
+          else {
+            alert(error.error.message);
+          }
+        }
+      );
+    }
+    else {
+      alert("No se pudo completar el pago");
+    }
   }
 }
