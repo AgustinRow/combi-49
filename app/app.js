@@ -17,6 +17,7 @@ const pasajeRouter = require("./routes/pasaje");
 const viandaRouter = require("./routes/vianda");
 const valoracionRouter = require("./routes/valoracion");
 const testRouter = require("./routes/test");
+const testMembresia = require("./routes/membresia");
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use(cookieParser());
 app.use(cors({ origin: ["http://localhost:4200"], credentials: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
+//rutas API
 app.use("/", indexRouter);
 app.use("/api/ciudad", ciudadRouter);
 app.use("/api/usuario", usersRouter);
@@ -42,6 +44,7 @@ app.use("/api/pasaje", pasajeRouter);
 app.use("/api/vianda", viandaRouter);
 app.use("/api/valoracion", valoracionRouter);
 app.use("/api/test", testRouter);
+app.use("/api/membresia", testMembresia);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

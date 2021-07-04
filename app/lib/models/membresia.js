@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Membresia.init(
     {
-      fecha: DataTypes.DATE,
+      fecha_vencimiento: DataTypes.DATE,
       activo: DataTypes.BOOLEAN,
       descuento: DataTypes.INTEGER,
     },

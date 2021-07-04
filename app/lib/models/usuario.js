@@ -16,7 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "UsuarioId",
         through: "Viaje_Chofer",
       });
-      Usuario.hasOne(models.Membresia, { foreignKey: "UsuarioId" });
+      Usuario.hasOne(models.Membresia, {
+        as: "Membresia",
+        foreignKey: "UsuarioId",
+      });
     }
   }
   Usuario.init(

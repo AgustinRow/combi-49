@@ -1,6 +1,7 @@
 const model = require("../lib/models");
 const Op = require("sequelize").Op;
 const jwt = require("jsonwebtoken");
+const Membresia = require("../controller/membresia");
 require("dotenv").config();
 
 function jwtToken(user) {
@@ -32,14 +33,72 @@ const findUser = async (req, res) => {
 
 const login = async (req, res) => {
   const user = req.body;
+  try {
+    let usuario = await model.Usuario.findOne({
+      where: { email: user.email, habilitado: true },
+    });
+    const membresia = await usuario.getMembresia();
+    if (usuario != null) {
+      if (user.password === usuario.password) {
+        //await Membresia.checkMembership(membresia);
+        usuario = await model.Usuario.findOne({
+          where: { email: user.email, habilitado: true },
+          attributes: [
+            "id",
+            "email",
+            "nombre",
+            "apellido",
+            "password",
+            "dni",
+            "tipo",
+          ],
+          include: [
+            {
+              model: model.Membresia,
+              as: "Membresia",
+              attributes: ["id", "activo", "fecha_vencimiento", "descuento"],
+            },
+          ],
+        });
+        res.status(200).json({ data: usuario });
+      } else {
+        res.status(400).json({ error: "Email o contraseña incorrecto" });
+      }
+    } else {
+      res.status(401).json({ error: "Email o contraseña incorrecto" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const Oldlogin = async (req, res) => {
+  const user = req.body;
   console.log(user);
   model.Usuario.findOne({
     where: { email: user.email, habilitado: true },
+    attributes: [
+      "id",
+      "email",
+      "nombre",
+      "apellido",
+      "password",
+      "dni",
+      "tipo",
+    ],
+    include: [
+      {
+        model: model.Membresia,
+        as: "Membresia",
+        attributes: ["id", "activo", "fecha", "descuento"],
+      },
+    ],
   }).then((response) => {
     try {
       if (response != null) {
         if (user.password === response.password) {
-          res.status(200).json({ data: parse(response) });
+          res.status(200).json({ data: response });
         } else {
           res.status(400).json({ error: "Email o contraseña incorrecto" });
         }

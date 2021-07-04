@@ -3,7 +3,6 @@ const Op = require("sequelize").Op;
 
 const create = async (req, res) => {
   const pasaje = req.body;
-  console.log(pasaje);
   try {
     const viaje = await model.Viaje.findOne({
       where: { id: pasaje.viajeId, habilitado: true },
@@ -11,14 +10,20 @@ const create = async (req, res) => {
     const pasajero = await model.Usuario.findOne({
       where: { id: pasaje.pasajero, tipo: 3 },
     });
-    // chequear que pueda realizar la compra, si es que puede hago todo
     const estado = await model.Estado.findOne({
       where: { estado: "Pendiente" },
     });
     if (viaje.asientos_disponibles >= 1) {
+      const membresia = await pasajero.getMembresia();
+      let precio;
+      if (membresia != null && membresia.activo) {
+        precio = viaje.precio - (10 * viaje.precio) / 100;
+      } else {
+        precio = viaje.precio;
+      }
       const pasajex = await model.Pasaje.create({
         habilitado: true,
-        precio: viaje.precio,
+        precio: precio,
       }).then((response) => {
         viaje.update({ asientos_disponibles: viaje.asientos_disponibles - 1 });
         response.setPasajero(pasajero);

@@ -74,7 +74,7 @@ const remove = async (req, res) => {
       where: { id: id, habilitado: true },
     });
     const pasaje = await vianda.getPasaje();
-    if (pasaje != null) {
+    if (pasaje.length == 0) {
       model.Vianda.update({ habilitado: false }, { where: { id: id } }).then(
         (response) => {
           res.status(201).json({ message: "Vianda Eliminada" });
@@ -103,9 +103,16 @@ const buy = async (req, res) => {
         where: { id: body.viandas[i].id, habilitado: true },
       });
       if (vianda.stock > 0) {
+        const membresia = await pasajero.getMembresia();
+        let precio;
+        if (membresia != null && membresia.activo) {
+          precio = pasaje.precio - (10 * pasaje.precio) / 100;
+        } else {
+          precio = pasaje.precio;
+        }
         pasaje.addVianda(vianda).then((response) => {
           if (response) {
-            pasaje.update({ precio: pasaje.precio + vianda.precio });
+            pasaje.update({ precio: precio + vianda.precio });
             vianda.update({ stock: vianda.stock - 1 });
           } else {
             res.status(400).json({
