@@ -25,6 +25,18 @@ const create = async (req, res) => {
   });
 };
 
+const list = async (req, res) => {
+  try {
+    const estados = await model.Estado.findAll({
+      attributes: ["id", "estado"],
+    });
+    res.status(200).json({ data: estados });
+  } catch {
+    res.status(500).json({ message: "internal server error" });
+  }
+};
+
 module.exports = {
   create,
+  list,
 };

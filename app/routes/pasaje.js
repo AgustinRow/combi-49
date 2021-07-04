@@ -7,6 +7,7 @@ const verify = require("../controller/verifyPayment");
 //inicializa los estados de los pasajes,
 //ejecutar esta api antes de comprar pasajes
 router.get("/inicializar_estado", Estado.create);
+router.get("/listar_estados", Estado.list);
 
 router.post("/comprar", Pasaje.create);
 router.get("/buscar/(:id)", Pasaje.findTravelsForUser);
