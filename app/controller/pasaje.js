@@ -380,6 +380,98 @@ const ausente = async (req, res) => {
   }
 };
 
+const reporte = async (req, res) => {
+  const { query } = req;
+  try {
+    console.log(query.fecha_inicial, query.fecha_fin);
+    const pasajes = await model.Pasaje.findAll({
+      where: {
+        [Op.and]: [
+          {
+            createdAt: { [Op.gte]: query.fecha_inicial },
+            createdAt: { [Op.lte]: query.fecha_fin },
+          },
+        ],
+      },
+      attributes: ["id", "precio"],
+      include: [
+        {
+          model: model.Valoracion,
+          as: "Valoracion",
+          attributes: ["id", "descripcion", "puntuacion"],
+        },
+        {
+          model: model.Vianda,
+          as: "Vianda",
+          attributes: ["id", "nombre"],
+        },
+        {
+          model: model.Estado,
+          as: "Estado",
+          attributes: ["id", "estado"],
+          where: { estado: "Finalizado" },
+        },
+        {
+          model: model.Viaje,
+          as: "Viaje",
+          order: ["fecha_salida"],
+          attributes: [
+            "id",
+            "nombre",
+            "fecha_salida",
+            "hora",
+            "detalle",
+            "asientos_disponibles",
+            "precio",
+          ],
+          include: [
+            {
+              model: model.Estado,
+              as: "Estado",
+              attributes: ["id", "estado"],
+            },
+            {
+              model: model.Ruta,
+              as: "Ruta",
+              attributes: ["id", "distancia", "duracion"],
+              include: [
+                {
+                  model: model.Ciudad,
+                  as: "Origen",
+                  attributes: ["id", "nombre", "cp"],
+                  include: [
+                    {
+                      model: model.Provincia,
+                      as: "Provincia",
+                      attributes: ["id", "nombre"],
+                    },
+                  ],
+                },
+                {
+                  model: model.Ciudad,
+                  as: "Destino",
+                  attributes: ["id", "nombre", "cp"],
+                  include: [
+                    {
+                      model: model.Provincia,
+                      as: "Provincia",
+                      attributes: ["id", "nombre"],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    res.status(200).json({ data: pasajes });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   create,
   findTravelsForUser,
@@ -389,4 +481,5 @@ module.exports = {
   listUsedTicket,
   ausente,
   actualizarStock,
+  reporte,
 };
