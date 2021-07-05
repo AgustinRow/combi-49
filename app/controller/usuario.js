@@ -37,7 +37,7 @@ const login = async (req, res) => {
     let usuario = await model.Usuario.findOne({
       where: { email: user.email, habilitado: true },
     });
-    const membresia = await usuario.getMembresia();
+    //const membresia = await usuario.getMembresia();
     if (usuario != null) {
       if (user.password === usuario.password) {
         //await Membresia.checkMembership(membresia);

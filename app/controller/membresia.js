@@ -11,17 +11,26 @@ const create = async (req, res) => {
       where: { id: body.usuarioId, habilitado: true, tipo: 3 },
       include: [{ model: model.Membresia, as: "Membresia" }],
     });
-    if (user.Membresia.activo) {
-      res
-        .status(400)
-        .json({ message: "El usuario ya tiene membresia contratada" });
+    const date = new Date();
+    let vencimiento = new Date(
+      date.getFullYear(),
+      date.getMonth() + 1,
+      date.getDate()
+    );
+    if (user.Membresia != null) {
+      if (user.Membresia.activo) {
+        res
+          .status(400)
+          .json({ message: "El usuario ya tiene membresia contratada" });
+      } else {
+        user.Membresia.update({
+          activo: true,
+          fecha_vencimiento: vencimiento,
+        }).then((response) => {
+          res.status(200).json({ message: "Membresia actualizada" });
+        });
+      }
     } else {
-      const date = new Date();
-      let vencimiento = new Date(
-        date.getFullYear(),
-        date.getMonth() + 1,
-        date.getDate()
-      );
       model.Membresia.create({
         activo: true,
         descuento: 10,
