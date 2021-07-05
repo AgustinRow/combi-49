@@ -1,7 +1,76 @@
-<h6>Cantidad de articulos: {{ viandasCompradas.length }}</h6>
-<h6>Subtotal de viandas: {{ totalViandas }}</h6>
-<h6>Valor de pasaje: {{ pasajeModificado.precio }}</h6>
-<h6>Total: {{ total }}</h6>
+<div class="my-2">
+    <ngb-accordion (panelChange)="beforeChange($event)">
+        <ngb-panel title="Ya pagado">
+            <ng-template ngbPanelContent>
+                <ul class="list-group w-100">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col">
+                                Cantidad de articulos:
+                            </div>
+                            <div class="col">
+                                {{ viandasCompradas.length }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col">
+                                Valor de pasaje:
+                            </div>
+                            <div class="col">
+                                ${{ pasajeModificado.precio | number:'1.2-2' }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </ng-template>
+        </ngb-panel>
+    </ngb-accordion>
+</div>
+
+<h5>Resumen de lo agregado</h5>
+<ul class="list-group w-100 mb-2">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col">
+                Subtotal de viandas:
+            </div>
+            <div class="col">
+                ${{ subtotalViandasAgregadas | number:'1.2-2' }}
+                <ng-template [ngIf]="(viandasAgregadas.length !== 0)"> (
+                    {{ viandasAgregadas.length }}
+                    <ng-template [ngIf]="(viandasAgregadas.length === 1)" [ngIfElse]="BlockEnPlural2">
+                        <span>articulo</span>
+                    </ng-template>
+                    <ng-template #BlockEnPlural2>
+                        <span>articulos</span>
+                    </ng-template> )
+                </ng-template>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item" *ngIf="membresia && membresia.activo">
+        <div class="row">
+            <div class="col">
+                Descuento:
+            </div>
+            <div class="col">
+                ${{ descuentoTotal | number:'1.2-2' }}
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col">
+                <strong>Total</strong>
+            </div>
+            <div class="col">
+                ${{ totalViandasAgregadas | number:'1.2-2' }}
+            </div>
+        </div>
+    </li>
+</ul>
 
 <button type="button" class="btn btn-info" (click)="finishBuy()" [disabled]="totalViandasAgregadas == 0">
     <ng-template [ngIf]="(viandasAgregadas.length === 1)" [ngIfElse]="BlockEnPlural">
@@ -13,16 +82,16 @@
 </button>
 
 <br>
-<form (ngSubmit)="addFoodBox(foodForm)" #foodForm="ngForm">
+<form (ngSubmit)="addFoodBox(foodForm)" #foodForm="ngForm" class="form-inline my-3">
     <div class="form-group">
         <label for="vianda">Vianda:</label>
-        <select class="form-control" name="vianda" ngModel required [value]="0">
+        <select class="form-control mx-2" name="vianda" ngModel required [value]="0">
             <option *ngFor="let vianda of viandasParaVenta; index as i" [value]="i">{{ vianda.nombre }} ${{
                 vianda.precio }}</option>
         </select>
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-success">Agregar</button>
+        <button type="submit" class="btn btn-success" [disabled]="!foodForm.valid">Agregar</button>
     </div>
 </form>
 

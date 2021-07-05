@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Session } from 'src/app/module/session.module';
 import { Usuario } from 'src/app/module/usuario.module';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 import { MembershipService } from 'src/app/service/membership.service';
 import { StorageService } from 'src/app/service/storage.service';
 import { UserService } from 'src/app/service/user.service';
@@ -11,7 +13,8 @@ import { UserService } from 'src/app/service/user.service';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
   providers: [
-    StorageService
+    StorageService,
+    AuthenticationService
   ]
 })
 export class NavBarComponent implements OnInit, OnChanges {
@@ -28,7 +31,8 @@ export class NavBarComponent implements OnInit, OnChanges {
     private storageService: StorageService,
     private userService: UserService,
     private modalCommentService: NgbModal,
-    private membershipService: MembershipService
+    private membershipService: MembershipService,
+    private authService: AuthenticationService
   ) {
     //Ver porque no lo toma
     this.storageService.logChange.subscribe(
@@ -40,7 +44,7 @@ export class NavBarComponent implements OnInit, OnChanges {
         console.log('ERROR verify : ', error);
       },
     );
-    
+
   }
 
   ngOnInit(): void {
@@ -72,15 +76,26 @@ export class NavBarComponent implements OnInit, OnChanges {
     this.router.navigate(['/']);
   }
 
-  
+
   payment(estaPago: boolean) {
     if (estaPago) {
       this.membershipService.addMembership(this.usuarioIdentificado).subscribe(
         (data: any) => {
           if (data != null) {
             alert("Se ha pagado la membrecia correctamente");
-            //this.passageNewEvent.emit(data.data);
-            this.router.navigate(['/']);
+            this.authService.loginUser(this.usuarioIdentificado).subscribe(
+              (session: any) => {
+                if (session.data != null) {
+                  this.storageService.login(new Session(session.data));
+                }
+                else {
+                  console.log("El usuario o contraseña son incorrectos");
+                }
+              },
+              (error) => {
+                alert(error)
+              }
+            );
           }
         },
         (error) => {

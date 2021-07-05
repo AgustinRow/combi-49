@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PassageService } from 'src/app/service/passage.service';
 import { Pasaje } from 'src/app/module/pasaje.module';
 import { StorageService } from 'src/app/service/storage.service';
+import { Membresia } from 'src/app/module/membresia.module';
 
 @Component({
   selector: 'app-pasaje-nuevo',
@@ -15,6 +16,9 @@ import { StorageService } from 'src/app/service/storage.service';
 export class PasajeNuevoComponent implements OnInit {
   viajeSeleccionado = new Viaje();
   pasajeNuevo = new Pasaje();
+  descuento = 0;
+  total = 0;
+  membresia: Membresia;
   @Output() passageNewEvent = new EventEmitter<Pasaje>();
 
   constructor(
@@ -41,6 +45,13 @@ export class PasajeNuevoComponent implements OnInit {
     this.travelService.getTravelById(viajeId).subscribe(
       (list: any) => {
         this.viajeSeleccionado = list.data as Viaje;
+        this.membresia = this.storageService.getCurrentUser().Membresia;
+        if (this.membresia && this.membresia.activo) {
+          this.descuento = this.viajeSeleccionado.precio * .1;
+          this.total = this.viajeSeleccionado.precio * .9;
+        } else {
+          this.total = this.viajeSeleccionado.precio;
+        }
       },
       (error) => {
         if (error.status >= 500) {

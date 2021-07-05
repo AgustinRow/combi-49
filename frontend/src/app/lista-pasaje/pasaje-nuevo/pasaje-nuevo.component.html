@@ -1,19 +1,55 @@
 <div class="col m-3 justify-content-center">
-    <div class="row m-3 ">
-        <H6>Pasaje para el {{ viajeSeleccionado.fecha_salida | date:'dd-MM-yyyy' }} a las {{ viajeSeleccionado.hora }}</H6>
+    <div class="row m-3">
+        <H6>Pasaje para el {{ viajeSeleccionado.fecha_salida | date:'dd-MM-yyyy' }} a las {{ viajeSeleccionado.hora }}
+        </H6>
     </div>
-    <div class="row mx-3 ">
-        <p>De {{ viajeSeleccionado.Ruta.Origen.nombre }}, {{ viajeSeleccionado.Ruta.Origen.Provincia.nombre }} hasta {{ viajeSeleccionado.Ruta.Destino.nombre }}, {{ viajeSeleccionado.Ruta.Destino.Provincia.nombre }}</p>
+    <div class="row mx-3" *ngIf="viajeSeleccionado.Ruta">
+        <p>De {{ viajeSeleccionado.Ruta.Origen.nombre }}, {{ viajeSeleccionado.Ruta.Origen.Provincia.nombre }} hasta {{
+            viajeSeleccionado.Ruta.Destino.nombre }}, {{ viajeSeleccionado.Ruta.Destino.Provincia.nombre }}</p>
     </div>
-    <div class="row mx-3 ">
+    <div class="row mx-3" *ngIf="viajeSeleccionado.Ruta">
         <p>Duracion: {{viajeSeleccionado.Ruta.duracion }} min</p>
     </div>
 
-    <div class="row m-3 ">
+    <ul class="list-group" style="width: 300px;">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col">
+                    Pasaje:
+                </div>
+                <div class="col">
+                    ${{ viajeSeleccionado.precio | number:'1.2-2' }}
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col">
+                    Descuento:
+                </div>
+                <div class="col">
+                    ${{ descuento | number:'1.2-2' }}
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col">
+                    <strong>Total</strong>
+                </div>
+                <div class="col">
+                    ${{ total | number:'1.2-2' }}
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <div class="row m-3">
         <button type="button" class="btn btn-danger" (click)="openModal(contentShow)">
-            Pagar ${{ viajeSeleccionado.precio }}</button>
+            Pagar ${{ total | number:'1.2-2' }}</button>
     </div>
 </div>
 <ng-template #contentShow let-c="close" let-d="dismiss">
-    <app-pago [(total)]="viajeSeleccionado.total" (closeEvent)="c('Close click')" (payEvent)="payment($event); c('Close click')">Cargando...</app-pago>
+    <app-pago [(total)]="viajeSeleccionado.total" (closeEvent)="c('Close click')"
+        (payEvent)="payment($event); c('Close click')">Cargando...</app-pago>
 </ng-template>

@@ -47,7 +47,6 @@ export class ListaPasajeComponent implements OnInit {
   refreshList() {
     this.passageService.findByIdUser(this.storageService.getCurrentUser().id).subscribe(
       (list: any) => {
-        console.log(list);
         //this.listT = list.data.Pasaje as Pasaje[];
         this.listT = [...(list.data.Pasaje as Pasaje[]).filter(pasaje => pasaje.Estado.estado.match('Pendiente'))];
         this.listT.forEach(() => { this.viandasCompradas.push({ aPagar: false, viandas: [], total: 0 }) });
@@ -70,6 +69,10 @@ export class ListaPasajeComponent implements OnInit {
     this.viandasCompradas[index].viandas.forEach(vianda => {
       this.viandasCompradas[index].total += vianda.precio;
     });
+    var membresia = this.storageService.getCurrentUser().Membresia;
+    if(membresia && (membresia.activo)){
+      this.viandasCompradas[index].total *= (1 - (membresia.descuento/100));
+    }
   }
 
   payment(estaPago: boolean) {
@@ -78,6 +81,7 @@ export class ListaPasajeComponent implements OnInit {
         (data: any) => {
           if (data != null) {
             alert("Se ha pagado correctamente");
+            this.refreshList();
           }
         },
         (error) => {

@@ -33,7 +33,7 @@
                             <ng-template #BlockPagar>
                                 <button type="button" class="btn btn-warning"
                                     (click)="openModal(contentPay, pasaje, i)">Pagar
-                                    ${{viandasCompradas[i].total}}</button>
+                                    ${{viandasCompradas[i].total | number:'1.2-2' }}</button>
                             </ng-template>
                             <button type="button" class="btn btn-danger"
                                 (click)="openModal(contentCancel, pasaje, i)">Cancelar pasaje</button>
@@ -44,13 +44,16 @@
         </table>
     </div>
 </ng-template>
+
+<!-- Pantalla para lista vacia -->
 <ng-template #BlockBuyPassage>
     <div class="text-center m-2">
-        <h2 class="m-2">No piene pasajes pendientes de uso</h2>
+        <h2 class="m-2">No tiene pasajes pendientes de uso</h2>
         <a class="btn btn-info w-100 h-25 my-3" routerLink="/">Ir a buscar viaje</a>
     </div>
 </ng-template>
 
+<!-- Modal cancelar pasaje -->
 <ng-template #contentCancel let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">¿Realmente desea cancelar el viaje?</h4>
@@ -65,6 +68,7 @@
     </div>
 </ng-template>
 
+<!-- Modal mostrar informacion -->
 <ng-template #contentShow let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">Informacion del pasaje</h4>
@@ -80,6 +84,7 @@
     </div>
 </ng-template>
 
+<!-- Modal agregar viandas -->
 <ng-template #contentAddFoodBox let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">Informacion del pasaje</h4>
@@ -92,9 +97,9 @@
             (compraViandaEvent)="toBuy($event); c('Close click')">
             Cargando...</app-vianda-comprar>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
-    </div>
+    <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cancelar</button>
+    </div> -->
 </ng-template>
 
 <ng-template #contentPay let-c="close" let-d="dismiss">

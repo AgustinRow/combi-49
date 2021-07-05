@@ -27,7 +27,6 @@ export class PasajeHistorialComponent implements OnInit {
     this.passageSercice.getPassagesBoughtByIdUser(this.usuarioConInfo).subscribe(
       (list: any) => {
         this.pasajesComprados = list.data.Pasaje as Pasaje[];
-        console.log(list)
       },
       (error) => {
         if (error.status >= 500) {
