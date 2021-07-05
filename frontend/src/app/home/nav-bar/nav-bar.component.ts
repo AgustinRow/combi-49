@@ -85,8 +85,9 @@ export class NavBarComponent implements OnInit, OnChanges {
             alert("Se ha pagado la membrecia correctamente");
             this.authService.loginUser(this.usuarioIdentificado).subscribe(
               (session: any) => {
-                if (session.data != null) {
-                  this.storageService.login(new Session(session.data));
+                console.log(session)
+                if (session != null) {
+                  this.storageService.login(new Session(session));
                 }
                 else {
                   console.log("El usuario o contraseña son incorrectos");

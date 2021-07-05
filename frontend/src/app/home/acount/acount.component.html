@@ -3,16 +3,23 @@
         <li class="nav-item">
             <a class="nav-link" (click)="onSelect('info')" [ngClass]="{ active: ver == 'info'}">Informacion</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" (click)="onSelect('historial')" [ngClass]="{ active: ver == 'historial'}"
-                *ngIf="usuarioIdentificado.tipo === USUARIO_PASAJERO">Calificaciones</a>
-        </li>
+        <ng-template [ngIf]="usuarioIdentificado.tipo === USUARIO_PASAJERO">
+            <li class="nav-item">
+                <a class="nav-link" (click)="onSelect('historial')"
+                    [ngClass]="{ active: ver == 'historial'}">Calificaciones</a>
+            </li>
+            <li class="nav-item" *ngIf="usuarioIdentificado.Membresia && (usuarioIdentificado.Membresia.activo)">
+                <a class="nav-link" (click)="onSelect('membresia')"
+                    [ngClass]="{ active: ver == 'membresia'}">Membresia</a>
+            </li>
+        </ng-template>
     </ul>
 </nav>
 
 <app-usuario [(usuarioConInfo)]="usuarioIdentificado" *ngIf="ver == 'info'">Cargando usuario...</app-usuario>
 <div class="container" *ngIf="(usuarioIdentificado.tipo === USUARIO_PASAJERO)&&(ver === 'info')">
-    <p>Solo si esta desea dejar de utilizar los servicios para la compra de pasajes y viandas de ahora en adelante, haga click en el siguiente boton</p>
+    <p>Solo si esta desea dejar de utilizar los servicios para la compra de pasajes y viandas de ahora en adelante, haga
+        click en el siguiente boton</p>
     <a class="btn btn-danger" (click)="openModal(logOut)">Cerrar cuenta</a>
 </div>
 
@@ -29,3 +36,4 @@
 </ng-template>
 
 <app-pasaje-historial [(usuarioConInfo)]="usuarioIdentificado" *ngIf="ver == 'historial'">Cargando usuario...</app-pasaje-historial>
+<app-membresia [userMembership]="usuarioIdentificado" *ngIf="ver == 'membresia'">Carcagdo membresia...</app-membresia>

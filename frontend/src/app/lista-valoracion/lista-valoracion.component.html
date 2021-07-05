@@ -24,11 +24,13 @@
                         <button type="button" class="btn btn-info" (click)="openModal(contentShow, viaje)">
                             <i class="bi bi-info-circle"></i>
                         </button>
-                        <button type="button" class="btn btn-info" 
-                            [disabled]="viaje.Valoracion.length === 0"
-                            (click)="openModal(contentShowListValue, viaje)">
-                            valoraciones por usuario
-                        </button>
+                        <ng-template [ngIf]="viaje.Valoracion">
+                            <button type="button" class="btn btn-info" 
+                                [disabled]="viaje.Valoracion.length === 0"
+                                (click)="openModal(contentShowListValue, viaje)">
+                                valoraciones por usuario
+                            </button>
+                        </ng-template>
                     </div>
                 </td>
             </tr>

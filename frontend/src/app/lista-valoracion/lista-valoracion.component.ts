@@ -36,7 +36,7 @@ export class ListaValoracionComponent implements OnInit {
   refreshList() {
     this.travelService.getTravels().subscribe(
       (list: any) => {
-        this.lViajes = list.data as Viaje[];
+        this.lViajes = [...(list.data as Viaje[]).filter(viaje => viaje.Estado.estado.match('Finalizado'))]
         this.lViajes.forEach(
           (viaje) => {
             this.ratingService.getRatingById(viaje).subscribe(

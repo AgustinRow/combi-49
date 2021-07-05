@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="row">
+        <div class="col" style="max-width: 200px;">
+            <strong>Estado: </strong>
+        </div>
+        <div class="col w-100">
+            <ng-template [ngIf]="userMembership.Membresia.activo" [ngIfElse]="BlockVencido">
+                Activo
+            </ng-template>
+            <ng-template #BlockVencido>
+                Vencido
+            </ng-template>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" style="max-width: 200px;">
+            <strong>Descuento aplicado: </strong>
+        </div>
+        <div class="col w-100">
+            {{ userMembership.Membresia.descuento }}%
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" style="max-width: 200px;">
+            <strong>Día de vencimiento: </strong>
+        </div>
+        <div class="col w-100">
+            {{ userMembership.Membresia.fecha_vencimiento | date:'dd/MM/yyyy' }}
+        </div>
+    </div>
+</div>
+<!-- Cancelar membresia -->
+<div class="container my-5">
+    <p>Cancelando la membresia, pierde acceso a los decuentos</p>
+    <a class="btn btn-danger" (click)="openModal(checkConfirm)">Cancelar membresia</a>
+</div>
+
+
+<!-- Modal para cancelar membrecia-->
+<ng-template #checkConfirm let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h6 class="modal-title">¿Realmente quiere cancelar su membresia?</h6>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="cancelMembership(); c('Close click')">Si, deseo cancelar mi
+            membresia</button>
+    </div>
+</ng-template>

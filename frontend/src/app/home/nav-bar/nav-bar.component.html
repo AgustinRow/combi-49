@@ -50,7 +50,7 @@
 
             <ul class="navbar-nav ml-auto">
                 <ng-template [ngIf]="(usuarioIdentificado.tipo === USUARIO_PASAJERO)">
-                    <ng-template [ngIf]="(usuarioIdentificado.Membresia === null)" [ngIfElse]="BlockMember">
+                    <ng-template [ngIf]="(usuarioIdentificado.Membresia === null) || !(usuarioIdentificado.Membresia.activo)" [ngIfElse]="BlockMember">
                         <li class="nav-item">
                             <a class="btn btn-info" (click)="onSelect(buyMembership)">Comprar membresia</a>
                         </li>

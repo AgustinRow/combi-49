@@ -1,5 +1,7 @@
 <ngb-toast [autohide]="false">
-    <h6>Valoracion</h6>
-    <ngb-rating [max]="5" [(rate)]="valoracion.puntuacion" [readonly]="true" style="font-size: 3rem;"></ngb-rating>
-    <p class="row">Detalle: {{ valoracion.descripcion }}</p>
+    <div class="container">
+        <h6>Valoracion</h6>
+        <ngb-rating [max]="5" [(rate)]="valoracion.puntuacion" [readonly]="true" style="font-size: 3rem;"></ngb-rating>
+        <p>Detalle: {{ valoracion.descripcion }}</p>
+    </div>
 </ngb-toast>
