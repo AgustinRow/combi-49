@@ -250,7 +250,10 @@ const cancel = async (req, res) => {
       pasajero.update({ saldo: pasaje.precio + pasajero.saldo });
       const viandas = await pasaje.getVianda();
       const viaje = await pasaje.getViaje();
-      pasaje.setEstado(3).then((response) => {
+      const cancelado = await model.Estado.findOne({
+        where: { estado: "Cancelado" },
+      });
+      pasaje.setEstado(cancelado).then((response) => {
         actualizarStock(viandas, viaje);
         res.status(200).json({ message: "Pasaje Cancelado" });
       });
