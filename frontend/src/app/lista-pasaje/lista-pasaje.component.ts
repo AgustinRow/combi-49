@@ -19,7 +19,7 @@ import { StorageService } from '../service/storage.service';
 export class ListaPasajeComponent implements OnInit {
   listP: Pasaje[] = [];
   pasajeSeleccionado: Pasaje;
-  viandasCompradas: { aPagar: boolean; viandas: Vianda[]; total: number }[] = [];
+  viandasCompradas: { pasajeId: number, aPagar: boolean; viandas: Vianda[]; total: number }[] = [];
   totalViandas: number = 0;
   indexPasajeSeleccionado: number;
   ver = 'Pendiente';
@@ -66,9 +66,8 @@ export class ListaPasajeComponent implements OnInit {
         this.listP = list.data.Pasaje as Pasaje[];
         /* this.listP = [...(list.data.Pasaje as Pasaje[]).filter(pasaje => pasaje.Estado.estado.match('Pendiente'))];
         this.listP.forEach(() => { this.viandasCompradas.push({ aPagar: false, viandas: [], total: 0 }) }); */
-        for (let step = 0; step < [...(list.data.Pasaje as Pasaje[]).filter(pasaje => pasaje.Estado.estado.match('Pendiente'))].length; step++) {
-          this.viandasCompradas.push({ aPagar: false, viandas: [], total: 0 })
-        }
+        var resultPendiente = [...(list.data.Pasaje as Pasaje[]).filter(pasaje => pasaje.Estado.estado.match('Pendiente'))];
+        resultPendiente.forEach((pasaje) => { this.viandasCompradas.push({ pasajeId: pasaje.id , aPagar: false, viandas: [], total: 0 }) });
       },
       (error) => {
         if (error.status >= 500) {
@@ -82,7 +81,8 @@ export class ListaPasajeComponent implements OnInit {
   }
 
   toBuy(listaVianda: Vianda[]) {
-    var index = this.listP.indexOf(this.pasajeSeleccionado);
+    //var index = this.listP.indexOf(this.pasajeSeleccionado);
+    var index = this.viandasCompradas.map(e => e.pasajeId).indexOf(this.pasajeSeleccionado.id);
     this.viandasCompradas[index].aPagar = true;
     this.viandasCompradas[index].viandas = listaVianda;
     this.viandasCompradas[index].viandas.forEach(vianda => {
