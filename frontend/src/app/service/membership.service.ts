@@ -19,7 +19,7 @@ export class MembershipService {
   ) { }
 
   addMembership(user: Usuario): Observable<Usuario> {
-    return this.http.post<Usuario>(this.usersUrl + 'contratar', { usuarioId: user.id, Membrecia: user.Membresia }, httpOptions);
+    return this.http.post<Usuario>(this.usersUrl + 'contratar', { usuarioId: user.id, membresia: user.Membresia }, httpOptions);
   }
   
   cancelMembership(user: Usuario): Observable<any>{

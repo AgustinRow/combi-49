@@ -17,11 +17,13 @@ import { StorageService } from '../service/storage.service';
   ]
 })
 export class ListaPasajeComponent implements OnInit {
-  listT: Pasaje[] = [];
+  listP: Pasaje[] = [];
   pasajeSeleccionado: Pasaje;
   viandasCompradas: { aPagar: boolean; viandas: Vianda[]; total: number }[] = [];
   totalViandas: number = 0;
   indexPasajeSeleccionado: number;
+  ver = 'Pendiente';
+  filtroEstado = ["Pendiente"];
 
   constructor(
     private modalService: NgbModal,
@@ -35,7 +37,21 @@ export class ListaPasajeComponent implements OnInit {
     this.refreshList();
   }
 
-
+  onSelect(selection: string) {
+    this.ver = selection;
+    switch (selection) {
+      case 'Pendiente':
+        this.filtroEstado = [this.ver];
+        break;
+      case 'Finalizado':
+        this.filtroEstado = ['Finalizado', 'Ausente'];
+        break;
+      default:
+        // Devueltos
+        this.filtroEstado = ['Cancelado', 'Rechazado por covid-19'];
+        break;
+    }
+  }
 
   openModal(contentEdit, passageSelected: Pasaje, index: number) {
     this.pasajeSeleccionado = passageSelected;
@@ -47,9 +63,12 @@ export class ListaPasajeComponent implements OnInit {
   refreshList() {
     this.passageService.findByIdUser(this.storageService.getCurrentUser().id).subscribe(
       (list: any) => {
-        //this.listT = list.data.Pasaje as Pasaje[];
-        this.listT = [...(list.data.Pasaje as Pasaje[]).filter(pasaje => pasaje.Estado.estado.match('Pendiente'))];
-        this.listT.forEach(() => { this.viandasCompradas.push({ aPagar: false, viandas: [], total: 0 }) });
+        this.listP = list.data.Pasaje as Pasaje[];
+        /* this.listP = [...(list.data.Pasaje as Pasaje[]).filter(pasaje => pasaje.Estado.estado.match('Pendiente'))];
+        this.listP.forEach(() => { this.viandasCompradas.push({ aPagar: false, viandas: [], total: 0 }) }); */
+        for (let step = 0; step < [...(list.data.Pasaje as Pasaje[]).filter(pasaje => pasaje.Estado.estado.match('Pendiente'))].length; step++) {
+          this.viandasCompradas.push({ aPagar: false, viandas: [], total: 0 })
+        }
       },
       (error) => {
         if (error.status >= 500) {
@@ -63,15 +82,15 @@ export class ListaPasajeComponent implements OnInit {
   }
 
   toBuy(listaVianda: Vianda[]) {
-    var index = this.listT.indexOf(this.pasajeSeleccionado);
+    var index = this.listP.indexOf(this.pasajeSeleccionado);
     this.viandasCompradas[index].aPagar = true;
     this.viandasCompradas[index].viandas = listaVianda;
     this.viandasCompradas[index].viandas.forEach(vianda => {
       this.viandasCompradas[index].total += vianda.precio;
     });
     var membresia = this.storageService.getCurrentUser().Membresia;
-    if(membresia && (membresia.activo)){
-      this.viandasCompradas[index].total *= (1 - (membresia.descuento/100));
+    if (membresia && (membresia.activo)) {
+      this.viandasCompradas[index].total *= (1 - (membresia.descuento / 100));
     }
   }
 

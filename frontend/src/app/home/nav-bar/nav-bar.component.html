@@ -46,12 +46,15 @@
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/Viandas">Viandas</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/Reportes">Reportes</a>
+                </li>
             </ul>
 
             <ul class="navbar-nav ml-auto">
                 <ng-template [ngIf]="(usuarioIdentificado.tipo === USUARIO_PASAJERO)">
                     <ng-template [ngIf]="(usuarioIdentificado.Membresia === null) || !(usuarioIdentificado.Membresia.activo)" [ngIfElse]="BlockMember">
-                        <li class="nav-item">
+                        <li class="nav-item mx-2">
                             <a class="btn btn-info" (click)="onSelect(buyMembership)">Comprar membresia</a>
                         </li>
                     </ng-template>
@@ -142,10 +145,10 @@
     </div>
 </ng-template>
 
-<!-- Modal para comprar membrecia-->
+<!-- Modal para comprar membresia-->
 <ng-template #buyMembership let-c="close" let-d="dismiss">
     <div class="modal-header">
-        <h6 class="modal-title">Membrecia mesual</h6>
+        <h6 class="modal-title">membresia mesual</h6>
     </div>
     <div class="modal-body">
         <p>Con la compra de la membresia se le aplicara un 10% de descuento en su proxima compra de pasajes o viandas.
@@ -158,7 +161,7 @@
     </div>
 </ng-template>
 
-<!-- Modal pago de membrecia -->
+<!-- Modal pago de membresia -->
 <ng-template #contentPay let-c="close" let-d="dismiss">
     <app-pago [total]="250" (closeEvent)="c('Close click')" (payEvent)="payment($event); c('Close click')">
         Cargando...</app-pago>

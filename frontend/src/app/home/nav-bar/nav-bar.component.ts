@@ -82,7 +82,7 @@ export class NavBarComponent implements OnInit, OnChanges {
       this.membershipService.addMembership(this.usuarioIdentificado).subscribe(
         (data: any) => {
           if (data != null) {
-            alert("Se ha pagado la membrecia correctamente");
+            alert("Se ha pagado la membresia correctamente");
             this.authService.loginUser(this.usuarioIdentificado).subscribe(
               (session: any) => {
                 console.log(session)
