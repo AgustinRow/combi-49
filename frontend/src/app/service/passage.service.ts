@@ -53,11 +53,11 @@ export class PassageService {
   }
   
   reportBetweenDates( fecha_inicial: string, fecha_final: string): Observable<Pasaje[]> {
-    return this.http.get<Pasaje[]>(this.usersUrl + '/reporte?fecha_inicial=' + fecha_inicial + '&fecha_fin=' + fecha_final, httpOptions);
+    return this.http.get<Pasaje[]>(this.usersUrl + 'reporte?fecha_inicial=' + fecha_inicial + '&fecha_fin=' + fecha_final, httpOptions);
   }
 
   getPassageStates(): Observable<Estado[]> {
-    return this.http.get<Estado[]>(this.usersUrl + '/listar_estados', httpOptions);
+    return this.http.get<Estado[]>(this.usersUrl + 'listar_estados', httpOptions);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

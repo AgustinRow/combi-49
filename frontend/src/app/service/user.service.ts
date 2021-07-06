@@ -59,6 +59,10 @@ export class UserService {
   cancelUserAcount(user: Usuario): Observable<any> {
     return this.http.put( this.usersUrl + 'cerrar_cuenta/' + user.id, httpOptions);
   }
+  
+  reportBetweenDates( fecha_inicial: string, fecha_final: string): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(this.usersUrl + 'reporte_usuarios?fecha_inicial=' + fecha_inicial + '&fecha_fin=' + fecha_final, httpOptions);
+  }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

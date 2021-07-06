@@ -1,0 +1,143 @@
+<!-- Formulario de busqueda -->
+<div class="container my-3">
+    <h4 class="mb-3">Reporte de usuario ingresados al sistema</h4>
+    <form (ngSubmit)="newReport(datesForm)" #datesForm="ngForm" class="form-inline my-2">
+        <div class="form-group mx-3">
+            <label for="fecha_inicio">Fecha de inicio:</label>
+            <input type="date" class="form-control" ngModel name="fecha_inicio" required>
+        </div>
+
+        <div class="form-group mx-3">
+            <label for="fecha_fin">Fecha de fin:</label>
+            <input type="date" class="form-control" ngModel name="fecha_fin" required>
+        </div>
+
+        <div class="d-flex justify-content-around">
+            <button type="submit" class="btn btn-success"
+                [disabled]="!(datesForm.valid&&datesForm.dirty)">Buscar</button>
+        </div>
+    </form>
+</div>
+
+<!-- Resultados y su filtro -->
+<ng-template [ngIf]="showResult">
+    <div class="container">
+        <h4>Filtros</h4>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="filtroUsuarioHabilitado">Habilitado:</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="filtroUsuarioHabilitado" [(ngModel)]="filtroUsuarioHabilitado">
+                    <option [ngValue]="null" selected>Todos</option>
+                    <option [ngValue]="true">Si</option>
+                    <option [ngValue]="false">No</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="filtroTipoUsuario">Tipo:</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="filtroTipoUsuario" [(ngModel)]="filtroTipoUsuario">
+                    <option [ngValue]="-1" selected>Todos</option>
+                    <option [ngValue]="1">Administrador</option>
+                    <option [ngValue]="2">Chofer</option>
+                    <option [ngValue]="3">Pasajero</option>
+                </select>
+            </div>
+        </div>
+
+        <ng-template [ngIf]="filtroTipoUsuario === 3">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="filtroConMembrecia">Membrecia:</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="filtroConMembrecia" [(ngModel)]="filtroConMembrecia">
+                        <option [ngValue]="null" selected>Todos</option>
+                        <option [ngValue]="true">Comprada</option>
+                        <option [ngValue]="false">Sin</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="filtroConMembrecia">
+                <label class="col-sm-2 col-form-label" for="filtroEstadoMembresia">Estado:</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="filtroEstadoMembresia" [(ngModel)]="filtroEstadoMembresia">
+                        <option [ngValue]="null" selected>Todos</option>
+                        <option [ngValue]="true">Activa</option>
+                        <option [ngValue]="false">Cancelada/Vencida</option>
+                    </select>
+                </div>
+            </div>
+        </ng-template>
+
+        <!-- Tabla filtrada -->
+        <ng-container
+            *ngIf="(listU | userType: filtroTipoUsuario | userActive: filtroUsuarioHabilitado | userMembership: filtroConMembrecia | userMembershipActive: filtroEstadoMembresia) as result">
+            <ng-template [ngIf]="result.length !== 0" [ngIfElse]="BlockEmptyResult">
+                <h4>Resultados</h4>
+                <table class="table table-hover">
+                    <thead>
+                        <tr scope="row">
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>DNI</th>
+                            <th>Tipo</th>
+                            <th>Habilitado</th>
+                            <th>Membresia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let usuario of result; index as i">
+                            <td data-title="Id">{{usuario.id}}</td>
+                            <td data-title="Nombre">{{usuario.nombre}} {{usuario.apellido}}</td>
+                            <td data-title="DNI">{{usuario.dni}}</td>
+                            <td data-title="Tipo">
+                                <ng-template [ngIf]="usuario.tipo !== 1" [ngIfElse]="BlockTipoAdministrador">
+                                    <ng-template [ngIf]="usuario.tipo !== 2" [ngIfElse]="BlockTipoChofer">
+                                        Pasajero
+                                    </ng-template>
+                                    <ng-template #BlockTipoChofer>
+                                        Chofer
+                                    </ng-template>
+                                </ng-template>
+                                <ng-template #BlockTipoAdministrador>
+                                    Administrador
+                                </ng-template>
+                            </td>
+                            <td data-title="Habilitado">
+                                <ng-template [ngIf]="usuario.habilitado" [ngIfElse]="BlockDeshabilitado">
+                                    Si
+                                </ng-template>
+                                <ng-template #BlockDeshabilitado>
+                                    No
+                                </ng-template>
+                            </td>
+                            <td data-title="Membresia">
+                                <ng-template [ngIf]="usuario.Membresia" [ngIfElse]="BlockMember">
+                                    <ng-template [ngIf]="usuario.Membresia.activo" [ngIfElse]="BlockMemberNoActive">
+                                        Activa
+                                    </ng-template>
+                                    <ng-template #BlockMemberNoActive>
+                                        Cancelada/Vencida
+                                    </ng-template>
+                                </ng-template>
+                                <ng-template #BlockMember>
+                                    Sin membrecia
+                                </ng-template>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <div class="row">
+                                    <p class="col text-left"><strong>Cantidad de item: {{ result.length }} </strong></p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-template>
+            <ng-template #BlockEmptyResult>
+                <h4>No se encontraron resultados</h4>
+            </ng-template>
+        </ng-container>
+    </div>
+</ng-template>

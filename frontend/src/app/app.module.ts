@@ -87,6 +87,11 @@ import { ReporteComponent } from './reporte/reporte.component';
 import { PorPasajeComponent } from './reporte/por-pasaje/por-pasaje.component';
 import { PassageFilterPipe } from './pipe/passage-filter.pipe';
 import { PassageSumPipe } from './pipe/passage-sum.pipe';
+import { PorUsuarioComponent } from './reporte/por-usuario/por-usuario.component';
+import { UserTypePipe } from './pipe/user-type.pipe';
+import { UserMembershipPipe } from './pipe/user-membership.pipe';
+import { UserActivePipe } from './pipe/user-active.pipe';
+import { UserMembershipActivePipe } from './pipe/user-membership-active.pipe';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -175,7 +180,12 @@ export function tokenGetter() {
     ReporteComponent,
     PorPasajeComponent,
     PassageFilterPipe,
-    PassageSumPipe
+    PassageSumPipe,
+    PorUsuarioComponent,
+    UserTypePipe,
+    UserMembershipPipe,
+    UserActivePipe,
+    UserMembershipActivePipe
   ],
   imports: [
     BrowserModule,

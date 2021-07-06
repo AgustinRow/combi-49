@@ -27,7 +27,6 @@ export class PorPasajeComponent implements OnInit {
     );
   }
 
-  
   newReport( form: NgForm) {
     this.passageService.reportBetweenDates(form.value.fecha_inicio, form.value.fecha_fin).subscribe(
       (list: any) => {
