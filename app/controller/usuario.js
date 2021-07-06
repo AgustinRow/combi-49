@@ -456,7 +456,7 @@ const myTravels = async (req, res) => {
 const reportUser = async (req, res) => {
   const { query } = req;
   try {
-    const user = model.Usuario.findAll({
+    const user = await model.Usuario.findAll({
       where: {
         [Op.and]: [
           {
