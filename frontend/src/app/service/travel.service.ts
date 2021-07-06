@@ -36,7 +36,7 @@ export class TravelService {
   }
 
   deleteTravel(travel: Viaje): Observable<any> {
-    return this.http.delete<Viaje>(this.usersUrl + 'borrar/' + travel.id, httpOptions);
+    return this.http.delete<Viaje>(this.usersUrl + 'baja/' + travel.id, httpOptions);
   }
 
   findTravels(origen: Ciudad, destino: Ciudad, salida: String): Observable<Viaje[]> {
