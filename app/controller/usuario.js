@@ -463,10 +463,9 @@ const reportUser = async (req, res) => {
             createdAt: { [Op.gte]: query.fecha_inicial },
             createdAt: { [Op.lte]: query.fecha_fin },
           },
-        ],
-        habilitad: true,
+        ]
       },
-      attributes: ["id", "nombre", "apellido", "email", "dni", "tipo"],
+      attributes: ["id", "nombre", "apellido", "email", "dni", "tipo", "habilitado"],
       include: [
         {
           model: model.Membresia,
@@ -474,8 +473,9 @@ const reportUser = async (req, res) => {
           attributes: ["id", "activo", "fecha_vencimiento"],
         },
       ],
+    }).then((response) => {
+      res.status(200).json({ data: response })
     });
-    res.status(200).json({ data: user });
   } catch {
     res.status(500).json({ message: "Internal server error" });
   }
