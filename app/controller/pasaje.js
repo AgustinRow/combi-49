@@ -412,7 +412,6 @@ const reporte = async (req, res) => {
           model: model.Estado,
           as: "Estado",
           attributes: ["id", "estado"],
-          where: { estado: "Finalizado" },
         },
         {
           model: model.Viaje,
