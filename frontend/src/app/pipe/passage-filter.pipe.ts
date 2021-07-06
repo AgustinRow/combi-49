@@ -8,12 +8,12 @@ export class PassageFilterPipe implements PipeTransform {
 
   transform(
     passages: Pasaje[],
-    estado?: string
+    estados?: string[]
   ): Pasaje[] {
 
     if (!passages) return [];
-    if (!estado) return passages;
-    passages = [...passages.filter(passage => passage.Estado.estado.match(estado))];
+    if (!estados) return passages;
+    passages = [...passages.filter(passage => estados.includes(passage.Estado.estado))];
 
     return passages;
   }
