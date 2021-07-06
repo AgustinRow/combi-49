@@ -464,7 +464,7 @@ const reportUser = async (req, res) => {
             createdAt: { [Op.lte]: query.fecha_fin },
           },
         ],
-        habilitad: true,
+        habilitado: true,
       },
       attributes: ["id", "nombre", "apellido", "email", "dni", "tipo"],
       include: [
