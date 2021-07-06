@@ -136,7 +136,35 @@ const updateX = async (req, res) => {
   } catch {}
 };
 
-const remove = async (req, res) => {};
+const remove = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const viaje = await model.Viaje.findOne({
+      where: { id: id, habilitado: true },
+      include: [
+        {
+          model: model.Pasaje,
+          as: "Pasaje",
+        },
+      ],
+    });
+    if (viaje.Pasaje.length == 0) {
+      await viaje.update({ habilitado: false });
+      const chofer = await viaje.getChofer();
+      await viaje.removeChofer(chofer);
+      const vehiculo = await viaje.getVehiculo();
+      await viaje.removeVehiculo(vehiculo);
+      res.status(200).json({ message: viaje });
+    } else {
+      res
+        .status(400)
+        .json({ message: "No se puede eliminar viaje con pasaje comprados" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 const find = async (req, res) => {
   const viaje = req.query;
