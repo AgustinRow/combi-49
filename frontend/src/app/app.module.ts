@@ -83,6 +83,10 @@ import { TestComponent } from './lista-test/test/test.component';
 import { TestNuevoComponent } from './lista-test/test-nuevo/test-nuevo.component';
 import { ListaMembresiaComponent } from './lista-membresia/lista-membresia.component';
 import { MembresiaComponent } from './lista-membresia/membresia/membresia.component';
+import { ReporteComponent } from './reporte/reporte.component';
+import { PorPasajeComponent } from './reporte/por-pasaje/por-pasaje.component';
+import { PassageFilterPipe } from './pipe/passage-filter.pipe';
+import { PassageSumPipe } from './pipe/passage-sum.pipe';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -98,6 +102,7 @@ const appRoutes: Routes = [
   { path: 'CompraPasaje/:viajeId', component: PasajeNuevoComponent },
   { path: 'Pasajes', component: ListaPasajeComponent },
   { path: 'EnCurso', component: ViajeIniciadoComponent },
+  { path: 'Reportes', component: ReporteComponent },
 ]
 
 export function tokenGetter() {
@@ -166,7 +171,11 @@ export function tokenGetter() {
     TestComponent,
     TestNuevoComponent,
     ListaMembresiaComponent,
-    MembresiaComponent
+    MembresiaComponent,
+    ReporteComponent,
+    PorPasajeComponent,
+    PassageFilterPipe,
+    PassageSumPipe
   ],
   imports: [
     BrowserModule,

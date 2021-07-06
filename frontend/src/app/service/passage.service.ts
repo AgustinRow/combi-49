@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Pasaje } from '../module/pasaje.module';
 import { Usuario } from '../module/usuario.module';
+import { Estado } from '../module/estado.module';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -49,6 +50,14 @@ export class PassageService {
 
   cancelPassage(passage: Pasaje): Observable<any>{
     return this.http.put<Pasaje>(this.usersUrl + 'cancelar/'+passage.id, httpOptions)
+  }
+  
+  reportBetweenDates( fecha_inicial: string, fecha_final: string): Observable<Pasaje[]> {
+    return this.http.get<Pasaje[]>(this.usersUrl + '/reporte?fecha_inicial=' + fecha_inicial + '&fecha_fin=' + fecha_final, httpOptions);
+  }
+
+  getPassageStates(): Observable<Estado[]> {
+    return this.http.get<Estado[]>(this.usersUrl + '/listar_estados', httpOptions);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

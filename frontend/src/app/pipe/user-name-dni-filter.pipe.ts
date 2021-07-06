@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 import { Usuario } from '../module/usuario.module';
 
 @Pipe({
