@@ -83,13 +83,18 @@
                         </div>
                     </td>
                     <ng-template #NoAdminBlock>
-                        <td data-title="Acciones"
-                            *ngIf="usuarioIdentificado.tipo === USUARIO_CHOFER; else BlockPassager">
-                            <button class="btn btn-success" [disabled]="!(viaje.fecha_salida === hoy)"
-                                (click)="startTravel(viaje)">
-                                <span>Iniciar</span>
-                            </button>
-                        </td>
+                        <ng-template [ngIf]="usuarioIdentificado.tipo === USUARIO_CHOFER" [ngIfElse]="BlockPassager">
+                            <td data-title="Acciones">
+                                <div class="btn-group">
+                                    <button class="btn btn-success" [disabled]="!(viaje.fecha_salida === hoy)" (click)="startTravel(viaje)">
+                                        <span>Iniciar</span>
+                                    </button>
+                                    <button class="btn btn-success" (click)="openModal(confirmCancel, viaje)">
+                                        <span>Cancelar</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-template>
                         <ng-template #BlockPassager>
                             <td data-title="Acciones">
                                 <a [routerLink]="['/CompraPasaje', viaje.id]">
@@ -146,5 +151,16 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="c('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<!-- Modal para confirmar cancelación-->
+<ng-template #confirmCancel let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h6 class="modal-title">¿Realmente quiere cancelar el viaje?</h6>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="c('Close click')">No</button>
+        <button type="button" class="btn btn-danger" (click)="deleteTravel(viajeSeleccionado); c('Close click')">Si, deseo cancelar el viaje</button>
     </div>
 </ng-template>

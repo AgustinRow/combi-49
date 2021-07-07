@@ -6,23 +6,13 @@
 }
 
 footer {
-  /*position: fixed;*/
+  position: relative;
   left: 0;
   bottom: 0;
   width: 100%;
   color: white;
   background-color: #3eb7db;
   text-align: center;
-}
-
-@media screen and (min-height: 600px) {
-  footer {
-    position: fixed;
-  }
-
-  body {
-    margin-bottom: 220px;
-  }
 }
 
 footer.page-footer .footer-copyright {
