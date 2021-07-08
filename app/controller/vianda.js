@@ -92,17 +92,18 @@ const remove = async (req, res) => {
 
 const buy = async (req, res) => {
   const { body } = req;
-
+ 
   try {
     const pasaje = await model.Pasaje.findOne({
       where: { id: body.pasajeId, habilitado: true },
     });
-
+    const pasajero = await pasaje.getPasajero();
     for (i = 0; i < body.viandas.length; i++) {
       const vianda = await model.Vianda.findOne({
         where: { id: body.viandas[i].id, habilitado: true },
       });
       if (vianda.stock > 0) {
+        
         const membresia = await pasajero.getMembresia();
         let precio;
         if (membresia != null && membresia.activo) {
